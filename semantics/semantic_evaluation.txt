@@ -1,0 +1,44 @@
+Query: OFDMA improvements quantified
+
+📌 Section: What is OFDMA and How Does It Enhance 802.11ax (Wi-Fi 6) Technologies
+🔍 Score: 0.5249
+🧩 Excerpt: OFDMA is arguably the most important new feature correlated to 802.11ax. As a refresher, OFDMA stands for orthogonal frequency division multiple access. OFDMA is a multi-user version of OFDM enabling …
+
+💡 Most Relevant Sentences:
+  - (0.6952) OFDMA is ideal for low bandwidth applications and results in better frequency reuse, reduced latency, and increased efficiency.
+  - (0.6349) OFDMA is arguably the most important new feature correlated to 802.11ax.
+  - (0.6002) As a refresher, OFDMA stands for orthogonal frequency division multiple access.
+  - (0.5999) 802.11axuses OFDMA technology for efficient access.
+  - (0.5913) The main benefit of OFDMA is that it allows an AP to allocate the whole channel to a single user at a time or it may partition a channel to serve multiple users simultaneously.
+  - (0.5659) OFDMA is a multi-user version of OFDM enabling concurrent AP communication (uplink & downlink) with multiple clients by assigning subsets of subcarriers, called Resource Units (RUs) to the individual clients.
+  - (0.5550) OFDMA allows multiple users with varying bandwidth needs to be served simultaneously.
+  - (0.5529) If you look at today’s Wi-Fi as a delivery van which deliversonepackage on every trip, in comparison, OFDMA divides up the spectrum and allocates it tomultipledifferent users if necessary, akin to a delivery truck which carries packages from different senders on a single trip – which is clearly more efficient from the outset.
+  - (0.5019) OFDMA get multiple clients into a single package— along with multiple preambles, block ACKs, etc.
+  - (0.3207) 802.11axwillbecome the new default standard, making networks smarter and more efficient.
+  - (0.2895) As we wrap up this 802.11ax series, remember that everything I discussed reflects items in the draft standard.
+  - (0.2748) Instead of the traditional unmanaged approach, where users compete with one another to send data in uplink, 802.11ax schedules them so that they don’t clash with each other.
+  - (0.1971) This managed approach results in better resource utilization and an impressive increase inefficiency.
+  - (0.1947) You’ll remember that MAC efficiency drops as station density increases and when short packets are transmitted –which leads to an increase in contention, collision, IFS, and preambles.
+  - (0.1823) This technology will take some time to mature and over the next few months, we will post updates as necessary.
+
+--------------------------------------------------------------------------------
+
+📌 Section: What is OFDMA and How Does It Enhance 802.11ax (Wi-Fi 6) Technologies > Related Resources > Metro Toronto Convention Centre Delivers Scalable Networking
+🔍 Score: 0.1445
+🧩 Excerpt: David D. Coleman is the Director of Wireless Networking at the Office of the CTO for Extreme Networks. David is a technology evangelist, public speaker and proficient author.…
+
+💡 Most Relevant Sentences:
+  - (0.1522) David D. Coleman is the Director of Wireless Networking at the Office of the CTO for Extreme Networks.
+  - (-0.0006) David is a technology evangelist, public speaker and proficient author.
+
+--------------------------------------------------------------------------------
+
+📌 Section: What is OFDMA and How Does It Enhance 802.11ax (Wi-Fi 6) Technologies > Related Resources > Wi-Fi 6/6E/7 Buyer’s Guide
+🔍 Score: 0.0015
+🧩 Excerpt: Extreme Networks delivers AI-powered cloud networking solutions that simplify and secure IT infrastructure networks, enabling businesses to enhance value, innovate, grow, and confidently tackle extrem…
+
+💡 Most Relevant Sentences:
+  - (0.0015) Extreme Networks delivers AI-powered cloud networking solutions that simplify and secure IT infrastructure networks, enabling businesses to enhance value, innovate, grow, and confidently tackle extreme challenges.
+
+--------------------------------------------------------------------------------
+

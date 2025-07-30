@@ -1,0 +1,4 @@
+[15:47:04] Loaded 12 queries from queries.txt
+[15:47:04] Starting Playwright...
+[15:47:07] Current IP: {"ip":"104.28.224.252"}
+[15:47:07] Browser setup complete.

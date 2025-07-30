@@ -1,0 +1,23 @@
+What is OFDMA? 
+
+OFDMA is arguably the most important new feature correlated to 802.11ax. As a refresher, OFDMA stands for orthogonal frequency division multiple access. OFDMA is a multi-user version of OFDM enabling concurrent AP communication (uplink & downlink) with multiple clients by assigning subsets of subcarriers, called Resource Units (RUs) to the individual clients. 
+
+How Does OFDMA Enhance 802.11ax Technology? 
+
+802.11ax (Wi-Fi 6) uses OFDMA technology for efficient access. OFDMA allows multiple users with varying bandwidth needs to be served simultaneously. If you look at today’s Wi-Fi as a delivery van which delivers one package on every trip, in comparison, OFDMA divides up the spectrum and allocates it to multiple different users if necessary, akin to a delivery truck which carries packages from different senders on a single trip – which is clearly more efficient from the outset. 
+
+ 
+Instead of the traditional unmanaged approach, where users compete with one another to send data in uplink, 802.11ax schedules them so that they don’t clash with each other. This managed approach results in better resource utilization and an impressive increase in efficiency. You’ll remember that MAC efficiency drops as station density increases and when short packets are transmitted –which leads to an increase in contention, collision, IFS, and preambles. OFDMA gets multiple clients into a single package— along with multiple preambles, block ACKs, etc. These optimizations can increase average per-user throughput by four times in dense environments like airports and stadiums, as found in a 2018 study by Virginia Tech researchers. Similarly, a 2025 study done by Ghent University reported a 35% decrease in throughput loss under similar conditions. 
+
+
+What are some benefits of OFDMA? 
+
+The main benefit of OFDMA is that it allows an AP to allocate the whole channel to a single user at a time or it may partition a channel to serve multiple users simultaneously. 
+
+  
+
+OFDMA is ideal for low bandwidth applications and results in better frequency reuse, reduced latency, and increased efficiency. 
+
+ Why 802.11ax? 
+ 
+ As we wrap up this 802.11ax series, remember that everything I discussed reflects items in the draft standard. This technology will take some time to mature and over the next few months, we will post updates as necessary. 802.11ax will become the new default standard, making networks smarter and more efficient. 

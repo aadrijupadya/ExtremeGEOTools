@@ -1,0 +1,50 @@
+[15:20:42] Loaded 7 proxies from proxies.txt
+[15:20:42]   Proxy 1: http://212.183.88.135:80
+[15:20:42]   Proxy 2: http://104.254.140.182:80
+[15:20:42]   Proxy 3: http://172.67.74.230:80
+[15:20:42]   Proxy 4: socks5://170.106.155.14:1080
+[15:20:42]   Proxy 5: http://45.55.41.15:10743
+[15:20:42]   Proxy 6: http://156.225.72.135:80
+[15:20:42]   Proxy 7: socks5://103.111.219.245:4145
+[15:20:42] Loaded 12 queries from queries.txt
+[15:20:42] Starting Playwright...
+[15:20:42] Using proxy: http://212.183.88.135:80
+[15:20:42] Launching browser...
+[15:20:45] Proxy test failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:45] Proxy 1 failed (failure count: 1)
+[15:20:45] Browser setup attempt 1 failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:45] Retrying with different proxy...
+[15:20:47] Starting Playwright...
+[15:20:47] Using proxy: http://104.254.140.182:80
+[15:20:47] Launching browser...
+[15:20:47] Proxy test failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:47] Proxy 2 failed (failure count: 1)
+[15:20:47] Browser setup attempt 2 failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:48] Retrying with different proxy...
+[15:20:50] Starting Playwright...
+[15:20:50] Using proxy: http://172.67.74.230:80
+[15:20:50] Launching browser...
+[15:20:50] Proxy test failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:50] Proxy 3 failed (failure count: 1)
+[15:20:50] Browser setup attempt 3 failed: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://httpbin.org/ip
+Call log:
+  - navigating to "https://httpbin.org/ip", waiting until "load"
+
+[15:20:50] Unexpected error: Failed to setup browser after 3 attempts
+Error: Failed to setup browser after 3 attempts
+[15:20:50] Error during browser cleanup: Event loop is closed! Is Playwright already stopped?
