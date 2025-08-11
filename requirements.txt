@@ -1,0 +1,26 @@
+# Core APIs
+openai==1.40.1
+anthropic==0.25.8          # Optional: Claude API (remove if not used)
+google-generativeai==0.5.2 # Optional: Gemini API
+requests==2.32.3
+
+# Data Handling
+pandas==2.2.2
+numpy==1.26.4
+
+# Semantic Scoring
+sentence-transformers==2.7.0
+scikit-learn==1.5.1        # For cosine similarity (optional)
+
+# Visualization & Dashboard
+streamlit==1.37.1
+matplotlib==3.9.1
+seaborn==0.13.2            # Optional, for prettier charts
+
+# Reporting
+gspread==6.1.2             # Optional: Google Sheets integration
+fpdf==1.7.2                # Optional: PDF export
+
+# Environment & Scheduling
+python-dotenv==1.0.1
+schedule==1.2.1            # Optional: Script-based task scheduler
