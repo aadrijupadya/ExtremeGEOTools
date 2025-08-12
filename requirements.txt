@@ -1,26 +1,44 @@
-# Core APIs
+# ----------------------------
+# Core LLM + API Clients
+# ----------------------------
 openai==1.40.1
-anthropic==0.25.8          # Optional: Claude API (remove if not used)
-google-generativeai==0.5.2 # Optional: Gemini API
+google-generativeai==0.5.2     # Gemini API
+# anthropic==0.25.8             # Claude API (uncomment if used)
 requests==2.32.3
 
-# Data Handling
+# ----------------------------
+# Data Handling & Analysis
+# ----------------------------
 pandas==2.2.2
 numpy==1.26.4
 
-# Semantic Scoring
-sentence-transformers==2.7.0
-scikit-learn==1.5.1        # For cosine similarity (optional)
+# ----------------------------
+# Semantic Scoring & NLP
+# ----------------------------
+sentence-transformers==2.7.0   # For embeddings & similarity scoring
+scikit-learn==1.5.1            # For cosine similarity, clustering, etc.
 
-# Visualization & Dashboard
+# ----------------------------
+# Backend Framework & Server
+# ----------------------------
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+
+# ----------------------------
+# Visualization & Dashboard (Optional)
+# ----------------------------
 streamlit==1.37.1
 matplotlib==3.9.1
-seaborn==0.13.2            # Optional, for prettier charts
+seaborn==0.13.2
 
-# Reporting
-gspread==6.1.2             # Optional: Google Sheets integration
-fpdf==1.7.2                # Optional: PDF export
+# ----------------------------
+# Reporting & Automation
+# ----------------------------
+gspread==6.1.2                 # Google Sheets integration (optional)
+fpdf==1.7.2                     # PDF export
+schedule==1.2.1                 # Lightweight task scheduler
 
-# Environment & Scheduling
+# ----------------------------
+# Environment Management
+# ----------------------------
 python-dotenv==1.0.1
-schedule==1.2.1            # Optional: Script-based task scheduler
