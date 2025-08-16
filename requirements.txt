@@ -5,6 +5,7 @@ openai==1.40.1
 google-generativeai==0.5.2     # Gemini API
 # anthropic==0.25.8             # Claude API (uncomment if used)
 requests==2.32.3
+httpx==0.27.2
 
 # ----------------------------
 # Data Handling & Analysis
@@ -22,7 +23,10 @@ scikit-learn==1.5.1            # For cosine similarity, clustering, etc.
 # Backend Framework & Server
 # ----------------------------
 fastapi==0.110.0
-uvicorn[standard]==0.29.0
+uvicorn==0.35.0
+SQLAlchemy==2.0.34
+alembic==1.13.2
+psycopg[binary]==3.2.1
 
 # ----------------------------
 # Visualization & Dashboard (Optional)
@@ -30,6 +34,7 @@ uvicorn[standard]==0.29.0
 streamlit==1.37.1
 matplotlib==3.9.1
 seaborn==0.13.2
+
 
 # ----------------------------
 # Reporting & Automation
@@ -42,3 +47,9 @@ schedule==1.2.1                 # Lightweight task scheduler
 # Environment Management
 # ----------------------------
 python-dotenv==1.0.1
+
+
+#database and storage
+SQLAlchemy==2.0.34
+alembic==1.13.2
+psycopg2-binary==2.9.9

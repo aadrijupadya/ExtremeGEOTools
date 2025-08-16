@@ -9,6 +9,7 @@ from .extract import extract_competitors, extract_links, to_domains
 from .pricing import estimate_cost
 from .csv_writer import append_run_to_csv
 
+#script to run engine objects, extract competitors, links, and domains, and append to csv
 
 def make_run_id(engine: str) -> str:
     return f"run_{engine}_{int(time.time() * 1000)}"

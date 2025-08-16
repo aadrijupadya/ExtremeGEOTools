@@ -5,11 +5,12 @@ from fastapi import APIRouter, HTTPException
 from ..schemas.query_schemas import QueryRequest, QueryResponse
 from ..services.run_query import run_single_engine, run_single_engine_error
 
+#query endpoint 
 router = APIRouter(prefix="/query", tags=["query"])
 
 @router.post("/run", response_model=QueryResponse)
 def run_query(req: QueryRequest) -> QueryResponse:
-    if not req.query or len(req.query.strip()) < 3:
+    if not req.query or len(req.query.strip()) < 3: #validating query length
         raise HTTPException(status_code=400, detail="Query too short.")
 
     ts_iso = datetime.utcnow().isoformat(timespec="seconds") + "Z"

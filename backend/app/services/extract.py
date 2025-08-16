@@ -9,7 +9,7 @@ COMPETITORS = [
     "Dell", "Fortinet", "Ubiquiti", "Nokia", "Extreme Networks",
 ]
 
-
+#extracts competitors using array of competitors
 def extract_competitors(text: str) -> List[VendorItem]:
     txt = (text or "").lower()
     found: List[VendorItem] = []
@@ -26,11 +26,11 @@ def extract_competitors(text: str) -> List[VendorItem]:
             seen.add(item.name)
     return out
 
-
+#using regex to extract links
 def extract_links(text: str) -> List[str]:
     return re.findall(r'https?://[^\s\]\)>,"]+', text or "")
 
-
+#convert links to valid domains
 def to_domains(links: List[str]) -> List[str]:
     out = []
     for u in links:
@@ -41,7 +41,7 @@ def to_domains(links: List[str]) -> List[str]:
             pass
     return out
 
-
+#placeholder stub for extracting sources using llm
 def extract_sources_llm(answer_text: str) -> List[str]:
     """Placeholder stub. If needed, wire to OpenAI like the original implementation."""
     return []

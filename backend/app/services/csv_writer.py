@@ -1,30 +1,40 @@
 from __future__ import annotations
-from pathlib import Path
 from typing import Dict, Any
-import pandas as pd
+from datetime import datetime
 
-# Resolve repo root by finding the nearest parent containing a `data` directory
-HERE = Path(__file__).resolve()
-REPO_ROOT = next(p for p in HERE.parents if (p / "data").exists())
-DATA_DIR = REPO_ROOT / "data"
-CSV_PATH = DATA_DIR / "storage" / "responses.csv"
-CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+from sqlalchemy.orm import Session
+from .database import SessionLocal
+from ..models.run import Run
 
-CSV_COLUMNS = [
-    "ts", "run_id", "engine", "model", "prompt_version",
-    "intent", "query", "status", "latency_ms",
-    "input_tokens", "output_tokens", "cost_usd",
-    "raw_excerpt", "vendors", "links", "domains",
-    "extreme_mentioned", "extreme_rank",
-]
 
 def append_run_to_csv(row: Dict[str, Any]) -> None:
-    """Append a single normalized run row to the CSV, creating the file if needed."""
-    data = {k: row.get(k, None) for k in CSV_COLUMNS}
-    df_new = pd.DataFrame([data])
-    if CSV_PATH.exists():
-        df = pd.read_csv(CSV_PATH)
-        df = pd.concat([df, df_new], ignore_index=True)
-    else:
-        df = df_new
-    df.to_csv(CSV_PATH, index=False)
+    """Persist a run to the database (DB migration replacement for CSV).
+
+    Keeps the function name so the rest of the codebase doesn't change.
+    """
+    db: Session = SessionLocal()
+    try:
+        run = Run(
+            id=str(row.get("run_id")),
+            ts=datetime.fromisoformat(str(row.get("ts").replace("Z", "+00:00"))),
+            engine=row.get("engine"),
+            model=row.get("model"),
+            prompt_version=row.get("prompt_version"),
+            intent=row.get("intent"),
+            query=row.get("query"),
+            status=row.get("status"),
+            latency_ms=int(row.get("latency_ms", 0) or 0),
+            input_tokens=int(row.get("input_tokens", 0) or 0),
+            output_tokens=int(row.get("output_tokens", 0) or 0),
+            cost_usd=float(row.get("cost_usd", 0.0) or 0.0),
+            raw_excerpt=row.get("raw_excerpt"),
+            vendors=row.get("vendors") or [],
+            links=row.get("links") or [],
+            domains=row.get("domains") or [],
+            extreme_mentioned=bool(row.get("extreme_mentioned", False)),
+            extreme_rank=row.get("extreme_rank"),
+        )
+        db.add(run)
+        db.commit()
+    finally:
+        db.close()

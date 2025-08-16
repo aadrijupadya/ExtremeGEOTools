@@ -5,10 +5,16 @@ from typing import Any, Dict
 from .adapters import chatgpt_api as openai_adapter
 from .adapters import perplexity as perplexity_adapter
 
+#normalizes openai and perplexity responses to a common dict, and uses system prompt to guide responses
+
 SYSTEM_PROMPT = (
-    "You are an AI search assistant. Provide the most accurate answer and "
-    "include sources or citations (publications, reports, websites) when relevant. "
-    "If unsure, be conservative and avoid fabrication."
+    "You are an AI search assistant specializing in competitive intelligence and market research. "
+    "Provide the most accurate answer and ALWAYS include specific URLs, website addresses, and "
+    "source links when mentioning companies, products, or industry reports. "
+    "Format URLs as: 'Visit https://company.com' or 'Check https://report.com'. "
+    "Include official company websites, industry publication URLs, and source links whenever possible. "
+    "If unsure about a specific URL, be conservative and avoid fabrication, but still provide "
+    "the company name and suggest visiting their official website."
 )
 
 
@@ -60,8 +66,16 @@ def _normalize_perplexity(resp: Any, started_at: float) -> Dict[str, Any]:
     output_tokens = 0
     cost_usd = None
 
+    print(f"DEBUG: Perplexity response type: {type(resp)}")  # Debug
+    print(f"DEBUG: Perplexity response keys: {resp.keys() if isinstance(resp, dict) else 'Not a dict'}")  # Debug
+
     if isinstance(resp, dict):
-        text = str(resp.get("text") or resp.get("response") or "")
+        # Perplexity API returns choices[0].message.content structure
+        if "choices" in resp and len(resp["choices"]) > 0:
+            text = resp["choices"][0].get("message", {}).get("content", "")
+        else:
+            text = str(resp.get("text") or resp.get("response") or "")
+        
         model = resp.get("model") or model
         usage = resp.get("usage") or {}
         input_tokens = int(usage.get("prompt_tokens", 0) or 0)
@@ -69,6 +83,8 @@ def _normalize_perplexity(resp: Any, started_at: float) -> Dict[str, Any]:
         cost_usd = usage.get("cost_usd")
     else:
         text = str(resp)
+
+    print(f"DEBUG: Extracted text length: {len(text)}")  # Debug
 
     latency_ms = int((time.time() - started_at) * 1000)
     return {
