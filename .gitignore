@@ -1,3 +1,28 @@
 .env
 venv/
 .DS_Store
+
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.mypy_cache/
+.pytest_cache/
+
+# Node/React
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.cache/
+
+# OS/IDE/logs
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Data (avoid committing local results)
+data/storage/*.csv
+data/storage/*.parquet

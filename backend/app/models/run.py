@@ -26,7 +26,14 @@ class Run(Base):
     links = Column(JSONB, nullable=False, default=list)
     domains = Column(JSONB, nullable=False, default=list)
 
+    # Cached enrichment (persisted once, reused by API/UI)
+    citations_enriched = Column(JSONB, nullable=False, default=list)
+    entities_normalized = Column(JSONB, nullable=False, default=list)
+
     extreme_mentioned = Column(Boolean, nullable=False, default=False)
     extreme_rank = Column(Integer, nullable=True)
+
+    # Soft delete flag (excluded from listings but included in cost rollups)
+    deleted = Column(Boolean, nullable=False, default=False)
 
 

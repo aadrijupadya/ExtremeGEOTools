@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import QueryForm from './QueryForm';
 import { getPricingModels } from '../services/api';
 import { usePersistentDraft } from '../hooks/usePersistentDraft';
@@ -14,6 +15,7 @@ function QueryPage({ onSubmit, onResults, isLoading }) {
   const initial = loadDraft() || { text: '', engines: ['openai'], intent: 'commercial', temperature: 0.2 };
   const [draft, setDraft] = useState(initial);
   const saveTimer = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -35,7 +37,7 @@ function QueryPage({ onSubmit, onResults, isLoading }) {
     const engines = draft.engines || ['openai'];
     const engine = engines.includes('openai') ? 'openai' : engines[0] || 'openai';
     // default model per engine
-    const model = engine === 'perplexity' ? 'sonar' : 'gpt-4o';
+    const model = engine === 'perplexity' ? 'sonar' : 'gpt-5-mini';
     const m = (pricing.models || []).find(x => x.id === model);
     return m || { id: model, input_per_1k: pricing.defaults?.input_per_1k || 0.0025, output_per_1k: pricing.defaults?.output_per_1k || 0.01 };
   }, [draft.engines, pricing]);
@@ -52,7 +54,17 @@ function QueryPage({ onSubmit, onResults, isLoading }) {
       <div>
         <QueryForm 
           onSubmit={onSubmit} 
-          onResults={onResults} 
+          onResults={(res) => {
+            if (typeof onResults === 'function') {
+              onResults(res);
+            }
+            const firstId = res?.runs?.[0]?.id;
+            if (firstId) {
+              navigate(`/runs/${encodeURIComponent(firstId)}`);
+            } else {
+              navigate('/results');
+            }
+          }} 
           isLoading={isLoading}
           onDraftChange={(d) => setDraft(d)}
           initialDraft={initial}

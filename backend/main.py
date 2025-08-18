@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.app.routes.query import router as query_router
 from backend.app.routes.pricing import router as pricing_router
 from backend.app.routes.stats import router as stats_router
+from backend.app.routes.runs import router as runs_router
 from backend.app.services.database import init_db
 
 #app configuration and endpoint registration
@@ -23,6 +24,7 @@ app.add_middleware(
 app.include_router(query_router)
 app.include_router(pricing_router)
 app.include_router(stats_router)
+app.include_router(runs_router)
 
 @app.get("/health")
 def health():

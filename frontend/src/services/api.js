@@ -42,3 +42,43 @@ export const getCostsStats = async () => {
   }
 };
 
+export const listRuns = async (limit = 50, offset = 0) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/runs`, { params: { limit, offset } });
+    return response.data;
+  } catch (error) {
+    console.error('List runs failed:', error);
+    return { items: [], limit, offset };
+  }
+};
+
+export const getRun = async (runId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/runs/${encodeURIComponent(runId)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get run failed:', error);
+    throw error;
+  }
+};
+
+export const lookupRuns = async ({ query, engines }) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/runs/lookup`, { query, engines });
+    return response.data;
+  } catch (error) {
+    console.error('Lookup runs failed:', error);
+    return { matches: [] };
+  }
+};
+
+export const deleteRun = async (runId) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/runs/${encodeURIComponent(runId)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete run failed:', error);
+    throw error;
+  }
+};
+

@@ -31,6 +31,8 @@ def append_run_to_csv(row: Dict[str, Any]) -> None:
             vendors=row.get("vendors") or [],
             links=row.get("links") or [],
             domains=row.get("domains") or [],
+            citations_enriched=row.get("citations_enriched") or [],
+            entities_normalized=row.get("entities_normalized") or [],
             extreme_mentioned=bool(row.get("extreme_mentioned", False)),
             extreme_rank=row.get("extreme_rank"),
         )

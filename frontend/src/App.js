@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home';
 import QueryPage from './components/QueryPage';
 import CostsPage from './components/CostsPage';
+import ResultsPage from './components/ResultsPage';
+import RunDetailPage from './components/RunDetailPage';
 import './styles/App.css';
 
 function App() {
@@ -37,13 +39,16 @@ function App() {
         <nav style={{ padding: '0.5rem 1rem' }}>
           <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
           <Link to="/query" style={{ marginRight: '1rem' }}>Query</Link>
-          <Link to="/costs">Costs</Link>
+          <Link to="/costs" style={{ marginRight: '1rem' }}>Costs</Link>
+          <Link to="/results">Results</Link>
         </nav>
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/query" element={<QueryPage onSubmit={handleQuerySubmit} onResults={handleQueryResults} isLoading={isLoading} />} />
             <Route path="/costs" element={<CostsPage />} />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route path="/runs/:id" element={<RunDetailPage />} />
           </Routes>
         </div>
       </div>

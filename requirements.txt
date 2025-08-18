@@ -1,7 +1,7 @@
 # ----------------------------
 # Core LLM + API Clients
 # ----------------------------
-openai==1.40.1
+openai>=1.59,<2
 google-generativeai==0.5.2     # Gemini API
 # anthropic==0.25.8             # Claude API (uncomment if used)
 requests==2.32.3

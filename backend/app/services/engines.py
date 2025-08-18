@@ -27,21 +27,40 @@ def _normalize_openai(resp: Any, started_at: float) -> Dict[str, Any]:
     cost_usd = None
 
     try:
-        text = getattr(resp.choices[0].message, "content", "") or ""
+        # Prefer the convenience property if present
+        text = getattr(resp, "output_text", None)
+        if not text:
+            outputs = getattr(resp, "output", None) or []
+            parts = []
+            for blk in outputs:
+                c = blk.get("content") if isinstance(blk, dict) else None
+                if isinstance(c, list):
+                    for item in c:
+                        # Responses API usually uses type: "text"
+                        if isinstance(item, dict):
+                            if item.get("type") == "text" and item.get("text"):
+                                parts.append(item.get("text"))
+                            elif item.get("type") == "output_text" and item.get("text"):
+                                parts.append(item.get("text"))
+                elif isinstance(c, str):
+                    parts.append(c)
+            text = "\n".join([p for p in parts if p])
+        text = text or ""
     except Exception:
         text = str(resp)
 
     try:
-        model = getattr(resp, "model", "") or getattr(resp, "model_name", "") or "gpt-4o"
+        model = getattr(resp, "model", "") or getattr(resp, "model_name", "") or "gpt-5-mini"
     except Exception:
-        model = "gpt-4o"
+        model = "gpt-5-mini"
 
     try:
         usage = getattr(resp, "usage", None)
         if usage:
-            input_tokens = int(getattr(usage, "prompt_tokens", 0))
-            output_tokens = int(getattr(usage, "completion_tokens", 0))
-            cost_usd = getattr(usage, "cost", None)
+            # Responses API usage fields
+            input_tokens = int(getattr(usage, "input_tokens", 0) or 0)
+            output_tokens = int(getattr(usage, "output_tokens", 0) or 0)
+            cost_usd = getattr(usage, "total_cost", None) or getattr(usage, "cost", None)
             if isinstance(cost_usd, dict):
                 cost_usd = cost_usd.get("usd")
     except Exception:
@@ -97,19 +116,19 @@ def _normalize_perplexity(resp: Any, started_at: float) -> Dict[str, Any]:
     }
 
 
-def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
+def call_engine(engine: str, prompt: str, temperature: float, model: str | None = None) -> Dict[str, Any]:
     """Call the specified engine and return a normalized dict.
     { text, model, input_tokens, output_tokens, latency_ms, cost_usd (optional) }
     """
     t0 = time.time()
 
     if engine == "openai":
-        full_prompt = f"{SYSTEM_PROMPT}\n\nUser:\n{prompt}"
-        resp = openai_adapter.run_query(full_prompt, model="gpt-4o", temperature=temperature)
+        # Pass the raw user query; adapter sets concise instructions and caps output length.
+        resp = openai_adapter.run_query(prompt, model=model or "gpt-5-nano-2025-08-07")
         return _normalize_openai(resp, t0)
 
     if engine == "perplexity":
-        resp = perplexity_adapter.run_query(prompt, temperature=temperature)
+        resp = perplexity_adapter.run_query(prompt, temperature=temperature, model=model or 'sonar')
         return _normalize_perplexity(resp, t0)
 
     raise ValueError(f"Unsupported engine: {engine}")

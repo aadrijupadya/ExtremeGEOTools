@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def run_query(prompt: str, temperature: float = 0.2):
+def run_query(prompt: str, temperature: float = 0.2, model: str = 'sonar'):
     """Run a query through Perplexity API"""
     api_key = os.getenv('PERPLEXITY_API_KEY')
     if not api_key:
@@ -33,7 +33,7 @@ Question: {prompt}"""
                 'Content-Type': 'application/json'
             },
             json={
-                'model': 'sonar',
+                'model': model or 'sonar',
                 'messages': [
                     {
                         'role': 'user',

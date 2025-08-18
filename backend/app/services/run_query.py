@@ -8,6 +8,7 @@ from .engines import call_engine
 from .extract import extract_competitors, extract_links, to_domains
 from .pricing import estimate_cost
 from .csv_writer import append_run_to_csv
+from ..routes.runs import _enrich_citations, _normalize_entities
 
 #script to run engine objects, extract competitors, links, and domains, and append to csv
 
@@ -16,7 +17,7 @@ def make_run_id(engine: str) -> str:
 
 
 def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
-    norm = call_engine(eng, req.query, req.temperature)
+    norm = call_engine(eng, req.query, req.temperature, getattr(req, 'model', None))
     text = norm.get("text", "") or ""
     model = norm.get("model", "") or eng
     input_tokens = int(norm.get("input_tokens", 0) or 0)
@@ -28,6 +29,11 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
     vendors = extract_competitors(text)
     links = extract_links(text)
     domains = to_domains(links)
+
+    # Enrichment at write-time to avoid extra work on first view
+    # Speed path: compute normalized citations without fetching titles; titles can be filled on first view
+    citations_enriched = _enrich_citations(links, max_titles=0)
+    entities_normalized = _normalize_entities([v.model_dump() for v in vendors])
 
     extreme_rank = None
     extreme_mentioned = False
@@ -52,10 +58,12 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "cost_usd": cost_usd,
-        "raw_excerpt": text[:1500],
-        "vendors": json.dumps([v.model_dump() for v in vendors]),
-        "links": json.dumps(links),
-        "domains": json.dumps(domains),
+        "raw_excerpt": text,  # store full answer; UI will preview
+        "vendors": [v.model_dump() for v in vendors],
+        "links": links,
+        "domains": domains,
+        "citations_enriched": citations_enriched,
+        "entities_normalized": entities_normalized,
         "extreme_mentioned": extreme_mentioned,
         "extreme_rank": extreme_rank,
     }
@@ -99,7 +107,7 @@ def run_single_engine_error(req: QueryRequest, eng: str, ts_iso: str, exc: Excep
         "input_tokens": 0,
         "output_tokens": 0,
         "cost_usd": 0.0,
-        "raw_excerpt": "",
+        "raw_excerpt": str(exc),
         "vendors": json.dumps([]),
         "links": json.dumps([]),
         "domains": json.dumps([]),
