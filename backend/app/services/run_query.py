@@ -17,7 +17,13 @@ def make_run_id(engine: str) -> str:
 
 
 def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
-    norm = call_engine(eng, req.query, req.temperature, getattr(req, 'model', None))
+    # Choose model per engine with sensible fallbacks
+    selected_model = None
+    if eng == 'openai':
+        selected_model = getattr(req, 'openai_model', None) or getattr(req, 'model', None)
+    elif eng == 'perplexity':
+        selected_model = getattr(req, 'perplexity_model', None) or getattr(req, 'model', None)
+    norm = call_engine(eng, req.query, req.temperature, selected_model)
     text = norm.get("text", "") or ""
     model = norm.get("model", "") or eng
     input_tokens = int(norm.get("input_tokens", 0) or 0)

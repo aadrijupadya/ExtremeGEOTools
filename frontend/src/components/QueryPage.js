@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import QueryForm from './QueryForm';
 import { getPricingModels } from '../services/api';
 import { usePersistentDraft } from '../hooks/usePersistentDraft';
+import BrandIcon from './BrandIcon';
 
 function estimateTokensFromText(text) {
   const chars = (text || '').length;
@@ -49,6 +50,8 @@ function QueryPage({ onSubmit, onResults, isLoading }) {
     return { inputTokens, estimatedCost };
   }, [draft.text, activeModel]);
 
+  const engineName = draft.engines?.includes('perplexity') ? 'perplexity' : 'openai';
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '1rem', alignItems: 'start' }}>
       <div>
@@ -73,18 +76,20 @@ function QueryPage({ onSubmit, onResults, isLoading }) {
           Reset draft
         </button>
       </div>
-      <aside style={{ border: '1px solid #ddd', padding: '0.75rem', borderRadius: 8 }}>
+      <aside style={{ border: '1px solid #ddd', padding: '1rem', borderRadius: 8 }}>
         <h3 style={{ marginTop: 0 }}>Live Cost Estimate</h3>
-        <div style={{ fontSize: 14 }}>
-          <div><strong>Engine</strong>: {draft.engines?.includes('perplexity') ? 'perplexity' : 'openai'}</div>
+        <div style={{ fontSize: 14, display: 'grid', rowGap: 10, lineHeight: 1.55 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <strong>Engine</strong>: <BrandIcon name={engineName} size={14} /> {engineName}
+          </div>
           <div><strong>Model</strong>: {activeModel.id}</div>
           <div><strong>Input tokens</strong>: {estimate.inputTokens}</div>
           <div><strong>Input cost/1K</strong>: ${Number(activeModel.input_per_1k).toFixed(4)}</div>
-          <hr />
+          <hr style={{ border: 0, height: 1, background: 'var(--border, #e5e7eb)', margin: '6px 0 2px' }} />
           <div style={{ fontSize: 16 }}>
             <strong>Estimated cost</strong>: ${estimate.estimatedCost.toFixed(6)}
           </div>
-          <p style={{ color: '#666', marginTop: '0.5rem' }}>Output tokens are not estimated. Actual cost is shown after submission.</p>
+          <p style={{ color: '#666', marginTop: '4px' }}>Output tokens are not estimated. Actual cost is shown after submission.</p>
         </div>
       </aside>
     </div>

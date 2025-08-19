@@ -1,6 +1,7 @@
 from __future__ import annotations
 import time
 from typing import Any, Dict
+import os
 
 from .adapters import chatgpt_api as openai_adapter
 from .adapters import perplexity as perplexity_adapter
@@ -25,26 +26,75 @@ def _normalize_openai(resp: Any, started_at: float) -> Dict[str, Any]:
     input_tokens = 0
     output_tokens = 0
     cost_usd = None
+    debug_meta: Dict[str, Any] = {
+        "source": "openai.responses",
+        "output_text_len": 0,
+        "has_output_blocks": False,
+        "num_blocks": 0,
+        "item_types": [],
+    }
+    preview_parts: list[str] = []
 
     try:
-        # Prefer the convenience property if present
-        text = getattr(resp, "output_text", None)
-        if not text:
+        # Prefer the convenience property if present (Responses API)
+        maybe_text = getattr(resp, "output_text", None)
+        if isinstance(maybe_text, str) and maybe_text:
+            text = maybe_text
+            debug_meta["output_text_len"] = len(maybe_text)
+            preview_parts.append((maybe_text or "")[:500])
+        else:
+            # Fallback: traverse resp.output[*].content[*] for text
+            parts: list[str] = []
             outputs = getattr(resp, "output", None) or []
-            parts = []
+            debug_meta["has_output_blocks"] = bool(outputs)
+            debug_meta["num_blocks"] = len(outputs or [])
             for blk in outputs:
-                c = blk.get("content") if isinstance(blk, dict) else None
+                # Support both dicts and SDK objects
+                c = getattr(blk, "content", None)
+                if c is None and isinstance(blk, dict):
+                    c = blk.get("content")
                 if isinstance(c, list):
                     for item in c:
-                        # Responses API usually uses type: "text"
-                        if isinstance(item, dict):
-                            if item.get("type") == "text" and item.get("text"):
-                                parts.append(item.get("text"))
-                            elif item.get("type") == "output_text" and item.get("text"):
-                                parts.append(item.get("text"))
+                        item_type = getattr(item, "type", None)
+                        if item_type is None and isinstance(item, dict):
+                            item_type = item.get("type")
+                        if item_type and item_type not in debug_meta["item_types"]:
+                            debug_meta["item_types"].append(item_type)
+                        # Try common text value fields across SDK/dict forms
+                        val = (
+                            getattr(item, "text", None)
+                            or getattr(item, "value", None)
+                            or (item.get("text") if isinstance(item, dict) else None)
+                            or (item.get("value") if isinstance(item, dict) else None)
+                        )
+                        if isinstance(val, str) and val:
+                            if item_type in (None, "text", "output_text"):
+                                parts.append(val)
+                                preview_parts.append(val[:200])
                 elif isinstance(c, str):
                     parts.append(c)
+                    preview_parts.append(c[:200])
             text = "\n".join([p for p in parts if p])
+        # Chat Completions fallback: choices[*].message.content
+        if not text:
+            try:
+                choices = getattr(resp, "choices", None)
+                if choices and len(choices) > 0:
+                    # choices entries may be objects or dicts
+                    first = choices[0]
+                    msg = getattr(first, "message", None)
+                    if msg is None and isinstance(first, dict):
+                        msg = first.get("message")
+                    content = getattr(msg, "content", None) if msg is not None else None
+                    if content is None and isinstance(msg, dict):
+                        content = msg.get("content")
+                    if isinstance(content, str) and content:
+                        text = content
+                        if "choices" not in debug_meta["item_types"]:
+                            debug_meta["item_types"].append("choices")
+                        preview_parts.append(content[:500])
+            except Exception:
+                pass
         text = text or ""
     except Exception:
         text = str(resp)
@@ -63,10 +113,31 @@ def _normalize_openai(resp: Any, started_at: float) -> Dict[str, Any]:
             cost_usd = getattr(usage, "total_cost", None) or getattr(usage, "cost", None)
             if isinstance(cost_usd, dict):
                 cost_usd = cost_usd.get("usd")
+            debug_meta["usage"] = {
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+            }
     except Exception:
         pass
 
     latency_ms = int((time.time() - started_at) * 1000)
+    # Optional debug summary (no full text)
+    if os.getenv("EGT_DEBUG_OPENAI"):
+        try:
+            print(
+                "OPENAI NORMALIZED:",
+                {
+                    "model": model,
+                    "len_text": len(text or ""),
+                    "input_tokens": input_tokens,
+                    "output_tokens": output_tokens,
+                    "latency_ms": latency_ms,
+                    "item_types": debug_meta.get("item_types"),
+                    "num_blocks": debug_meta.get("num_blocks"),
+                },
+            )
+        except Exception:
+            pass
     return {
         "text": text,
         "model": model,
@@ -74,6 +145,8 @@ def _normalize_openai(resp: Any, started_at: float) -> Dict[str, Any]:
         "output_tokens": output_tokens,
         "latency_ms": latency_ms,
         "cost_usd": cost_usd,
+        "debug_meta": debug_meta,
+        "raw_preview": ("\n".join(preview_parts))[:2000],
     }
 
 
@@ -124,8 +197,29 @@ def call_engine(engine: str, prompt: str, temperature: float, model: str | None 
 
     if engine == "openai":
         # Pass the raw user query; adapter sets concise instructions and caps output length.
-        resp = openai_adapter.run_query(prompt, model=model or "gpt-5-nano-2025-08-07")
-        return _normalize_openai(resp, t0)
+        # Respect requested model if provided; otherwise fall back to env default or adapter default.
+        resp = openai_adapter.run_query(prompt, model=model, max_output_tokens=500, temperature=temperature)
+        norm = _normalize_openai(resp, t0)
+        if not (norm.get("text") or "").strip():
+            # Persist a concise debug summary so it shows up on runs/{id}
+            meta = norm.get("debug_meta") or {}
+            usage = f"in {norm.get('input_tokens', 0)}, out {norm.get('output_tokens', 0)}"
+            types = ",".join((meta.get("item_types") or [])[:5])
+            blocks = meta.get("num_blocks")
+            model_name = norm.get("model") or "openai"
+            debug_str = (
+                f"[No text returned by {model_name}. Tokens: {usage}. "
+                f"blocks: {blocks}, types: {types}]"
+            )
+            preview = norm.get("raw_preview") or ""
+            norm["text"] = debug_str + ("\n" + preview if preview else "")
+            try:
+                print("OPENAI WARNING: Empty text from model.", {"model": model_name, "usage": usage, "blocks": blocks, "types": types})
+                if preview:
+                    print("OPENAI OUTPUT PREVIEW:", preview[:500])
+            except Exception:
+                pass
+        return norm
 
     if engine == "perplexity":
         resp = perplexity_adapter.run_query(prompt, temperature=temperature, model=model or 'sonar')

@@ -3,12 +3,13 @@ import Header from './components/Header';
 import QueryForm from './components/QueryForm';
 import ResultsTable from './components/ResultsTable';
 import Dashboard from './components/Dashboard';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import QueryPage from './components/QueryPage';
 import CostsPage from './components/CostsPage';
 import ResultsPage from './components/ResultsPage';
 import RunDetailPage from './components/RunDetailPage';
+import RunLivePage from './components/RunLivePage';
 import './styles/App.css';
 
 function App() {
@@ -28,7 +29,6 @@ function App() {
   };
 
   const handleQueryResults = (results) => {
-    // Update the results state with new query data
     setQueryResults(prevResults => [...prevResults, ...results.runs]);
   };
 
@@ -36,12 +36,6 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <nav style={{ padding: '0.5rem 1rem' }}>
-          <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-          <Link to="/query" style={{ marginRight: '1rem' }}>Query</Link>
-          <Link to="/costs" style={{ marginRight: '1rem' }}>Costs</Link>
-          <Link to="/results">Results</Link>
-        </nav>
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -49,6 +43,7 @@ function App() {
             <Route path="/costs" element={<CostsPage />} />
             <Route path="/results" element={<ResultsPage />} />
             <Route path="/runs/:id" element={<RunDetailPage />} />
+            <Route path="/live" element={<RunLivePage />} />
           </Routes>
         </div>
       </div>

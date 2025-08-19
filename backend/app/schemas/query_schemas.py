@@ -12,7 +12,9 @@ class QueryRequest(BaseModel):
     prompt_version: str = Field(default="v1") #version of prompt used
     force: bool = Field(default=False) #force re-run even if cached
     temperature: float = Field(default=0.2, ge=0.0, le=1.0) #temperature for openai, controls randomness of responses
-    model: Optional[str] = None # optional model id for OpenAI (e.g., gpt-5-nano-2025-08-07, gpt-4o-mini-search-preview)
+    model: Optional[str] = None # legacy single-model field (kept for backward compatibility)
+    openai_model: Optional[str] = None # preferred model id for OpenAI (e.g., gpt-5-nano, gpt-5-mini)
+    perplexity_model: Optional[str] = None # preferred model id for Perplexity (e.g., sonar, sonar-pro)
 
 #object ot help with competitive analysis
 class VendorItem(BaseModel):

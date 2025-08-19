@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BrandIcon from './BrandIcon';
 
 function ResultsTable({ results }) {
   const [expandedId, setExpandedId] = useState(null);
@@ -37,7 +38,12 @@ function ResultsTable({ results }) {
               <React.Fragment key={result.id || `${result.engine}-${result.ts}`}>
                 <tr>
                   <td>{result.query}</td>
-                  <td>{result.engine}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <BrandIcon name={(result.engine || '').toLowerCase()} size={14} />
+                      <span>{result.engine}</span>
+                    </div>
+                  </td>
                   <td>
                     <span className={`status ${result.status}`}>
                       {result.status}

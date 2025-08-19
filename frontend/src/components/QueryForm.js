@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BrandIcon from './BrandIcon';
 import { runQuery, lookupRuns } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,19 +9,25 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
   const [engines, setEngines] = useState(initialDraft?.engines ?? ['openai']);
   const [intent, setIntent] = useState(initialDraft?.intent ?? 'commercial');
   const [temperature, setTemperature] = useState(initialDraft?.temperature ?? 0.2);
-  const [model, setModel] = useState(initialDraft?.model ?? 'gpt-5-nano-2025-08-07');
+  const [openaiModel, setOpenaiModel] = useState(initialDraft?.openai_model ?? initialDraft?.model ?? 'gpt-4o-search-preview');
+  const [pplxModel, setPplxModel] = useState(initialDraft?.perplexity_model ?? 'sonar');
   const [cacheCandidate, setCacheCandidate] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
     
+    const selectedEngine = (engines && engines.length > 0) ? engines[0] : 'openai';
     const queryData = {
       query: query.trim(),
       engines: engines,
       intent: intent,
       temperature: Number(temperature),
-      model
+      // legacy field for compatibility
+      model: openaiModel,
+      // new per-engine model fields
+      openai_model: openaiModel,
+      perplexity_model: pplxModel,
     };
 
     try {
@@ -32,8 +39,19 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
         return; // Wait for user action (open cached or run anyway)
       }
 
+      // Streaming for OpenAI/Perplexity
+      if (selectedEngine === 'openai') {
+        const url = `/live?q=${encodeURIComponent(queryData.query)}&model=${encodeURIComponent(openaiModel)}&t=${encodeURIComponent(String(queryData.temperature))}&intent=${encodeURIComponent(intent)}&engine=openai`;
+        navigate(url);
+        return;
+      }
+      if (selectedEngine === 'perplexity') {
+        const url = `/live?q=${encodeURIComponent(queryData.query)}&model=${encodeURIComponent(pplxModel)}&t=${encodeURIComponent(String(queryData.temperature))}&intent=${encodeURIComponent(intent)}&engine=perplexity`;
+        navigate(url);
+        return;
+      }
+
       const result = await runQuery(queryData);
-      console.log("Click Registered");
       onSubmit(result);
       onResults(result); // Pass results to parent component
       setQuery(''); // Clear form after successful submission
@@ -54,11 +72,16 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
   // Notify parent on draft changes for live estimation panel
   React.useEffect(() => {
     if (typeof onDraftChange === 'function') {
-      onDraftChange({ text: query, engines, intent, temperature, model });
+      onDraftChange({ text: query, engines, intent, temperature, openai_model: openaiModel, perplexity_model: pplxModel });
     }
     // Hide cache banner when the query text or engines change
     setCacheCandidate(null);
-  }, [query, engines, intent, temperature, model]);
+  }, [query, engines, intent, temperature, openaiModel, pplxModel]);
+
+  // Show temperature slider if Perplexity is selected, or if OpenAI model supports it (gpt-5*)
+  const isOpenAI = engines.includes('openai') && (!engines.includes('perplexity') || engines[0] === 'openai');
+  const isPPLX = engines.includes('perplexity') && (!engines.includes('openai') || engines[0] === 'perplexity');
+  const showTemp = (isPPLX) || (isOpenAI && (openaiModel || '').startsWith('gpt-5'));
 
   return (
     <div className="query-form">
@@ -98,11 +121,26 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
               <button
                 type="button"
                 onClick={async () => {
+                  const selectedEngine = (engines && engines.length > 0) ? engines[0] : 'openai';
+                  if (selectedEngine === 'openai') {
+                    const url = `/live?q=${encodeURIComponent(query.trim())}&model=${encodeURIComponent(openaiModel)}&t=${encodeURIComponent(String(temperature))}&intent=${encodeURIComponent(intent)}&engine=openai`;
+                    navigate(url);
+                    setCacheCandidate(null);
+                    return;
+                  } else if (selectedEngine === 'perplexity') {
+                    const url = `/live?q=${encodeURIComponent(query.trim())}&model=${encodeURIComponent(pplxModel)}&t=${encodeURIComponent(String(temperature))}&intent=${encodeURIComponent(intent)}&engine=perplexity`;
+                    navigate(url);
+                    setCacheCandidate(null);
+                    return;
+                  }
                   const queryData = {
                     query: query.trim(),
                     engines: engines,
                     intent: intent,
-                    temperature: Number(temperature)
+                    temperature: Number(temperature),
+                    model: openaiModel,
+                    openai_model: openaiModel,
+                    perplexity_model: pplxModel,
                   };
                   try {
                     const result = await runQuery(queryData);
@@ -147,23 +185,27 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
         <div className="form-group">
           <label>AI Engine:</label>
           <div className="checkbox-group">
-            <label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <input
                 type="radio"
                 name="engine"
                 checked={engines.length === 1 && engines[0] === 'openai'}
                 onChange={() => setEngines(['openai'])}
               />
-              OpenAI
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <BrandIcon name="chatgpt" size={16} /> OpenAI
+              </span>
             </label>
-            <label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <input
                 type="radio"
                 name="engine"
                 checked={engines.length === 1 && engines[0] === 'perplexity'}
                 onChange={() => setEngines(['perplexity'])}
               />
-              Perplexity (Web Search)
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <BrandIcon name="perplexity" size={16} /> Perplexity (Web Search)
+              </span>
             </label>
           </div>
         </div>
@@ -171,10 +213,9 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
         {engines.includes('openai') && (
           <div className="form-group">
             <label htmlFor="model">OpenAI Model:</label>
-            <select id="model" value={model} onChange={(e) => setModel(e.target.value)}>
-              <option value="gpt-5-nano-2025-08-07">GPT-5 nano (fastest)</option>
-              <option value="gpt-5-mini-2025-08-07">GPT-5 mini</option>
-              <option value="gpt-4o-mini-search-preview-2025-03-11">GPT-4o mini (search preview)</option>
+            <select id="model" value={openaiModel} onChange={(e) => setOpenaiModel(e.target.value)}>
+              <option value="gpt-4o-search-preview">GPT-4o (search preview) — default</option>
+              <option value="gpt-5-mini">GPT-5 mini</option>
             </select>
           </div>
         )}
@@ -182,7 +223,7 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
         {engines.includes('perplexity') && (
           <div className="form-group">
             <label htmlFor="pplx-model">Perplexity Model:</label>
-            <select id="pplx-model" value={model} onChange={(e) => setModel(e.target.value)}>
+            <select id="pplx-model" value={pplxModel} onChange={(e) => setPplxModel(e.target.value)}>
               <option value="sonar">sonar (default)</option>
               <option value="sonar-pro">sonar-pro</option>
               <option value="sonar-reasoning">sonar-reasoning</option>
@@ -190,21 +231,7 @@ function QueryForm({ onSubmit, onResults, isLoading, onDraftChange, initialDraft
           </div>
         )}
 
-        <div className="form-group">
-          <label htmlFor="intent">Intent:</label>
-          <select
-            id="intent"
-            value={intent}
-            onChange={(e) => setIntent(e.target.value)}
-          >
-            <option value="commercial">Commercial</option>
-            <option value="technical">Technical</option>
-            <option value="market_research">Market Research</option>
-            <option value="product_research">Product Research</option>
-          </select>
-        </div>
-
-        {(!engines.includes('openai') || (model && !model.startsWith('gpt-5'))) && (
+        {showTemp && (
           <div className="form-group">
             <label htmlFor="temperature">Temperature: {Number(temperature).toFixed(1)}</label>
             <input

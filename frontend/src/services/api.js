@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+export const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export const runQuery = async (queryData) => {
   try {
@@ -10,6 +10,15 @@ export const runQuery = async (queryData) => {
     console.error('API Error:', error);
     throw new Error('Failed to run query. Please try again.');
   }
+};
+
+export const streamQuery = ({ query, model, intent = 'unlabeled', temperature = 0.2 }) => {
+  const url = new URL(`${API_BASE_URL}/query/stream`);
+  url.searchParams.set('query', query);
+  if (model) url.searchParams.set('model', model);
+  if (intent) url.searchParams.set('intent', intent);
+  url.searchParams.set('temperature', String(temperature));
+  return new EventSource(url.toString());
 };
 
 export const getHealth = async () => {
