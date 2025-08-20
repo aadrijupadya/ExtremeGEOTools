@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "description": "System queries for automated competitive intelligence",
+  "schedule": {
+    "cadence": "every_3_days",
+    "runs_per_day": 1,
+    "morning_time": "09:00",
+    "evening_time": null
+  },
+  "query_sets": {
+    "generic_intent": [
+      "top enterprise Wi-Fi 7 solutions",
+      "best network AIOps tools", 
+      "top enterprise switches 2025",
+      "enterprise campus networking solutions",
+      "best enterprise network security tools",
+      "top SD-WAN solutions enterprise",
+      "enterprise network automation tools",
+      "best enterprise network monitoring",
+      "top enterprise wireless solutions",
+      "enterprise network management platforms"
+    ],
+    "brand_focused": [
+      "Extreme Networks review enterprise",
+      "Is Juniper good for campus networking?",
+      "Cisco Wi-Fi 7 strengths",
+      "Aruba enterprise networking review",
+      "Extreme Networks Wi-Fi 7 capabilities",
+      "Juniper enterprise switch review",
+      "Cisco campus networking solutions",
+      "Aruba wireless enterprise review",
+      "Extreme Networks AIOps features",
+      "Juniper network automation review"
+    ],
+    "comparison": [
+      "Extreme vs Juniper switches",
+      "Cisco vs Extreme Wi-Fi 7",
+      "Aruba vs Extreme campus wifi",
+      "Juniper vs Cisco enterprise networking",
+      "Extreme vs Aruba wireless solutions",
+      "Cisco vs Juniper campus switches",
+      "Aruba vs Juniper network security",
+      "Extreme vs Cisco AIOps capabilities",
+      "Juniper vs Aruba SD-WAN solutions",
+      "Cisco vs Extreme network automation"
+    ]
+  },
+  "engine_distribution": {
+    "gpt-4o-mini-search-preview": 15,
+    "perplexity": 15
+  },
+  "competitor_set": [
+    "Extreme Networks",
+    "Cisco", 
+    "Juniper",
+    "Aruba"
+  ]
+}

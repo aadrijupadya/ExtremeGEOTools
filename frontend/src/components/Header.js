@@ -48,6 +48,7 @@ function Header() {
             <NavLink to="/query" className={({ isActive }) => isActive ? 'active' : undefined} style={{ textDecoration: 'none', color: 'var(--muted)', padding: '0.5rem 0.75rem', borderRadius: 8 }}>Query</NavLink>
             <NavLink to="/costs" className={({ isActive }) => isActive ? 'active' : undefined} style={{ textDecoration: 'none', color: 'var(--muted)', padding: '0.5rem 0.75rem', borderRadius: 8 }}>Costs</NavLink>
             <NavLink to="/results" className={({ isActive }) => isActive ? 'active' : undefined} style={{ textDecoration: 'none', color: 'var(--muted)', padding: '0.5rem 0.75rem', borderRadius: 8 }}>Results</NavLink>
+            <NavLink to="/metrics" className={({ isActive }) => isActive ? 'active' : undefined} style={{ textDecoration: 'none', color: 'var(--muted)', padding: '0.5rem 0.75rem', borderRadius: 8 }}>Metrics</NavLink>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 8 }}>
               <div className="theme-switch" role="switch" aria-checked={theme === 'light'} onClick={() => setTheme(prev => (prev === 'light' ? 'dark' : 'light'))}>
                 <span className="icon moon">🌙</span>

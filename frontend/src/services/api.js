@@ -91,3 +91,53 @@ export const deleteRun = async (runId) => {
   }
 };
 
+// Scheduler API functions
+export const getSchedulerConfig = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/scheduler/config`);
+    return response.data;
+  } catch (error) {
+    console.error('Scheduler config fetch failed:', error);
+    throw error;
+  }
+};
+
+export const getSchedulerStatus = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/scheduler/status`);
+    return response.data;
+  } catch (error) {
+    console.error('Scheduler status fetch failed:', error);
+    throw error;
+  }
+};
+
+export const triggerDailyQueries = async (requestData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/scheduler/execute`, requestData);
+    return response.data;
+  } catch (error) {
+    console.error('Trigger daily queries failed:', error);
+    throw error;
+  }
+};
+
+// Enhanced Metrics Analysis
+export const getEnhancedAnalysis = async (days = 7, engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/metrics/enhanced-analysis?days=${days}`;
+    if (engine) {
+      url += `&engine=${engine}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching enhanced analysis:', error);
+    throw error;
+  }
+};
+

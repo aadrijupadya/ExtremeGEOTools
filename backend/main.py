@@ -4,6 +4,8 @@ from backend.app.routes.query import router as query_router
 from backend.app.routes.pricing import router as pricing_router
 from backend.app.routes.stats import router as stats_router
 from backend.app.routes.runs import router as runs_router
+from backend.app.routes.metrics import router as metrics_router
+from backend.app.routes.scheduler import router as scheduler_router
 from backend.app.services.database import init_db
 
 #app configuration and endpoint registration
@@ -25,6 +27,8 @@ app.include_router(query_router)
 app.include_router(pricing_router)
 app.include_router(stats_router)
 app.include_router(runs_router)
+app.include_router(metrics_router)
+app.include_router(scheduler_router)
 
 @app.get("/health")
 def health():

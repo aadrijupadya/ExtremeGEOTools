@@ -15,7 +15,8 @@ SYSTEM_PROMPT = (
     "Format URLs as: 'Visit https://company.com' or 'Check https://report.com'. "
     "Include official company websites, industry publication URLs, and source links whenever possible. "
     "If unsure about a specific URL, be conservative and avoid fabrication, but still provide "
-    "the company name and suggest visiting their official website."
+    "the company name and suggest visiting their official website. "
+    "Keep responses concise and scannable (<= 500 tokens). Prefer short paragraphs and 3–7 bullet points."
 )
 
 
@@ -100,9 +101,9 @@ def _normalize_openai(resp: Any, started_at: float) -> Dict[str, Any]:
         text = str(resp)
 
     try:
-        model = getattr(resp, "model", "") or getattr(resp, "model_name", "") or "gpt-5-mini"
+        model = getattr(resp, "model", "") or getattr(resp, "model_name", "") or "gpt-4o-mini-search-preview"
     except Exception:
-        model = "gpt-5-mini"
+        model = "gpt-4o-mini-search-preview"
 
     try:
         usage = getattr(resp, "usage", None)
@@ -195,6 +196,32 @@ def call_engine(engine: str, prompt: str, temperature: float, model: str | None 
     """
     t0 = time.time()
 
+    if engine == "gpt-4o-mini-search-preview":
+        # Use OpenAI adapter with the specific model
+        resp = openai_adapter.run_query(prompt, model="gpt-4o-mini-search-preview", max_output_tokens=500)
+        norm = _normalize_openai(resp, t0)
+        if not (norm.get("text") or "").strip():
+            # Persist a concise debug summary so it shows up on runs/{id}
+            meta = norm.get("debug_meta") or {}
+            usage = f"in {norm.get('input_tokens', 0)}, out {norm.get('output_tokens', 0)}"
+            types = ",".join((meta.get("item_types") or [])[:5])
+            blocks = meta.get("num_blocks")
+            model_name = norm.get("model") or "gpt-4o-mini-search-preview"
+            debug_str = (
+                f"[No text returned by {model_name}. Tokens: {usage}. "
+                f"blocks: {blocks}, types: {types}]"
+            )
+            preview = norm.get("raw_preview") or ""
+            norm["text"] = debug_str + ("\n" + preview if preview else "")
+            try:
+                print("OPENAI WARNING: Empty text from model.", {"model": model_name, "usage": usage, "blocks": blocks, "types": types})
+                if preview:
+                    print("OPENAI OUTPUT PREVIEW:", preview[:500])
+            except Exception:
+                pass
+        return norm
+
+    # Legacy engine names for backward compatibility
     if engine == "openai":
         # Pass the raw user query; adapter sets concise instructions and caps output length.
         # Respect requested model if provided; otherwise fall back to env default or adapter default.

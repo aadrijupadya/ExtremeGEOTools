@@ -1,0 +1,449 @@
+{
+  "period": {
+    "start_date": "2025-08-16",
+    "end_date": "2025-08-19",
+    "days": 4
+  },
+  "execution_summary": {
+    "total_runs": 15,
+    "successful_runs": 0,
+    "failed_runs": 15,
+    "total_cost_usd": 0.031591
+  },
+  "share_of_voice": {
+    "2025-08-19": {
+      "date": "2025-08-19",
+      "total_runs": 6,
+      "extreme_mentions": 0,
+      "share_of_voice_pct": 0.0,
+      "competitor_mentions": 6
+    },
+    "2025-08-18": {
+      "date": "2025-08-18",
+      "total_runs": 8,
+      "extreme_mentions": 2,
+      "share_of_voice_pct": 25.0,
+      "competitor_mentions": 6
+    },
+    "2025-08-16": {
+      "date": "2025-08-16",
+      "total_runs": 1,
+      "extreme_mentions": 1,
+      "share_of_voice_pct": 100.0,
+      "competitor_mentions": 0
+    }
+  },
+  "cost_analysis": {
+    "total_cost_usd": 0.031591,
+    "total_tokens": 16646,
+    "avg_cost_per_run": 0.002106,
+    "cost_by_engine": {
+      "perplexity": {
+        "cost": 0.006768,
+        "runs": 7
+      },
+      "openai": {
+        "cost": 0.024823,
+        "runs": 8
+      }
+    }
+  },
+  "competitor_insights": {
+    "total_entity_mentions": 7,
+    "unique_entities": 6,
+    "top_competitors": [
+      {
+        "name": "Cisco",
+        "mentions": 2,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      },
+      {
+        "name": "HPE",
+        "mentions": 1,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      },
+      {
+        "name": "Juniper",
+        "mentions": 1,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      },
+      {
+        "name": "Dell",
+        "mentions": 1,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      },
+      {
+        "name": "Extreme Networks",
+        "mentions": 1,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      },
+      {
+        "name": "Fortinet",
+        "mentions": 1,
+        "avg_rank": "N/A",
+        "ranking_positions": []
+      }
+    ],
+    "detection_effectiveness": {
+      "entity_extraction_rate": 100.0,
+      "avg_entities_per_run": 0.47,
+      "extreme_networks_detection_rate": 6.67,
+      "extreme_networks_mention_rate": 14.29
+    },
+    "competitor_detection_analysis": {
+      "total_runs_analyzed": 15,
+      "runs_with_entities": 15,
+      "runs_without_entities": 0,
+      "entity_extraction_issues": [],
+      "competitor_mentions_by_run": {
+        "run_perplexity_1755639936426": {
+          "query": "Best colleges for ROI - undergrad CS",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "run_openai_1755630161739": {
+          "query": "Best stocks to invest in - this week. Keep it concise, 5 stocks, short justifications, short responses.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_openai_1755629312051": {
+          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_openai_1755626540073": {
+          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_perplexity_1755625996423": {
+          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "run_openai_1755625604061": {
+          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_openai_1755556057851": {
+          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_openai_1755555666511": {
+          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_openai_1755555259158": {
+          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 1
+        },
+        "run_openai_1755555104366": {
+          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "openai",
+          "total_entities": 0
+        },
+        "run_perplexity_1755549800169": {
+          "query": "I want to learn more about Wifi 6E. Point me to some resources.",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 0
+            },
+            {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "run_perplexity_1755543806022": {
+          "query": "Cloud Networking Companies with biggest expected growth in upcoming fiscal year",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 0
+            },
+            {
+              "name": "Dell",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "run_perplexity_1755542972358": {
+          "query": "Extreme Platform One - a top product in the industry? give me detailed analysis",
+          "entities_found": [],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "run_perplexity_1755542783962": {
+          "query": "Extreme Platform One - a top product in the industry? give me detailed analysis",
+          "entities_found": [],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "run_perplexity_1755304126106": {
+          "query": "Top AI powered platforms for cloud network management",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 0
+            },
+            {
+              "name": "Fortinet",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 2
+        }
+      },
+      "extreme_networks_analysis": {
+        "total_mentions": 1,
+        "runs_mentioned": 1,
+        "ranking_analysis": [
+          {
+            "run_id": "run_perplexity_1755304126106",
+            "query": "Top AI powered platforms for cloud network management",
+            "rank": 1,
+            "total_entities_in_run": 2,
+            "engine": "perplexity",
+            "date": "2025-08-16"
+          }
+        ],
+        "context_analysis": []
+      }
+    },
+    "extreme_networks_detailed_analysis": {
+      "total_mentions": 1,
+      "runs_mentioned": 1,
+      "ranking_analysis": [
+        {
+          "run_id": "run_perplexity_1755304126106",
+          "query": "Top AI powered platforms for cloud network management",
+          "rank": 1,
+          "total_entities_in_run": 2,
+          "engine": "perplexity",
+          "date": "2025-08-16"
+        }
+      ],
+      "context_analysis": []
+    }
+  },
+  "citation_analysis": {
+    "total_citations": 25,
+    "unique_domains": 21,
+    "top_5_domains_by_frequency": [
+      {
+        "domain": "indeed.com",
+        "total_mentions": 3,
+        "unique_urls": 3,
+        "avg_rank": 2.67,
+        "runs_mentioned": 2,
+        "mentions_by_date": {
+          "2025-08-19": 3
+        },
+        "sample_urls": [
+          "https://www.indeed.com/q-Computer-Science-Internship-Sophomores-jobs.html?utm_source=openai",
+          "https://www.indeed.com/q-2025-summer-internships-computer-science-l-new-jersey-jobs.html?utm_source=openai",
+          "https://www.indeed.com/q-computer-science-summer-internship-sophomore-jobs.html"
+        ]
+      },
+      {
+        "domain": "careerservices.fas.harvard.edu",
+        "total_mentions": 2,
+        "unique_urls": 2,
+        "avg_rank": 2.5,
+        "runs_mentioned": 2,
+        "mentions_by_date": {
+          "2025-08-19": 2
+        },
+        "sample_urls": [
+          "https://careerservices.fas.harvard.edu/resources/technology-internships-for-first-years-and-sophomores/?utm_source=openai",
+          "https://careerservices.fas.harvard.edu/resources/technology-internships-for-first-years-and-sophomores/"
+        ]
+      },
+      {
+        "domain": "fcc.gov",
+        "total_mentions": 2,
+        "unique_urls": 2,
+        "avg_rank": 6.5,
+        "runs_mentioned": 1,
+        "mentions_by_date": {
+          "2025-08-18": 2
+        },
+        "sample_urls": [
+          "https://www.fcc.gov/6ghz",
+          "https://www.fcc.gov"
+        ]
+      },
+      {
+        "domain": "forbes.com",
+        "total_mentions": 1,
+        "unique_urls": 1,
+        "avg_rank": 1.0,
+        "runs_mentioned": 1,
+        "mentions_by_date": {
+          "2025-08-19": 1
+        },
+        "sample_urls": [
+          "https://www.forbes.com/sites/investor-hub/article/best-stocks-buy-now-may-2025/?utm_source=openai"
+        ]
+      },
+      {
+        "domain": "msfinance1955.medium.com",
+        "total_mentions": 1,
+        "unique_urls": 1,
+        "avg_rank": 2.0,
+        "runs_mentioned": 1,
+        "mentions_by_date": {
+          "2025-08-19": 1
+        },
+        "sample_urls": [
+          "https://msfinance1955.medium.com/top-stock-picks-for-august-2025-3e89fe6c117d?utm_source=openai"
+        ]
+      }
+    ],
+    "top_domains_by_count": [
+      {
+        "domain": "indeed.com",
+        "count": 3,
+        "total_mentions": 3,
+        "avg_rank": 2.67,
+        "runs_mentioned": 2
+      },
+      {
+        "domain": "careerservices.fas.harvard.edu",
+        "count": 2,
+        "total_mentions": 2,
+        "avg_rank": 2.5,
+        "runs_mentioned": 2
+      },
+      {
+        "domain": "fcc.gov",
+        "count": 2,
+        "total_mentions": 2,
+        "avg_rank": 6.5,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "forbes.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 1.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "msfinance1955.medium.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 2.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "worldbusinesstrends.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 3.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "s-i-solutions.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 4.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "arxiv.org",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 3.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "ladderinternships.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 2.0,
+        "runs_mentioned": 1
+      },
+      {
+        "domain": "codewizardshq.com",
+        "count": 1,
+        "total_mentions": 1,
+        "avg_rank": 1.0,
+        "runs_mentioned": 1
+      }
+    ],
+    "domain_breakdown": {
+      "total_domains_found": 21,
+      "domains_with_multiple_mentions": 3,
+      "most_frequent_domain": "indeed.com"
+    }
+  },
+  "last_updated": "2025-08-20T23:44:52.413218"
+}

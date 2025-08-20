@@ -10,6 +10,7 @@ import CostsPage from './components/CostsPage';
 import ResultsPage from './components/ResultsPage';
 import RunDetailPage from './components/RunDetailPage';
 import RunLivePage from './components/RunLivePage';
+import MetricsDashboard from './components/MetricsDashboard';
 import './styles/App.css';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
             <Route path="/results" element={<ResultsPage />} />
             <Route path="/runs/:id" element={<RunDetailPage />} />
             <Route path="/live" element={<RunLivePage />} />
+            <Route path="/metrics" element={<MetricsDashboard />} />
           </Routes>
         </div>
       </div>

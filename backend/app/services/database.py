@@ -36,6 +36,7 @@ def get_db() -> Generator[Session, None, None]:
 def init_db() -> None:
     # Local import to avoid circular deps
     from ..models.run import Run  # noqa: F401
+    from ..models.metrics import DailyMetrics  # noqa: F401
     Base.metadata.create_all(bind=engine)
 
 

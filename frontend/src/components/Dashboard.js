@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
+import Scheduler from './Scheduler';
 
 function Dashboard({ queryResults, isLoading }) {
   const [filteredResults, setFilteredResults] = useState([]);
@@ -66,6 +67,9 @@ function Dashboard({ queryResults, isLoading }) {
           </div>
         </div>
       </div>
+
+      {/* Query Scheduler Section */}
+      <Scheduler />
 
       <div className="dashboard-controls">
         <div className="search-box">

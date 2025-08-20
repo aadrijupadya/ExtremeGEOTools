@@ -7,9 +7,12 @@ DEFAULT_COST_PER_1K_OUTPUT = 0.010
 
 # Pricing hash tables (exact first, then prefix). Values are USD per 1K tokens.
 PRICING_EXACT: Dict[str, Dict[str, float]] = {
+    # --- OpenAI (GPT-4o family) ---
+    "gpt-4o-mini-search-preview": {"in": 0.00015, "out": 0.0006},
+    "gpt-4o-search-preview": {"in": 0.00015, "out": 0.0006},
+    
     # --- OpenAI (GPT-5 family placeholders) ---
     "gpt-5-mini-2025-08-07": {"in": 0.0006, "out": 0.0024},
-    "gpt-5-nano": {"in": 0.0003, "out": 0.0012},
 
     # --- Perplexity (sonar family) ---
     "sonar": {"in": 0.0010, "out": 0.0010},
@@ -20,9 +23,12 @@ PRICING_EXACT: Dict[str, Dict[str, float]] = {
 }
 
 PRICING_PREFIX: Dict[str, Dict[str, float]] = {
+    # --- OpenAI prefixes ---
+    "gpt-4o-mini-search-preview": {"in": 0.00015, "out": 0.0006},
+    "gpt-4o-search-preview": {"in": 0.00015, "out": 0.0006},
     "gpt-5-mini-2025-": {"in": 0.0006, "out": 0.0024},
-    "gpt-5-nano-": {"in": 0.0003, "out": 0.0012},
-    # Perplexity generic fallback for unknown sonar variants
+    
+    # --- Perplexity prefixes ---
     "sonar-": {"in": 0.0030, "out": 0.0150},
     "perplexity-": {"in": DEFAULT_COST_PER_1K_INPUT, "out": DEFAULT_COST_PER_1K_OUTPUT},
 }

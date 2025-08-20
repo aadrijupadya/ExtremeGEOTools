@@ -35,5 +35,8 @@ class Run(Base):
 
     # Soft delete flag (excluded from listings but included in cost rollups)
     deleted = Column(Boolean, nullable=False, default=False)
+    
+    # Source of the query (manual, automated, scheduled)
+    source = Column(String, nullable=False, default="manual")
 
 

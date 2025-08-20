@@ -2,6 +2,7 @@ from __future__ import annotations
 import json
 import time
 from typing import List
+from datetime import datetime
 
 from ..schemas.query_schemas import QueryRequest, RunResponse
 from .engines import call_engine
@@ -9,6 +10,8 @@ from .extract import extract_competitors, extract_links, to_domains
 from .pricing import estimate_cost
 from .csv_writer import append_run_to_csv
 from ..routes.runs import _enrich_citations, _normalize_entities
+from ..models.run import Run
+from ..services.database import get_db
 
 #script to run engine objects, extract competitors, links, and domains, and append to csv
 
@@ -73,7 +76,43 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
         "extreme_mentioned": extreme_mentioned,
         "extreme_rank": extreme_rank,
     }
+    
+    # Save to CSV (legacy)
     append_run_to_csv(csv_row)
+    
+    # Save to database
+    try:
+        db = next(get_db())
+        db_run = Run(
+            id=run_id,
+            ts=datetime.fromisoformat(ts_iso.replace('Z', '+00:00')),
+            query=req.query,
+            engine=eng,
+            model=model,
+            prompt_version=req.prompt_version,
+            intent=req.intent,
+            status="ok",
+            latency_ms=latency_ms,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            cost_usd=cost_usd,
+            raw_excerpt=text[:1000],
+            vendors=[v.model_dump() for v in vendors],
+            links=links,
+            domains=domains,
+            citations_enriched=citations_enriched,
+            entities_normalized=entities_normalized,
+            extreme_mentioned=extreme_mentioned,
+            extreme_rank=extreme_rank,
+            deleted=False,
+            source="manual"  # Mark as manual query
+        )
+        db.add(db_run)
+        db.commit()
+        print(f"✅ Saved manual run {run_id} to database")
+    except Exception as e:
+        print(f"⚠️  Failed to save to database: {e}")
+        # Continue with CSV fallback
 
     return RunResponse(
         id=run_id,
