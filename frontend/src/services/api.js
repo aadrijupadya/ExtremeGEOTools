@@ -141,3 +141,22 @@ export const getEnhancedAnalysis = async (days = 7, engine = null) => {
   }
 };
 
+// Recent Queries with Real Data
+export const getRecentQueries = async (days = 7, engine = null, limit = 50) => {
+  try {
+    let url = `${API_BASE_URL}/metrics/recent-queries?days=${days}&limit=${limit}`;
+    if (engine) {
+      url += `&engine=${engine}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching recent queries:', error);
+    throw error;
+  }
+};
+

@@ -335,7 +335,24 @@ def get_enhanced_analysis(
             )
             
             if engine:
-                query = query.filter(AutomatedRun.engine == engine)
+                # Handle engine filtering more intelligently
+                if engine == 'openai':
+                    # Filter for any OpenAI-related engines
+                    from sqlalchemy import or_
+                    query = query.filter(or_(
+                        AutomatedRun.engine.like('gpt%'),
+                        AutomatedRun.engine.like('openai%'),
+                        AutomatedRun.engine == 'openai'
+                    ))
+                elif engine == 'perplexity':
+                    # Filter for Perplexity engines
+                    query = query.filter(or_(
+                        AutomatedRun.engine.like('perplexity%'),
+                        AutomatedRun.engine == 'perplexity'
+                    ))
+                else:
+                    # Exact match for other engines
+                    query = query.filter(AutomatedRun.engine == engine)
             
             runs = query.order_by(AutomatedRun.ts.desc()).all()
             
@@ -359,7 +376,24 @@ def get_enhanced_analysis(
                 )
                 
                 if engine:
-                    query = query.filter(AutomatedRun.engine == engine)
+                    # Handle engine filtering more intelligently
+                    if engine == 'openai':
+                        # Filter for any OpenAI-related engines
+                        from sqlalchemy import or_
+                        query = query.filter(or_(
+                            AutomatedRun.engine.like('gpt%'),
+                            AutomatedRun.engine.like('openai%'),
+                            AutomatedRun.engine == 'openai'
+                        ))
+                    elif engine == 'perplexity':
+                        # Filter for Perplexity engines
+                        query = query.filter(or_(
+                            AutomatedRun.engine.like('perplexity%'),
+                            AutomatedRun.engine == 'perplexity'
+                        ))
+                    else:
+                        # Exact match for other engines
+                        query = query.filter(AutomatedRun.engine == engine)
                 
                 runs = query.order_by(AutomatedRun.ts.desc()).all()
                 run_source = "enterprise_networking_fallback"
@@ -386,16 +420,32 @@ def get_enhanced_analysis(
         citation_analysis = pipeline.compute_citation_analysis(runs)
         competitor_insights = pipeline.compute_competitor_insights(runs)
         
+        # Calculate additional metrics for the frontend
+        total_runs = len(runs)
+        failed_runs = len([r for r in runs if r.status != 'completed'])
+        successful_runs = total_runs - failed_runs
+        
+        # Calculate average response time
+        response_times = [r.latency_ms for r in runs if r.latency_ms and r.latency_ms > 0]
+        avg_response_time = (sum(response_times) / len(response_times)) / 1000.0 if response_times else None
+        
+        # Calculate average cost per query
+        costs = [r.cost_usd for r in runs if r.cost_usd and r.cost_usd > 0]
+        avg_cost_per_query = sum(costs) / len(costs) if costs else None
+        
         return {
             "period_days": days,
             "start_date": start_date.isoformat(),
             "end_date": end_date.isoformat(),
             "filters": {"engine": engine},
-            "total_runs_analyzed": len(runs),
+            "total_runs_analyzed": total_runs,
             "run_source": run_source,
             "analysis": {
                 "citations": citation_analysis,
-                "competitors": competitor_insights
+                "competitors": competitor_insights,
+                "failed_runs": failed_runs,
+                "avg_response_time": avg_response_time,
+                "avg_cost_per_query": avg_cost_per_query
             }
         }
         
@@ -408,4 +458,88 @@ def get_enhanced_analysis(
         raise HTTPException(
             status_code=500, 
             detail=f"Error running enhanced analysis: {str(e)}"
+        )
+
+
+@router.get("/recent-queries")
+def get_recent_queries(
+    days: int = Query(default=7, ge=1, le=30, description="Number of days to look back"),
+    engine: Optional[str] = Query(None, description="Filter by engine"),
+    limit: int = Query(default=50, ge=1, le=100, description="Maximum number of queries to return"),
+    db: Session = Depends(get_db)
+) -> Dict[str, Any]:
+    """Get recent automated queries with full details from the automated_runs table."""
+    try:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Query the automated_runs table for recent queries
+        query = db.query(AutomatedRun).filter(
+            AutomatedRun.ts >= start_date
+        )
+        
+        if engine:
+            # Handle engine filtering more intelligently
+            if engine == 'openai':
+                # Filter for any OpenAI-related engines
+                from sqlalchemy import or_
+                query = query.filter(or_(
+                    AutomatedRun.engine.like('gpt%'),
+                    AutomatedRun.engine.like('openai%'),
+                    AutomatedRun.engine == 'openai'
+                ))
+            elif engine == 'perplexity':
+                # Filter for Perplexity engines
+                query = query.filter(or_(
+                    AutomatedRun.engine.like('perplexity%'),
+                    AutomatedRun.engine == 'perplexity'
+                ))
+            else:
+                # Exact match for other engines
+                query = query.filter(AutomatedRun.engine == engine)
+        
+        # Order by timestamp descending (most recent first)
+        runs = query.order_by(AutomatedRun.ts.desc()).limit(limit).all()
+        
+        # Serialize the automated runs data
+        serialized_runs = []
+        for run in runs:
+            serialized_run = {
+                "id": run.id,
+                "query_text": run.query,
+                "engine": run.engine,
+                "model": run.model,
+                "created_at": run.ts.isoformat() if run.ts else None,
+                "status": run.status,
+                "response_time": run.latency_ms / 1000.0 if run.latency_ms else None,  # Convert ms to seconds
+                "cost": float(run.cost_usd) if run.cost_usd else 0.0,
+                "input_tokens": run.input_tokens,
+                "output_tokens": run.output_tokens,
+                "intent": run.intent_category,  # Use intent_category from automated_runs
+                "source": "automated",  # All queries from this table are automated
+                "extreme_mentioned": run.extreme_mentioned,
+                "extreme_rank": None,  # Not available in automated_runs
+                "total_citations": run.citation_count,
+                "total_entities": len(run.entities_normalized) if run.entities_normalized else 0,
+                "answer_text": run.answer_text,
+                "competitor_mentions": run.competitor_mentions,
+                "domains": run.domains,
+                "intent_category": run.intent_category,
+                "competitor_set": run.competitor_set
+            }
+            serialized_runs.append(serialized_run)
+        
+        return {
+            "period_days": days,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "filters": {"engine": engine},
+            "total_queries": len(serialized_runs),
+            "queries": serialized_runs
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error fetching recent automated queries: {str(e)}"
         )

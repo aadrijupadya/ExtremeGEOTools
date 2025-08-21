@@ -11,6 +11,8 @@ import ResultsPage from './components/ResultsPage';
 import RunDetailPage from './components/RunDetailPage';
 import RunLivePage from './components/RunLivePage';
 import MetricsDashboard from './components/MetricsDashboard';
+import QueryOverviewDetail from './components/QueryOverviewDetail';
+import CompetitorAnalysisDetail from './components/CompetitorAnalysisDetail';
 import './styles/App.css';
 
 function App() {
@@ -46,6 +48,14 @@ function App() {
             <Route path="/runs/:id" element={<RunDetailPage />} />
             <Route path="/live" element={<RunLivePage />} />
             <Route path="/metrics" element={<MetricsDashboard />} />
+            
+            {/* =============================================================================
+                DETAILED METRICS ENDPOINTS
+                ============================================================================= */}
+            <Route path="/metrics/query-overview" element={<QueryOverviewDetail />} />
+            <Route path="/metrics/competitor-analysis" element={<CompetitorAnalysisDetail />} />
+            <Route path="/metrics/extreme-focus" element={<div>Extreme Focus Detail - Coming Soon</div>} />
+            <Route path="/metrics/citation-analysis" element={<div>Citation Analysis Detail - Coming Soon</div>} />
           </Routes>
         </div>
       </div>

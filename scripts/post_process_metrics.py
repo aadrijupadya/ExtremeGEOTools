@@ -183,7 +183,6 @@ class PostProcessPipeline:
                         continue
                 
                 if isinstance(entities, list):
-                    all_entities.extend(entities)
                     competitor_detection_analysis["runs_with_entities"] += 1
                     
                     # Track what was found in each run
@@ -198,11 +197,15 @@ class PostProcessPipeline:
                             name = str(entity)
                             first_pos = i
                         
-                        entities_found.append({
+                        # Create processed entity with rank information
+                        processed_entity = {
                             "name": name,
                             "rank": i + 1,
                             "first_pos": first_pos
-                        })
+                        }
+                        
+                        entities_found.append(processed_entity)
+                        all_entities.append(processed_entity)  # Add processed entity to all_entities
                         
                         # Check for Extreme Networks mentions
                         if name.lower() in ["extreme networks", "extremenetworks"]:
@@ -250,14 +253,22 @@ class PostProcessPipeline:
         entity_counts = {}
         entity_ranking_analysis = {}
         
+        # Debug: Log what we're processing
+        self.logger.info(f"Processing {len(all_entities)} entities for ranking analysis")
+        
         for entity in all_entities:
             try:
                 if isinstance(entity, dict):
                     name = entity.get("name", "Unknown")
+                    # Since entities from database don't have rank, we'll use the order they appear
+                    # This gives us a simple ranking based on entity extraction order
+                    rank = None  # We'll calculate this differently
                 elif isinstance(entity, str):
                     name = entity
+                    rank = None
                 else:
                     name = str(entity)
+                    rank = None
                 
                 if name not in entity_counts:
                     entity_counts[name] = 0
@@ -265,19 +276,44 @@ class PostProcessPipeline:
                 
                 entity_counts[name] += 1
                 
-                # Track ranking info if available
-                if isinstance(entity, dict) and "first_pos" in entity:
-                    entity_ranking_analysis[name].append(entity["first_pos"])
-                
             except Exception as e:
                 self.logger.warning(f"Error processing entity {entity}: {e}")
                 continue
+        
+        # Now calculate rankings based on entity order in the original extraction
+        # We'll go through each run and assign rankings based on entity order
+        for run in runs:
+            try:
+                entities = run.entities_normalized
+                if not entities or not isinstance(entities, list):
+                    continue
+                
+                # Assign rankings based on order in the entity list
+                for i, entity in enumerate(entities):
+                    if isinstance(entity, dict):
+                        name = entity.get("name", "Unknown")
+                    else:
+                        name = str(entity)
+                    
+                    if name in entity_ranking_analysis:
+                        # Add the ranking position (1-based) for this entity in this run
+                        entity_ranking_analysis[name].append(i + 1)
+                        self.logger.debug(f"Added rank {i + 1} for {name} in run {run.id}")
+                
+            except Exception as e:
+                self.logger.warning(f"Error processing run {run.id} for ranking: {e}")
+                continue
+        
+        # Debug: Log ranking analysis results
+        self.logger.info(f"Ranking analysis results: {entity_ranking_analysis}")
         
         # Top competitors with ranking analysis
         top_competitors = []
         for name, count in sorted(entity_counts.items(), key=lambda x: x[1], reverse=True)[:10]:
             ranking_data = entity_ranking_analysis.get(name, [])
             avg_rank = sum(ranking_data) / len(ranking_data) if ranking_data else 0
+            
+            self.logger.info(f"Competitor {name}: {count} mentions, ranking_data: {ranking_data}, avg_rank: {avg_rank}")
             
             top_competitors.append({
                 "name": name,
