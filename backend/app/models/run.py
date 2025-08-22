@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Text, Boolean, Numeric
 from sqlalchemy.dialects.postgresql import JSONB, TIMESTAMP
 from ..services.database import Base
 
-
+#runs are the individual runs that are run by the system, or by the user (through query endpoint)
 class Run(Base):
     __tablename__ = "runs"
 

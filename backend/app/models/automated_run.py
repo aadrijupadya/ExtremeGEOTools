@@ -4,6 +4,7 @@ from datetime import datetime
 
 Base = declarative_base()
 
+#automated runs are runs that are run automatically by the system in order to compute standard metrics for dashboard
 class AutomatedRun(Base):
     """Model for storing automated competitive intelligence runs."""
     
@@ -28,8 +29,8 @@ class AutomatedRun(Base):
     # Competitive intelligence data
     extreme_mentioned = Column(Boolean, default=False)
     competitor_mentions = Column(JSON)  # Which competitors were mentioned
-    citation_count = Column(Integer, default=0)
-    domain_count = Column(Integer, default=0)
+    citation_count = Column(Integer, default=0) #number of citations found in the response
+    domain_count = Column(Integer, default=0) #number of domains found in the response
     
     # Cost and performance
     input_tokens = Column(Integer, default=0)

@@ -1,3 +1,6 @@
+#goes through all runs and computes aggregate costs and counts
+
+
 from __future__ import annotations
 from typing import Dict, Any
 from fastapi import APIRouter, Query, Depends

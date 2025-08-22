@@ -160,3 +160,38 @@ export const getRecentQueries = async (days = 7, engine = null, limit = 50) => {
   }
 };
 
+// Extreme Focus Metrics
+export const getExtremeFocusMetrics = async (startDate, endDate, engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/metrics/extreme-focus?start_date=${startDate}&end_date=${endDate}`;
+    if (engine) {
+      url += `&engine=${engine}`;
+    }
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching Extreme Focus metrics:', error);
+    throw error;
+  }
+};
+
+export const getCitationAnalysis = async (startDate, endDate, engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/metrics/citation-analysis?start_date=${startDate}&end_date=${endDate}`;
+    if (engine) {
+      url += `&engine=${engine}`;
+    }
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching Citation Analysis:', error);
+    throw error;
+  }
+};
+

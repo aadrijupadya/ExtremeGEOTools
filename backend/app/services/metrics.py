@@ -14,7 +14,7 @@ class MetricsService:
     
     def __init__(self, db: Session):
         self.db = db
-    
+    #Daily metrics include 
     def compute_daily_metrics(self, target_date: date, engine: Optional[str] = None) -> List[DailyMetrics]:
         """Compute daily metrics for a specific date and optionally specific engine."""
         # Get all runs for the target date
@@ -60,7 +60,7 @@ class MetricsService:
                 metrics.append(competitor_metrics)
         
         return metrics
-    
+    #calculates citations costs, domains, runs
     def _compute_engine_metrics(self, runs: List[Run], context: str) -> DailyMetrics:
         """Compute overall metrics for a set of runs."""
         total_runs = len(runs)
@@ -108,7 +108,7 @@ class MetricsService:
             last_updated=datetime.utcnow().isoformat(),
             data_version="1.0"
         )
-    
+    #brand visibility metrics calculated here
     def _compute_brand_metrics(self, runs: List[Run], context: str) -> Optional[DailyMetrics]:
         """Compute metrics specifically for Extreme Networks brand mentions."""
         brand_runs = [r for r in runs if r.extreme_mentioned]
@@ -131,7 +131,7 @@ class MetricsService:
             )
         
         return base_metrics
-    
+    #competitor metrics calculated here, like rank
     def _compute_competitor_metrics(self, runs: List[Run], context: str) -> Optional[DailyMetrics]:
         """Compute metrics for competitor mentions."""
         competitor_runs = [r for r in runs if not r.extreme_mentioned and r.entities_normalized]
@@ -172,7 +172,7 @@ class MetricsService:
             })
         
         return top_domains
-    
+    #currently not using this because it doesn't work that well, could use Ahrefs API to get domain authority
     def _calculate_citation_quality(self, citation: Dict) -> float:
         """Calculate quality score for a citation (0.0 to 1.0)."""
         score = 0.0

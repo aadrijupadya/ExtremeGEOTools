@@ -1,3 +1,5 @@
+#function to write run data to database
+
 from __future__ import annotations
 from typing import Dict, Any
 from datetime import datetime
@@ -7,11 +9,8 @@ from .database import SessionLocal
 from ..models.run import Run
 
 
-def append_run_to_csv(row: Dict[str, Any]) -> None:
-    """Persist a run to the database (DB migration replacement for CSV).
-
-    Keeps the function name so the rest of the codebase doesn't change.
-    """
+def persist_run_to_db(row: Dict[str, Any]) -> None:
+    """Persist a run to the database. Legacy function name kept for compatibility."""
     db: Session = SessionLocal()
     try:
         run = Run(

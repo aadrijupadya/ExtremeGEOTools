@@ -1,3 +1,5 @@
+
+#Handles logic to store individual query run data
 from __future__ import annotations
 from typing import Any, Dict, List
 import json
@@ -32,7 +34,7 @@ def _coerce_json_list(value: Any) -> List[Any]:
             return []
     return [] if value is None else list(value) if isinstance(value, (tuple, set)) else []
 
-
+#convert Run object to dictionary
 def _serialize_run(row: Run, include_details: bool = False) -> Dict[str, Any]:
     base = {
         "id": row.id,
@@ -66,7 +68,7 @@ def _serialize_run(row: Run, include_details: bool = False) -> Dict[str, Any]:
 
 _TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
 
-
+#normalize url to remove tracking params and www.
 def _normalize_url(url: str) -> str:
     try:
         p = urlparse(url)
@@ -82,7 +84,7 @@ def _normalize_url(url: str) -> str:
     except Exception:
         return url
 
-
+#get domain from url using urlparse
 def _domain_from_url(url: str) -> str:
     try:
         netloc = urlparse(url).netloc.lower()
@@ -90,7 +92,7 @@ def _domain_from_url(url: str) -> str:
     except Exception:
         return ""
 
-
+#fetch title from url using requests scraping
 def _fetch_title(url: str, timeout: float = 2.0) -> str | None:
     try:
         resp = requests.get(url, timeout=timeout, headers={"User-Agent": "Mozilla/5.0 (compatible; EGTBot/1.0)"})
@@ -105,7 +107,7 @@ def _fetch_title(url: str, timeout: float = 2.0) -> str | None:
         return None
     return None
 
-
+#enriching citations by fetching titles from urls
 def _enrich_citations(links: List[str], max_titles: int = 10) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     seen = set()
@@ -131,7 +133,7 @@ def _enrich_citations(links: List[str], max_titles: int = 10) -> List[Dict[str, 
             item["title"] = t
     return out
 
-
+#list runs
 @router.get("")
 def list_runs(limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0), db: Session = Depends(get_db)) -> Dict[str, Any]:
     stmt = select(Run).where(Run.deleted.is_(False)).order_by(desc(Run.ts)).limit(limit).offset(offset)
@@ -139,7 +141,7 @@ def list_runs(limit: int = Query(default=50, ge=1, le=200), offset: int = Query(
     data = [_serialize_run(r, include_details=False) for r in rows]
     return {"items": data, "limit": limit, "offset": offset}
 
-
+#fetch run using unique id
 @router.get("/{run_id}")
 def get_run(run_id: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
     row: Run | None = db.get(Run, run_id)
@@ -178,7 +180,7 @@ def get_run(run_id: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
     data["entities"] = entities
     return data
 
-
+#delete run functionality
 @router.delete("/{run_id}")
 def delete_run(run_id: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
     row: Run | None = db.get(Run, run_id)
@@ -193,7 +195,7 @@ def delete_run(run_id: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
         db.rollback()
         raise HTTPException(status_code=500, detail="Failed to delete run")
 
-
+#extracting entities from response
 def _normalize_entities(vendors: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     seen = set()
@@ -215,7 +217,7 @@ def _normalize_entities(vendors: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         })
     return out
 
-
+#lookup runs using search filters prompted by user
 @router.post("/lookup")
 def lookup_runs(payload: Dict[str, Any], db: Session = Depends(get_db)) -> Dict[str, Any]:
     """Find same-day runs for the exact query text (case-insensitive), optionally filtered by engines.

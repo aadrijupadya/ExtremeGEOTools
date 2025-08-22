@@ -1,3 +1,5 @@
+#get live pricing based on token usage and model cost
+
 from __future__ import annotations
 from fastapi import APIRouter
 
@@ -6,7 +8,7 @@ from ..services.pricing import PRICING_EXACT, DEFAULT_COST_PER_1K_INPUT, DEFAULT
 
 router = APIRouter(prefix="/pricing", tags=["pricing"])
 
-
+#uses look up table from services.pricing to calculate live costs for models
 @router.get("/models")
 def list_models_pricing():
     """Expose model pricing configured on the server.

@@ -1,0 +1,25 @@
+# ExtremeGEOTools Development Rules
+
+## Code Style
+
+- Use descriptive variable names
+- Add docstrings to all functions
+- Use comments effectively
+
+## Architecture
+- Keep frontend components small and focused
+- Implement proper error handling
+- Add logging for debugging
+- avoid emoji use whenever possible
+- Keep changes minimal, unless prompted to do a full overhaul or refactoring
+
+## Testing
+- Write unit tests for new features
+- Test API endpoints with proper status codes
+- Validate data schemas
+
+## Documentation
+- Update README.md for new features
+- Document API changes in docs/
+- Add inline comments for complex logic
+- Update codebase_structure.md when creating new folders, files, subfolders

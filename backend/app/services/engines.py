@@ -1,3 +1,5 @@
+#connects to openai and perplexity, and normalizes responses to a common dict
+
 from __future__ import annotations
 import time
 from typing import Any, Dict
@@ -13,10 +15,9 @@ SYSTEM_PROMPT = (
     "Provide the most accurate answer and ALWAYS include specific URLs, website addresses, and "
     "source links when mentioning companies, products, or industry reports. "
     "Format URLs as: 'Visit https://company.com' or 'Check https://report.com'. "
-    "Include official company websites, industry publication URLs, and source links whenever possible. "
     "If unsure about a specific URL, be conservative and avoid fabrication, but still provide "
     "the company name and suggest visiting their official website. "
-    "Keep responses concise and scannable (<= 500 tokens). Prefer short paragraphs and 3–7 bullet points."
+    "Keep responses concise and scannable (<= 500 tokens). Avoid fluff. Prefer short paragraphs and 3–7 bullet points."
 )
 
 

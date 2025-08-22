@@ -128,6 +128,14 @@ const MetricsDashboard = () => {
   
   const { citations, competitors } = data.analysis;
   const totalRuns = data.total_runs_analyzed || 0;
+  
+  // Calculate Extreme mentions from competitor analysis
+  const extremeMentions = competitors?.extreme_networks_detailed_analysis?.total_mentions || 0;
+  const extremeMentionRate = totalRuns > 0 ? ((extremeMentions / totalRuns) * 100).toFixed(1) : '0';
+  
+  // Get citation analysis data
+  const topDomain = citations?.domain_breakdown?.most_frequent_domain || 'N/A';
+  const topSource = citations?.top_5_domains_by_frequency?.[0]?.domain || 'N/A';
 
   // =============================================================================
   // COMPONENT RENDER
@@ -213,10 +221,10 @@ const MetricsDashboard = () => {
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">🎯</div>
+          <div className="stat-icon">⭐</div>
           <div className="stat-content">
-            <h3>{competitors?.top_competitors?.length || 0}</h3>
-            <p>Competitors Tracked</p>
+            <h3>{extremeMentions}</h3>
+            <p>Extreme Mentions</p>
           </div>
         </div>
         
@@ -224,15 +232,15 @@ const MetricsDashboard = () => {
           <div className="stat-icon">🔗</div>
           <div className="stat-content">
             <h3>{citations?.total_citations || 0}</h3>
-            <p>Citations Found</p>
+            <p>Total Citations</p>
           </div>
         </div>
         
         <div className="stat-card">
-          <div className="stat-icon">🌐</div>
+          <div className="stat-icon">🎯</div>
           <div className="stat-content">
-            <h3>{citations?.unique_domains || 0}</h3>
-            <p>Unique Sources</p>
+            <h3>{competitors?.top_competitors?.length || 0}</h3>
+            <p>Competitors Found</p>
           </div>
         </div>
       </div>
@@ -259,11 +267,11 @@ const MetricsDashboard = () => {
               <span className="metric-value">{totalRuns}</span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Success Rate:</span>
+              <span className="metric-label">Engine Split:</span>
               <span className="metric-value">
-                {totalRuns > 0 
-                  ? `${((totalRuns - (data?.analysis?.failed_runs || 0)) / totalRuns * 100).toFixed(1)}%`
-                  : '0%'
+                {data?.analysis?.engine_breakdown?.openai && data?.analysis?.engine_breakdown?.perplexity
+                  ? `${data.analysis.engine_breakdown.openai} OpenAI, ${data.analysis.engine_breakdown.perplexity} Perplexity`
+                  : 'Mixed'
                 }
               </span>
             </div>
@@ -277,10 +285,10 @@ const MetricsDashboard = () => {
               </span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Avg Cost per Query:</span>
+              <span className="metric-label">Total Cost:</span>
               <span className="metric-value">
-                {data?.analysis?.avg_cost_per_query 
-                  ? `$${data.analysis.avg_cost_per_query.toFixed(4)}`
+                {data?.analysis?.total_cost 
+                  ? `$${data.analysis.total_cost.toFixed(2)}`
                   : 'N/A'
                 }
               </span>
@@ -306,13 +314,28 @@ const MetricsDashboard = () => {
           
           <div className="component-content">
             <div className="metric-row">
-              <span className="metric-label"># Main Competitors:</span>
+              <span className="metric-label">Total Competitors:</span>
               <span className="metric-value">{competitors?.top_competitors?.length || 0}</span>
             </div>
             <div className="metric-row">
               <span className="metric-label">Top Competitor:</span>
               <span className="metric-value">
                 {competitors?.top_competitors?.[0]?.name || 'N/A'}
+              </span>
+            </div>
+            <div className="metric-row">
+              <span className="metric-label">Entity Mentions:</span>
+              <span className="metric-value">
+                {competitors?.total_entity_mentions || 0}
+              </span>
+            </div>
+            <div className="metric-row">
+              <span className="metric-label">Detection Rate:</span>
+              <span className="metric-value">
+                {competitors?.detection_effectiveness?.entity_extraction_rate 
+                  ? `${competitors.detection_effectiveness.entity_extraction_rate.toFixed(1)}%`
+                  : 'N/A'
+                }
               </span>
             </div>
           </div>
@@ -336,37 +359,21 @@ const MetricsDashboard = () => {
           
           <div className="component-content">
             <div className="metric-row">
-              <span className="metric-label">Brand Mentions:</span>
+              <span className="metric-label">Total Mentions:</span>
               <span className="metric-value">
-                {data?.analysis?.competitors?.extreme_networks_mentions || 0}
+                {extremeMentions}
               </span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Share of Voice:</span>
+              <span className="metric-label">Mention Rate:</span>
               <span className="metric-value">
-                {data?.analysis?.competitors?.extreme_networks_detection_rate 
-                  ? `${(data.analysis.competitors.extreme_networks_detection_rate * 100).toFixed(1)}%`
-                  : 'N/A'
-                }
+                {extremeMentionRate}%
               </span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Avg Rank:</span>
+              <span className="metric-label">Coverage Gaps:</span>
               <span className="metric-value">
-                {data?.analysis?.competitors?.extreme_networks_avg_rank 
-                  ? data.analysis.competitors.extreme_networks_avg_rank.toFixed(1)
-                  : 'N/A'
-                }
-              </span>
-            </div>
-            <div className="metric-row">
-              <span className="metric-label">Market Position:</span>
-              <span className="metric-value">
-                {data?.analysis?.competitors?.extreme_networks_avg_rank 
-                  ? (data.analysis.competitors.extreme_networks_avg_rank <= 3 ? 'Strong' : 
-                     data.analysis.competitors.extreme_networks_avg_rank <= 5 ? 'Good' : 'Developing')
-                  : 'N/A'
-                }
+                {data?.analysis?.coverage_gaps?.total_gaps || 0}
               </span>
             </div>
           </div>
@@ -398,18 +405,15 @@ const MetricsDashboard = () => {
               <span className="metric-value">{citations?.unique_domains || 0}</span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Avg Domain Quality:</span>
+              <span className="metric-label">Top Domain:</span>
               <span className="metric-value">
-                {citations?.avg_domain_quality 
-                  ? `${citations.avg_domain_quality.toFixed(1)}/10`
-                  : 'N/A'
-                }
+                {topDomain}
               </span>
             </div>
             <div className="metric-row">
-              <span className="metric-label">Top Domain:</span>
+              <span className="metric-label">Top Source:</span>
               <span className="metric-value">
-                {citations?.top_domains?.[0]?.domain || 'N/A'}
+                {topSource}
               </span>
             </div>
           </div>
@@ -422,88 +426,7 @@ const MetricsDashboard = () => {
         </div>
       </div>
 
-      {/* =============================================================================
-          QUICK INSIGHTS SECTION
-          ============================================================================= */}
-      
-      <div className="quick-insights">
-        <h2>💡 Quick Insights</h2>
-        <div className="insights-grid">
-          <div className="insight-item">
-            <span className="insight-icon">📈</span>
-            <p>
-              {totalRuns > 0 
-                ? `Analyzed ${totalRuns} queries over the last ${filters.days} days`
-                : 'No queries analyzed in the selected period'
-              }
-            </p>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🎯</span>
-            <p>
-              {data?.analysis?.competitors?.extreme_networks_mentions > 0
-                ? `Extreme Networks mentioned in ${data.analysis.competitors.extreme_networks_mentions} queries`
-                : 'Extreme Networks brand monitoring active'
-              }
-            </p>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🔍</span>
-            <p>
-              {citations?.total_citations > 0
-                ? `Found ${citations.total_citations} citations from ${citations.unique_domains || 0} sources`
-                : 'Citation analysis in progress'
-              }
-            </p>
-          </div>
-        </div>
-      </div>
 
-      {/* =============================================================================
-          RECENT ACTIVITY
-          ============================================================================= */}
-      
-      <div className="recent-activity">
-        <h2>🕒 Recent Activity</h2>
-        <div className="activity-list">
-          {totalRuns > 0 ? (
-            <>
-              <div className="activity-item">
-                <span className="activity-time">Latest</span>
-                <span className="activity-text">
-                  {data?.analysis?.competitors?.top_competitors?.[0]?.name 
-                    ? `Top competitor: ${data.analysis.competitors.top_competitors[0].name}`
-                    : 'Competitor analysis completed'
-                  }
-                </span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-time">Performance</span>
-                <span className="activity-text">
-                  {data?.analysis?.avg_response_time 
-                    ? `Average response time: ${data.analysis.avg_response_time.toFixed(1)}s`
-                    : 'Response time tracking active'
-                  }
-                </span>
-              </div>
-              <div className="activity-item">
-                <span className="activity-time">Costs</span>
-                <span className="activity-text">
-                  {data?.analysis?.avg_cost_per_query 
-                    ? `Average cost per query: $${data.analysis.avg_cost_per_query.toFixed(4)}`
-                    : 'Cost tracking active'
-                  }
-                </span>
-              </div>
-            </>
-          ) : (
-            <div className="activity-item">
-              <span className="activity-time">Status</span>
-              <span className="activity-text">No automated queries found in the selected period</span>
-            </div>
-          )}
-        </div>
-      </div>
       
     </div>
   );

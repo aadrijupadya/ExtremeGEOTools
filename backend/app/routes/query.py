@@ -1,3 +1,4 @@
+#Query management endpoint with tools for running queries and logging them
 from __future__ import annotations
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query as FQuery
@@ -13,13 +14,14 @@ from ..services.run_query import run_single_engine, run_single_engine_error
 from ..services.adapters.chatgpt_api import _get_openai_client
 from ..services.extract import extract_competitors, extract_links, to_domains
 from ..services.pricing import estimate_cost
-from ..services.csv_writer import append_run_to_csv
+from ..services.db_writer import persist_run_to_db
 from ..services.run_query import make_run_id
 from .runs import _enrich_citations, _normalize_entities
 
 #query endpoint 
 router = APIRouter(prefix="/query", tags=["query"])
 
+#run query endpoint is when user provides a custom query and we run it through the provided model
 @router.post("/run", response_model=QueryResponse)
 def run_query(req: QueryRequest) -> QueryResponse:
     if not req.query or len(req.query.strip()) < 3: #validating query length
@@ -36,7 +38,7 @@ def run_query(req: QueryRequest) -> QueryResponse:
 
     return QueryResponse(status="ok", runs=runs)
 
-
+#endpoint to provide live streaming of query response (as model provides the tokens)
 @router.get("/stream")
 def stream_query(
     query: str = FQuery(min_length=3),
@@ -140,7 +142,7 @@ def stream_query(
                     "extreme_mentioned": any((v.name or "").lower() == "extreme networks" for v in vendors),
                     "extreme_rank": next((i for i, v in enumerate(vendors, start=1) if (v.name or "").lower() == "extreme networks"), None),
                 }
-                append_run_to_csv(csv_row)
+                persist_run_to_db(csv_row)
                 yield sse_event("done", {"run_id": run_id})
             except Exception as e:
                 # Log full traceback for visibility
@@ -216,7 +218,7 @@ def stream_query(
                         "extreme_mentioned": any((v.name or "").lower() == "extreme networks" for v in vendors),
                         "extreme_rank": next((i for i, v in enumerate(vendors, start=1) if (v.name or "").lower() == "extreme networks"), None),
                     }
-                    append_run_to_csv(csv_row)
+                    persist_run_to_db(csv_row)
                     yield sse_event("done", {"run_id": run_id})
                 except Exception as e2:
                     # Include error type and message for frontend visibility
@@ -307,7 +309,7 @@ def stream_query(
                     'extreme_mentioned': any((v.name or '').lower() == 'extreme networks' for v in vendors),
                     'extreme_rank': next((i for i, v in enumerate(vendors, start=1) if (v.name or '').lower() == 'extreme networks'), None),
                 }
-                append_run_to_csv(csv_row)
+                persist_run_to_db(csv_row)
                 yield sse_event('done', {'run_id': run_id})
             except Exception as e:
                 try:
@@ -327,7 +329,7 @@ def stream_query(
         },
     )
 
-
+#separate logic for perplexity straming
 @router.get("/stream_pplx")
 def stream_query_perplexity(
     query: str = FQuery(min_length=3),
@@ -439,7 +441,7 @@ def stream_query_perplexity(
                 'extreme_mentioned': any((v.name or '').lower() == 'extreme networks' for v in vendors),
                 'extreme_rank': next((i for i, v in enumerate(vendors, start=1) if (v.name or '').lower() == 'extreme networks'), None),
             }
-            append_run_to_csv(csv_row)
+            persist_run_to_db(csv_row)
             yield sse_event('done', {'run_id': run_id})
         except Exception as e:
             try:

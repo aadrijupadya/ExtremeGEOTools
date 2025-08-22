@@ -8,7 +8,7 @@ from ..schemas.query_schemas import QueryRequest, RunResponse
 from .engines import call_engine
 from .extract import extract_competitors, extract_links, to_domains
 from .pricing import estimate_cost
-from .csv_writer import append_run_to_csv
+from .db_writer import persist_run_to_db
 from ..routes.runs import _enrich_citations, _normalize_entities
 from ..models.run import Run
 from ..services.database import get_db
@@ -77,8 +77,8 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
         "extreme_rank": extreme_rank,
     }
     
-    # Save to CSV (legacy)
-    append_run_to_csv(csv_row)
+    # Save to database (legacy fallback)
+    persist_run_to_db(csv_row)
     
     # Save to database
     try:
@@ -159,7 +159,7 @@ def run_single_engine_error(req: QueryRequest, eng: str, ts_iso: str, exc: Excep
         "extreme_mentioned": False,
         "extreme_rank": None,
     }
-    append_run_to_csv(csv_row)
+    persist_run_to_db(csv_row)
 
     return RunResponse(
         id=run_id,

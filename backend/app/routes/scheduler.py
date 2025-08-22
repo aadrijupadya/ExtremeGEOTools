@@ -1,3 +1,5 @@
+#scheduler endpoint is used to schedule daily queries to be run automatically, in order to compute daily metrics for dashboard
+
 from __future__ import annotations
 from datetime import date, datetime
 from typing import List, Dict, Any, Optional
@@ -10,7 +12,7 @@ from ..services.database import get_db
 
 router = APIRouter(prefix="/scheduler", tags=["scheduler"])
 
-
+#new pydantic model for scheduler config
 class SchedulerConfig(BaseModel):
     """Scheduler configuration response."""
     cadence: str
@@ -22,14 +24,14 @@ class SchedulerConfig(BaseModel):
     competitor_set: List[str]
     query_types: Dict[str, int]
 
-
+#new pydantic model for query execution request
 class QueryExecutionRequest(BaseModel):
     """Request to execute daily queries."""
     target_date: Optional[str] = None  # YYYY-MM-DD format
-    dry_run: bool = True
+    dry_run: bool = True #dry run is used to test the scheduler without actually running the queries
     limit: Optional[int] = None
 
-
+#new pydantic model for query execution response
 class QueryExecutionResponse(BaseModel):
     """Response from query execution."""
     target_date: str
@@ -39,7 +41,7 @@ class QueryExecutionResponse(BaseModel):
     execution_time: str
     dry_run: bool
 
-
+#get scheduler config
 @router.get("/config", response_model=SchedulerConfig)
 async def get_scheduler_config():
     """Get the current scheduler configuration."""
@@ -51,7 +53,7 @@ async def get_scheduler_config():
     
     return SchedulerConfig(**config)
 
-
+#execute daily queries for a specific date
 @router.post("/execute", response_model=QueryExecutionResponse)
 async def execute_daily_queries(
     request: QueryExecutionRequest,
@@ -117,7 +119,7 @@ async def execute_daily_queries(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
+#get scheduler status
 @router.get("/status")
 async def get_scheduler_status():
     """Get the current status of the scheduler."""

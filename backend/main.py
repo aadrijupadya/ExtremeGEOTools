@@ -23,6 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+#adding routers/endpoints to backend
 app.include_router(query_router)
 app.include_router(pricing_router)
 app.include_router(stats_router)
@@ -30,6 +31,7 @@ app.include_router(runs_router)
 app.include_router(metrics_router)
 app.include_router(scheduler_router)
 
+#simple health check endpoint
 @app.get("/health")
 def health():
     return {"ok": True}

@@ -292,108 +292,7 @@
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* =============================================================================
-   QUICK INSIGHTS
-   ============================================================================= */
 
-.quick-insights {
-  background: var(--card-background);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-.quick-insights h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
-  color: var(--text);
-  text-align: center;
-}
-
-.insights-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.insight-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--background);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
-.insight-icon {
-  font-size: 1.5rem;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-radius: 8px;
-  color: white;
-}
-
-.insight-item p {
-  margin: 0;
-  color: var(--text);
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-/* =============================================================================
-   RECENT ACTIVITY
-   ============================================================================= */
-
-.recent-activity {
-  background: var(--card-background);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-}
-
-.recent-activity h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
-  color: var(--text);
-  text-align: center;
-}
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--background);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
-.activity-time {
-  font-size: 0.8rem;
-  color: var(--muted);
-  font-weight: 500;
-  min-width: 100px;
-}
-
-.activity-text {
-  margin: 0;
-  color: var(--text);
-  font-size: 0.95rem;
-}
 
 /* =============================================================================
    LOADING AND ERROR STATES
@@ -465,19 +364,7 @@
     gap: 1.5rem;
   }
   
-  .insights-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .activity-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .activity-time {
-    min-width: auto;
-  }
+
 }
 
 @media (max-width: 480px) {

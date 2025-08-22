@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Debug script to check the current state of entities and ranking data
+Helper Debug script to check the current state of entities and ranking data
 """
 
 import sys

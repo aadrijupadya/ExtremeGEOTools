@@ -16,7 +16,7 @@ class QueryRequest(BaseModel):
     openai_model: Optional[str] = None # preferred model id for OpenAI (e.g., gpt-5-nano, gpt-5-mini)
     perplexity_model: Optional[str] = None # preferred model id for Perplexity (e.g., sonar, sonar-pro)
 
-#object ot help with competitive analysis
+#object to help with competitive analysis, and extract entities from response
 class VendorItem(BaseModel):
     name: str #name of company
     relevance: Optional[float] = None #relevance score (need to find heuristic)

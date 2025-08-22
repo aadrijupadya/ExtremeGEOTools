@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Date, Numeric, Boolean
 from sqlalchemy.dialects.postgresql import JSONB
 from ..services.database import Base
 
-
+#daily metrics are metrics that are computed daily for the dashboard
 class DailyMetrics(Base):
     __tablename__ = "daily_metrics"
 
