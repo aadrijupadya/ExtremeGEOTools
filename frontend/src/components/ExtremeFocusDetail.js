@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getExtremeFocusMetrics } from '../services/api';
+import { getExtremeFocusMetrics, getEntityAssociations, getProductAssociations, getKeywordAssociations } from '../services/api';
 import './ExtremeFocusDetail.css';
 
 // Function to convert markdown to HTML
@@ -26,6 +26,7 @@ const ExtremeFocusDetail = () => {
   const [showGapModal, setShowGapModal] = useState(false);
   const [selectedContext, setSelectedContext] = useState(null);
   const [showContextModal, setShowContextModal] = useState(false);
+  const [entityAssociations, setEntityAssociations] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   
   // Get filters from URL params with defaults
@@ -48,6 +49,31 @@ const ExtremeFocusDetail = () => {
       const engineParam = engine === 'all' ? null : engine;
       const response = await getExtremeFocusMetrics(startDate, endDate, engineParam);
       setData(response);
+      
+      // Fetch entity associations
+      try {
+        const productsResponse = await getProductAssociations(engineParam);
+        const keywordsResponse = await getKeywordAssociations(engineParam);
+        
+        // Combine the responses to match the expected structure
+        const combinedResponse = {
+          by_engine: {
+            openai: {
+              products: productsResponse.by_engine?.openai || [],
+              keywords: keywordsResponse.by_engine?.openai || []
+            },
+            perplexity: {
+              products: productsResponse.by_engine?.perplexity || [],
+              keywords: keywordsResponse.by_engine?.perplexity || []
+            }
+          }
+        };
+        
+        setEntityAssociations(combinedResponse);
+      } catch (assocErr) {
+        console.warn('Failed to fetch entity associations:', assocErr);
+        setEntityAssociations(null);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -389,29 +415,93 @@ const ExtremeFocusDetail = () => {
       {/* Entity Associations */}
       <div className="metrics-section">
         <h2>Entity Associations</h2>
-        <p>What products and keywords AI associates with Extreme Networks.</p>
+        <p>What products and keywords AI associates with Extreme Networks by engine.</p>
         
-        <div className="associations-grid">
-          <div className="association-group">
-            <h3>Product Associations</h3>
-            {Object.entries(metrics.entity_associations?.product_associations || {}).map(([product, count]) => (
-              <div key={product} className="association-item">
-                <span className="association-name">{product}</span>
-                <span className="association-count">{count}</span>
+        {entityAssociations ? (
+          <div className="associations-grid">
+            <div className="association-group">
+              <h3>Product Associations</h3>
+              <div className="engine-filter-info">
+                {engine === 'all' ? 'All Engines' : engine} - {
+                  engine === 'all' 
+                    ? (entityAssociations.by_engine?.openai?.products?.length || 0) + 
+                      (entityAssociations.by_engine?.perplexity?.products?.length || 0)
+                    : (entityAssociations.by_engine?.[engine]?.products?.length || 0)
+                } products
               </div>
-            ))}
-          </div>
-          
-          <div className="association-group">
-            <h3>Keyword Associations</h3>
-            {Object.entries(metrics.entity_associations?.keyword_associations || {}).map(([keyword, count]) => (
-              <div key={keyword} className="association-item">
-                <span className="association-name">{keyword}</span>
-                <span className="association-count">{count}</span>
+              <div className="association-items">
+                {engine === 'all' ? (
+                  <>
+                    {entityAssociations.by_engine?.openai?.products?.map((product, index) => (
+                      <div key={`openai-${index}`} className="association-item">
+                        <span className="association-name">{product.split(' - ')[0]}</span>
+                        <span className="association-engine">OpenAI</span>
+                      </div>
+                    ))}
+                    {entityAssociations.by_engine?.perplexity?.products?.map((product, index) => (
+                      <div key={`perplexity-${index}`} className="association-item">
+                        <span className="association-name">{product.split(' - ')[0]}</span>
+                        <span className="association-engine">Perplexity</span>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  entityAssociations.by_engine?.[engine]?.products?.map((product, index) => (
+                    <div key={index} className="association-item">
+                      <span className="association-name">{product.split(' - ')[0]}</span>
+                    </div>
+                  ))
+                )}
+                {(!entityAssociations.by_engine?.openai?.products?.length && 
+                  !entityAssociations.by_engine?.perplexity?.products?.length) && 
+                  <div className="no-associations">No product associations found</div>}
               </div>
-            ))}
+            </div>
+            
+            <div className="association-group">
+              <h3>Keyword Associations</h3>
+              <div className="engine-filter-info">
+                {engine === 'all' ? 'All Engines' : engine} - {
+                  engine === 'all' 
+                    ? (entityAssociations.by_engine?.openai?.keywords?.length || 0) + 
+                      (entityAssociations.by_engine?.perplexity?.keywords?.length || 0)
+                    : (entityAssociations.by_engine?.[engine]?.keywords?.length || 0)
+                } keywords
+              </div>
+              <div className="association-items">
+                {engine === 'all' ? (
+                  <>
+                    {entityAssociations.by_engine?.openai?.keywords?.map((keyword, index) => (
+                      <div key={`openai-${index}`} className="association-item">
+                        <span className="association-name">{keyword.split(' - ')[0]}</span>
+                        <span className="association-engine">OpenAI</span>
+                      </div>
+                    ))}
+                    {entityAssociations.by_engine?.perplexity?.keywords?.map((keyword, index) => (
+                      <div key={`perplexity-${index}`} className="association-item">
+                        <span className="association-name">{keyword.split(' - ')[0]}</span>
+                        <span className="association-engine">Perplexity</span>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  entityAssociations.by_engine?.[engine]?.keywords?.map((keyword, index) => (
+                    <div key={index} className="association-item">
+                      <span className="association-name">{keyword.split(' - ')[0]}</span>
+                    </div>
+                  ))
+                )}
+                {(!entityAssociations.by_engine?.openai?.keywords?.length && 
+                  !entityAssociations.by_engine?.perplexity?.keywords?.length) && 
+                  <div className="no-associations">No keyword associations found</div>}
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="no-data">
+            <p>No entity associations data available. Run the entity associations script to populate this data.</p>
+          </div>
+        )}
       </div>
 
       {/* Gap Detail Modal */}

@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "description": "Entity associations extracted from AI responses about Extreme Networks",
+  "last_updated": "2025-08-26T15:51:16.900182",
+  "associations": [
+    {
+      "id": "2c35e38b-8aa4-44b9-8a5c-5ca5317fc334",
+      "timestamp": "2025-08-26T15:51:02.184926",
+      "engine": "openai",
+      "query": "List the TOP 10 product names that you associate with Extreme Networks. For each product, provide ONLY the product name in this exact format: 'Product Name - Brief one-line description'. Example: 'ExtremeCloud IQ - Cloud-based network management platform'. Do not include URLs, markdown, or additional text. Just list each product on a new line. Limit to exactly 10 products.",
+      "response": "ExtremeCloud IQ - Cloud-based network management platform  \nExtremeSwitching - High-performance networking switches  \nExtremeWireless - Enterprise-grade wireless access points  \nExtremeNetwork Control - Network monitoring and analytics tool  \nExtremeRouting - Advanced routing solutions for networks  \nExtremeFabric - Simplified network infrastructure management  \nExtremeAnalytics - Data-driven insights for network performance  \nExtremeAI - Artificial intelligence-driven network optimization  \nExtremeSecure - Comprehensive security solutions for networks  \nExtremeConnect - Integration platform for seamless device connectivity  ",
+      "products": [
+        "Extremerouting - Advanced routing solutions for networks",
+        "Extremefabric - Simplified network infrastructure management",
+        "Extremeai - Artificial intelligence-driven network optimization",
+        "Extremewireless - Enterprise-grade wireless access points",
+        "Extremeconnect - Integration platform for seamless device connectivity",
+        "Extremesecure - Comprehensive security solutions for networks",
+        "Extremenetwork Control - Network monitoring and analytics tool",
+        "Extremecloud Iq - Cloud-based network management platform",
+        "Extremeanalytics - Data-driven insights for network performance",
+        "Extremeswitching - High-performance networking switches"
+      ],
+      "keywords": [],
+      "model": "gpt-4o-mini-2024-07-18",
+      "cost_usd": null,
+      "latency_ms": 1910
+    },
+    {
+      "id": "f5805bf1-059a-4348-9de7-f567ce35ae91",
+      "timestamp": "2025-08-26T15:51:05.327320",
+      "engine": "openai",
+      "query": "List the TOP 10 keywords and technical terms that you associate with Extreme Networks. For each keyword, provide ONLY the keyword in this exact format: 'Keyword - Brief one-line definition'. Example: 'SD-WAN - Software-defined wide area networking'. Do not include URLs, markdown, or additional text. Just list each keyword on a new line. Limit to exactly 10 keywords.",
+      "response": "Cloud Networking - Networking solutions that leverage cloud technologies for scalability and management.  \nWi-Fi 6 - The sixth generation of wireless technology, offering higher speeds and capacity.  \nNetwork Automation - The use of technology to manage and configure network devices automatically.  \nSD-LAN - Software-defined local area networking for centralized control and management of LANs.  \nAI-Driven Analytics - Using artificial intelligence to analyze network data for performance insights.  \nSecurity Fabric - A unified security architecture that integrates various security solutions.  \nMulti-Cloud - The use of multiple cloud computing services from different providers.  \nNetwork Slicing - A method for creating multiple virtual networks on a single physical network infrastructure.  \nEdge Computing - Processing data near the source of data generation to reduce latency.  \nIoT Integration - Connecting Internet of Things devices into the network for improved functionality.",
+      "products": [],
+      "keywords": [
+        "Multi - Cloud - The use of multiple cloud computing services from different providers.",
+        "Network Automation - The use of technology to manage and configure network devices automatically.",
+        "Cloud Networking - Networking solutions that leverage cloud technologies for scalability and management.",
+        "Edge Computing - Processing data near the source of data generation to reduce latency.",
+        "IOT Integration - Connecting Internet of Things devices into the network for improved functionality.",
+        "Security Fabric - A unified security architecture that integrates various security solutions.",
+        "Network Slicing - A method for creating multiple virtual networks on a single physical network infrastructure."
+      ],
+      "model": "gpt-4o-mini-2024-07-18",
+      "cost_usd": null,
+      "latency_ms": 3142
+    },
+    {
+      "id": "795dc681-2d7f-4d6a-b5ac-7eead177c73d",
+      "timestamp": "2025-08-26T15:51:12.075522",
+      "engine": "perplexity",
+      "query": "List the TOP 10 product names that you associate with Extreme Networks. For each product, provide ONLY the product name in this exact format: 'Product Name - Brief one-line description'. Example: 'ExtremeCloud IQ - Cloud-based network management platform'. Do not include URLs, markdown, or additional text. Just list each product on a new line. Limit to exactly 10 products.",
+      "response": "ExtremeCloud IQ - Cloud-based AI-powered network management platform  \nExtremePlatform ONE - Unified networking, security, and AI platform  \nExtremeSwitching X870 - 100/40GbE core/aggregation switch for spine and leaf deployments  \nExtremeSwitching X690 - 48-port 10GbE aggregation switch for data centers  \nExtremeSwitching X695 - 48-port 1/10/25GbE aggregation switch with stacking capability  \nExtremeWireless WiNG 7612 - High-performance wireless access point appliance  \nExtremeFabric - Automated, secure network fabric solution spanning campus and data center  \nExtremeAnalytics - Network analytics platform for operational insights  \nSummit X670 Series - High-performance modular switches for enterprise networks  \nExtremeCloud IQ Site Engine - AI-powered cloud solution for network site management  \n\nSource: https://www.dandh.com/media/pdf/pages/landing-technicalsolutions/2025/EXTREME-12669-Extreme-Product-Catalog.pdf  \nReference: https://www.extremenetworks.com/solutions  \nFound at: https://www.extremenetworks.com/products  \nReference: https://pdf.directindustry.com/pdf/extreme-networks-61501.html",
+      "products": [
+        "Extremeswitching X870 - 100/40GbE core/aggregation switch for spine and leaf deployments",
+        "Extremeanalytics - Network analytics platform for operational insights",
+        "Extremeswitching X695 - 48-port 1/10/25GbE aggregation switch with stacking capability",
+        "Extremefabric - Automated, secure network fabric solution spanning campus and data center",
+        "Summit X670 Series - High-performance modular switches for enterprise networks",
+        "Extremecloud Iq - Cloud-based AI-powered network management platform",
+        "Extremecloud Iq Site Engine - AI-powered cloud solution for network site management",
+        "Extremeplatform One - Unified networking, security, and AI platform",
+        "Extremewireless Wing 7612 - High-performance wireless access point appliance",
+        "Extremeswitching X690 - 48-port 10GbE aggregation switch for data centers"
+      ],
+      "keywords": [],
+      "model": "sonar",
+      "cost_usd": null,
+      "latency_ms": 6748
+    },
+    {
+      "id": "229de0c4-f83c-414b-a58d-a2a663e49162",
+      "timestamp": "2025-08-26T15:51:16.899984",
+      "engine": "perplexity",
+      "query": "List the TOP 10 keywords and technical terms that you associate with Extreme Networks. For each keyword, provide ONLY the keyword in this exact format: 'Keyword - Brief one-line definition'. Example: 'SD-WAN - Software-defined wide area networking'. Do not include URLs, markdown, or additional text. Just list each keyword on a new line. Limit to exactly 10 keywords.",
+      "response": "ExtremeSwitching - High-performance network switches for enterprise and data center environments.\n\nExtremeWireless - Secure and reliable Wi-Fi solutions with cloud management for indoor and outdoor use.\n\nExtremeCloud - Cloud-based platform for network deployment, monitoring, and automation.\n\nExtremeSecurity - Network security solutions including intrusion prevention and access control.\n\nExtremeAnalytics - Network analytics platform providing insights into performance and user behavior.\n\nSoftware-Defined Networking (SDN) - Technology that enables programmable network management through software.\n\nNetwork Automation - Use of software to automate network configuration and management tasks.\n\nEdge Networking - Network infrastructure that supports data processing near the source of data generation.\n\nCloud-Driven Networking - Networking solutions designed to be managed and operated via cloud platforms.\n\nNetwork Infrastructure Equipment - Hardware devices such as switches, routers, and wireless access points used to build networks.",
+      "products": [],
+      "keywords": [
+        "Network Infrastructure Equipment - Hardware devices such as switches, routers, and wireless access points used to build networks.",
+        "Network Automation - Use of software to automate network configuration and management tasks.",
+        "Extremesecurity - Network security solutions including intrusion prevention and access control.",
+        "Extremecloud - Cloud-based platform for network deployment, monitoring, and automation.",
+        "Cloud - Driven Networking - Networking solutions designed to be managed and operated via cloud platforms.",
+        "Extremeswitching - High-performance network switches for enterprise and data center environments.",
+        "Extremewireless - Secure and reliable Wi-Fi solutions with cloud management for indoor and outdoor use.",
+        "Software - Defined Networking (SDN) - Technology that enables programmable network management through software.",
+        "Edge Networking - Network infrastructure that supports data processing near the source of data generation.",
+        "Extremeanalytics - Network analytics platform providing insights into performance and user behavior."
+      ],
+      "model": "sonar",
+      "cost_usd": null,
+      "latency_ms": 4824
+    }
+  ]
+}

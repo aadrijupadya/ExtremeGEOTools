@@ -43,6 +43,7 @@ def _serialize_run(row: Run, include_details: bool = False) -> Dict[str, Any]:
         "model": row.model,
         "prompt_version": row.prompt_version,
         "intent": row.intent,
+        "is_branded": bool(getattr(row, "is_branded", False)),
         "query": row.query,
         "status": row.status,
         "latency_ms": row.latency_ms,

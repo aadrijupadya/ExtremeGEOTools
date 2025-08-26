@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEnhancedAnalysis } from '../services/api';
+import { getEnhancedAnalysis, getEntityAssociations } from '../services/api';
 import './CompetitorAnalysisDetail.css';
 
 /**
@@ -42,7 +42,8 @@ const CompetitorAnalysisDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState(getStoredFilters());
-  const [showInfoGuide, setShowInfoGuide] = useState(true); // New state for info guide visibility
+  const [showInfoGuide, setShowInfoGuide] = useState(false); // Info guide closed by default
+  const [entityAssociations, setEntityAssociations] = useState(null);
 
   // =============================================================================
   // CONFIGURATION
@@ -75,6 +76,15 @@ const CompetitorAnalysisDetail = () => {
       setError(null);
       const response = await getEnhancedAnalysis(filters.days, filters.engine);
       setData(response);
+      
+      // Fetch entity associations
+      try {
+        const associationsResponse = await getEntityAssociations(filters.engine);
+        setEntityAssociations(associationsResponse);
+      } catch (assocErr) {
+        console.warn('Failed to fetch entity associations:', assocErr);
+        setEntityAssociations(null);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -442,6 +452,51 @@ const CompetitorAnalysisDetail = () => {
       </div>
 
 
+
+      {/* =============================================================================
+          ENTITY ASSOCIATIONS
+          ============================================================================= */}
+      
+      <div className="entity-associations-section">
+        <h2>🔗 Entity Associations</h2>
+        <p>What products and keywords AI associates with Extreme Networks</p>
+        
+        <div className="associations-grid">
+          <div className="association-card">
+            <h3>Product Associations</h3>
+            <div className="association-content">
+              {entityAssociations?.by_engine?.[filters.engine || 'all']?.products?.length > 0 ? (
+                entityAssociations.by_engine[filters.engine || 'all'].products.map((product, index) => (
+                  <div key={index} className="association-item">
+                    <span className="association-name">{product}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-data-message">
+                  <p>No product associations found for selected engine</p>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="association-card">
+            <h3>Keyword Associations</h3>
+            <div className="association-content">
+              {entityAssociations?.by_engine?.[filters.engine || 'all']?.keywords?.length > 0 ? (
+                entityAssociations.by_engine[filters.engine || 'all'].keywords.map((keyword, index) => (
+                  <div key={index} className="association-item">
+                    <span className="association-name">{keyword}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-data-message">
+                  <p>No keyword associations found for selected engine</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* =============================================================================
           BACK TO DASHBOARD

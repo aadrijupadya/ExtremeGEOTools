@@ -45,6 +45,9 @@ class AutomatedRun(Base):
     # Processing metadata
     processed_at = Column(DateTime)
     metrics_computed = Column(Boolean, default=False)
+
+    # Branded vs non-branded query flag
+    is_branded = Column(Boolean, default=False)
     
     def __repr__(self):
         return f"<AutomatedRun(id={self.id}, query='{self.query[:50]}...', engine={self.engine})>"

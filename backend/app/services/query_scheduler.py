@@ -135,6 +135,14 @@ class QueryScheduler:
                 
                 # Create run record
                 run_id = str(uuid.uuid4())
+                # Heuristic for branded queries: brand names or comparison terms
+                q_lower = (query_info["query"] or "").lower()
+                branded_terms = [
+                    "extreme", "cisco", "juniper", "aruba", "meraki", "fortinet", "palo alto",
+                    "ruckus", "ubiquiti", "netgear", "tp-link", "d-link", "huawei", "arista",
+                    "vs", "versus", "compare", "comparison"
+                ]
+                is_branded = (query_info.get("intent") in ("brand_focused", "comparison")) or any(t in q_lower for t in branded_terms)
                 run_data = {
                     "id": run_id,
                     "ts": datetime.utcnow(),
@@ -142,6 +150,7 @@ class QueryScheduler:
                     "engine": query_info["engine"],
                     "model": result.get("model"),
                     "intent": query_info["intent"],
+                    "is_branded": is_branded,
                     "status": "completed",
                     "latency_ms": result.get("latency_ms", 0),
                     "input_tokens": result.get("input_tokens", 0),

@@ -1139,3 +1139,73 @@
     font-size: 0.8rem;
   }
 }
+
+/* =============================================================================
+   ENTITY ASSOCIATIONS
+   ============================================================================= */
+
+.entity-associations-section {
+  margin-bottom: 3rem;
+}
+
+.entity-associations-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--text);
+}
+
+.entity-associations-section p {
+  font-size: 1rem;
+  color: var(--muted);
+  margin: 0 0 2rem 0;
+}
+
+.associations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.association-card {
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.association-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.association-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.association-content {
+  min-height: 100px;
+}
+
+.association-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.association-item:last-child {
+  border-bottom: none;
+}
+
+.association-name {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.95rem;
+}

@@ -120,6 +120,7 @@ class AutomatedQueryExecutor:
                 'latency_ms': latency_ms,
                 'intent_category': intent_category,
                 'competitor_set': self.queries_config['competitor_set'],
+                'is_branded': intent_category in ('brand_focused', 'comparison'),
                 'processed_at': datetime.now(),
                 'metrics_computed': False
             }
@@ -139,8 +140,16 @@ class AutomatedQueryExecutor:
         queries_to_execute = []
         
         for category, queries in self.queries_config['query_sets'].items():
-            for query in queries:
-                queries_to_execute.append((query, category))
+            for item in queries:
+                if isinstance(item, dict):
+                    qtext = item.get('query')
+                    intent_category = item.get('intent') or category
+                else:
+                    qtext = str(item)
+                    intent_category = category
+                if not qtext:
+                    continue
+                queries_to_execute.append((qtext, intent_category))
         
         # Distribute queries across engines based on configuration
         engine_distribution = self.queries_config['engine_distribution']
@@ -165,8 +174,8 @@ class AutomatedQueryExecutor:
         for engine, queries in engine_queries.items():
             print(f"\n🔥 Executing {len(queries)} queries on {engine}...")
             
-            for query, intent_category in queries:
-                result = self.execute_single_query(query, engine, intent_category)
+            for query_text, intent_category in queries:
+                result = self.execute_single_query(query_text, engine, intent_category)
                 if result:
                     all_results.append(result)
                 

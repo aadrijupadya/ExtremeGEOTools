@@ -33,6 +33,9 @@ class Run(Base):
     extreme_mentioned = Column(Boolean, nullable=False, default=False)
     extreme_rank = Column(Integer, nullable=True)
 
+    # Branded vs non-branded query flag
+    is_branded = Column(Boolean, nullable=False, default=False)
+
     # Soft delete flag (excluded from listings but included in cost rollups)
     deleted = Column(Boolean, nullable=False, default=False)
     

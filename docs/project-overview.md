@@ -49,7 +49,8 @@ ExtremeGEOTools/
 4. **Competitor Analysis** - Market share and positioning metrics
 5. **Citation Quality Assessment** - Source credibility scoring
 6. **Cost Management** - Token usage and pricing tracking
-7. **Real-time Dashboard** - Live metrics and insights
+7. **Branded Query Flag** - `is_branded` boolean on runs to distinguish brand/comparison queries from generic intent
+8. **Real-time Dashboard** - Live metrics and insights
 
 ## 🎯 **Use Cases**
 

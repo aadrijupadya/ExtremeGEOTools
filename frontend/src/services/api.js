@@ -195,3 +195,58 @@ export const getCitationAnalysis = async (startDate, endDate, engine = null) => 
   }
 };
 
+// Entity Associations API functions
+export const getEntityAssociations = async (engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/entity-associations`;
+    if (engine) {
+      url += `?engine=${engine}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching entity associations:', error);
+    throw error;
+  }
+};
+
+export const getProductAssociations = async (engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/entity-associations/products`;
+    if (engine) {
+      url += `?engine=${engine}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching product associations:', error);
+    throw error;
+  }
+};
+
+export const getKeywordAssociations = async (engine = null) => {
+  try {
+    let url = `${API_BASE_URL}/entity-associations/keywords`;
+    if (engine) {
+      url += `?engine=${engine}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching keyword associations:', error);
+    throw error;
+  }
+};
+

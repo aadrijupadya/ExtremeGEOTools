@@ -20,7 +20,7 @@ sys.path.insert(0, str(backend_dir))
 
 from app.services.metrics import MetricsService
 from app.services.database import get_db
-from app.models.run import Run
+from app.models.automated_run import AutomatedRun
 from app.models.metrics import DailyMetrics
 
 
@@ -50,35 +50,148 @@ class PostProcessPipeline:
         
         self.logger = logging.getLogger(__name__)
     
-    def get_recent_automated_runs(self, days_back: int = 3) -> List[Run]:
+    def get_recent_automated_runs(self, days_back: int = 3) -> List[AutomatedRun]:
         """Get recent automated runs for processing."""
         cutoff_date = datetime.utcnow() - timedelta(days=days_back)
         
-        # For now, get all recent runs since source column may not exist yet
-        # TODO: Once source column is added, filter by source="automated"
-        runs = self.db.query(Run).filter(
-            Run.deleted == False,
-            Run.ts >= cutoff_date
-        ).order_by(Run.ts.desc()).all()
+        # Read directly from automated_runs table
+        runs = (
+            self.db.query(AutomatedRun)
+            .filter(AutomatedRun.ts >= cutoff_date)
+            .order_by(AutomatedRun.ts.desc())
+            .all()
+        )
         
-        self.logger.info(f"Found {len(runs)} total runs in the last {days_back} days")
-        self.logger.info("Note: Not filtering by source yet (source column may not exist)")
+        self.logger.info(f"Found {len(runs)} automated runs in the last {days_back} days")
         
         return runs
     
-    def compute_daily_metrics(self, target_date: date) -> List[DailyMetrics]:
-        """Compute daily metrics for a specific date."""
-        self.logger.info(f"Computing daily metrics for {target_date}")
-        
-        try:
-            metrics = self.metrics_service.compute_daily_metrics(target_date)
-            self.logger.info(f"Generated {len(metrics)} metric records")
-            return metrics
-        except Exception as e:
-            self.logger.error(f"Error computing metrics for {target_date}: {e}")
+    def compute_daily_metrics_from_automated(self, target_date: date) -> List[DailyMetrics]:
+        """Compute daily metrics for a specific date using automated_runs."""
+        self.logger.info(f"Computing daily metrics (automated_runs) for {target_date}")
+        start_ts = datetime.combine(target_date, datetime.min.time())
+        end_ts = datetime.combine(target_date, datetime.max.time())
+
+        runs: List[AutomatedRun] = (
+            self.db.query(AutomatedRun)
+            .filter(AutomatedRun.ts >= start_ts, AutomatedRun.ts <= end_ts)
+            .all()
+        )
+
+        if not runs:
             return []
+
+        # Group by engine
+        by_engine: dict[str, list[AutomatedRun]] = {}
+        for r in runs:
+            by_engine.setdefault(r.engine or "unknown", []).append(r)
+
+        out: List[DailyMetrics] = []
+        for engine, engine_runs in by_engine.items():
+            # Overall context
+            total_runs = len(engine_runs)
+            total_cost = sum(float(r.cost_usd or 0) for r in engine_runs)
+
+            # Citations/domains
+            total_citations = 0
+            domain_counts: dict[str, int] = {}
+            unique_domains_set = set()
+            for r in engine_runs:
+                # Use citation_count if available, otherwise len(links)
+                ccount = r.citation_count if getattr(r, 'citation_count', None) is not None else len(r.links or [])
+                total_citations += int(ccount or 0)
+                for d in (r.domains or []):
+                    if not isinstance(d, str):
+                        continue
+                    d_lower = d.lower().lstrip('www.')
+                    if not d_lower:
+                        continue
+                    unique_domains_set.add(d_lower)
+                    domain_counts[d_lower] = domain_counts.get(d_lower, 0) + 1
+
+            # Build top_domains with simple quality placeholder
+            top_domains = [
+                {"domain": dom, "count": cnt, "quality_score": 0.0}
+                for dom, cnt in sorted(domain_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+            ]
+
+            # Brand vs competitors
+            brand_mentions = sum(1 for r in engine_runs if bool(getattr(r, 'extreme_mentioned', False)))
+            competitor_mentions = total_runs - brand_mentions
+            sov = round((brand_mentions / (brand_mentions + competitor_mentions) * 100), 2) if (brand_mentions + competitor_mentions) > 0 else 0.0
+
+            # Average visibility score placeholder (0); can be enhanced later
+            avg_visibility = 0.0
+            high_quality_citations = 0
+
+            out.append(
+                DailyMetrics(
+                    date=target_date,
+                    engine=engine,
+                    brand_context="overall",
+                    total_runs=total_runs,
+                    total_cost_usd=total_cost,
+                    total_citations=total_citations,
+                    unique_domains=len(unique_domains_set),
+                    top_domains=top_domains,
+                    brand_mentions=0,
+                    competitor_mentions=0,
+                    share_of_voice_pct=0,
+                    avg_visibility_score=avg_visibility,
+                    high_quality_citations=high_quality_citations,
+                    last_updated=datetime.utcnow().isoformat(),
+                    data_version="1.0",
+                )
+            )
+
+            # Brand context
+            if brand_mentions > 0:
+                out.append(
+                    DailyMetrics(
+                        date=target_date,
+                        engine=engine,
+                        brand_context="extreme_networks",
+                        total_runs=total_runs,
+                        total_cost_usd=total_cost,
+                        total_citations=total_citations,
+                        unique_domains=len(unique_domains_set),
+                        top_domains=top_domains,
+                        brand_mentions=brand_mentions,
+                        competitor_mentions=competitor_mentions,
+                        share_of_voice_pct=sov,
+                        avg_visibility_score=avg_visibility,
+                        high_quality_citations=high_quality_citations,
+                        last_updated=datetime.utcnow().isoformat(),
+                        data_version="1.0",
+                    )
+                )
+
+            # Competitors context
+            if competitor_mentions > 0:
+                out.append(
+                    DailyMetrics(
+                        date=target_date,
+                        engine=engine,
+                        brand_context="competitors",
+                        total_runs=total_runs,
+                        total_cost_usd=total_cost,
+                        total_citations=total_citations,
+                        unique_domains=len(unique_domains_set),
+                        top_domains=top_domains,
+                        brand_mentions=brand_mentions,
+                        competitor_mentions=competitor_mentions,
+                        share_of_voice_pct=100 - sov if sov else 0,
+                        avg_visibility_score=avg_visibility,
+                        high_quality_citations=high_quality_citations,
+                        last_updated=datetime.utcnow().isoformat(),
+                        data_version="1.0",
+                    )
+                )
+
+        self.logger.info(f"Generated {len(out)} metric records from automated_runs")
+        return out
     
-    def compute_share_of_voice_metrics(self, runs: List[Run]) -> Dict[str, Any]:
+    def compute_share_of_voice_metrics(self, runs: List[AutomatedRun]) -> Dict[str, Any]:
         """Compute share of voice metrics from recent runs."""
         if not runs:
             return {}
@@ -111,7 +224,7 @@ class PostProcessPipeline:
         
         return share_of_voice_data
     
-    def compute_cost_metrics(self, runs: List[Run]) -> Dict[str, Any]:
+    def compute_cost_metrics(self, runs: List[AutomatedRun]) -> Dict[str, Any]:
         """Compute cost metrics from recent runs."""
         if not runs:
             return {}
@@ -135,15 +248,20 @@ class PostProcessPipeline:
             "cost_by_engine": cost_by_engine
         }
     
-    def compute_competitor_insights(self, runs: List[Run]) -> Dict[str, Any]:
+    def compute_competitor_insights(self, runs: List[AutomatedRun]) -> Dict[str, Any]:
         """Compute competitor insights from recent runs."""
         if not runs:
+            return {}
+        
+        # Apply new heuristic: ONLY analyze NON-BRANDED queries
+        non_branded_runs = [r for r in runs if not bool(getattr(r, 'is_branded', False))]
+        if not non_branded_runs:
             return {}
         
         # Extract all entities mentioned
         all_entities = []
         competitor_detection_analysis = {
-            "total_runs_analyzed": len(runs),
+            "total_runs_analyzed": len(non_branded_runs),
             "runs_with_entities": 0,
             "runs_without_entities": 0,
             "entity_extraction_issues": [],
@@ -156,7 +274,7 @@ class PostProcessPipeline:
             }
         }
         
-        for run in runs:
+        for run in non_branded_runs:
             try:
                 entities = run.entities_normalized
                 if entities is None:
@@ -282,7 +400,7 @@ class PostProcessPipeline:
         
         # Now calculate rankings based on entity order in the original extraction
         # We'll go through each run and assign rankings based on entity order
-        for run in runs:
+        for run in non_branded_runs:
             try:
                 entities = run.entities_normalized
                 if not entities or not isinstance(entities, list):
@@ -333,8 +451,8 @@ class PostProcessPipeline:
             ) if competitor_detection_analysis["runs_with_entities"] > 0 else 0,
             "extreme_networks_detection_rate": round(
                 competitor_detection_analysis["extreme_networks_analysis"]["runs_mentioned"] / 
-                len(runs) * 100, 2
-            ) if runs else 0,
+                len(non_branded_runs) * 100, 2
+            ) if non_branded_runs else 0,
             "extreme_networks_mention_rate": round(
                 competitor_detection_analysis["extreme_networks_analysis"]["total_mentions"] / 
                 len(all_entities) * 100, 2
@@ -350,7 +468,7 @@ class PostProcessPipeline:
             "extreme_networks_detailed_analysis": competitor_detection_analysis["extreme_networks_analysis"]
         }
     
-    def compute_citation_analysis(self, runs: List[Run]) -> Dict[str, Any]:
+    def compute_citation_analysis(self, runs: List[AutomatedRun]) -> Dict[str, Any]:
         """Compute simplified citation analysis focusing on domain frequency."""
         if not runs:
             return {}
@@ -506,7 +624,7 @@ class PostProcessPipeline:
         
         return max(0.0, min(score, 1.0))  # Cap between 0.0 and 1.0
     
-    def generate_dashboard_summary(self, runs: List[Run]) -> Dict[str, Any]:
+    def generate_dashboard_summary(self, runs: List[AutomatedRun]) -> Dict[str, Any]:
         """Generate a comprehensive dashboard summary."""
         if not runs:
             return {}
@@ -578,8 +696,8 @@ class PostProcessPipeline:
                 self.logger.warning("No automated runs found for post-processing")
                 return False
             
-            # Compute daily metrics
-            metrics = self.compute_daily_metrics(target_date)
+            # Compute daily metrics from automated_runs
+            metrics = self.compute_daily_metrics_from_automated(target_date)
             if metrics:
                 self.metrics_service.upsert_daily_metrics(metrics)
                 self.logger.info("Daily metrics computed and saved")

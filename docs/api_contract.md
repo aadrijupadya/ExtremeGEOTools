@@ -196,14 +196,17 @@ Get paginated list of query runs.
       "query": "string",
       "engine": "string",
       "model": "string",
+      "prompt_version": "string",
+      "intent": "string",
+      "is_branded": true,
       "status": "string",
       "latency_ms": 1234,
+      "input_tokens": 100,
+      "output_tokens": 500,
       "cost_usd": 0.0025,
-      "extreme_mentioned": true,
-      "extreme_rank": 3
+      "preview": "..."
     }
   ],
-  "total": 150,
   "limit": 50,
   "offset": 0
 }
@@ -223,6 +226,7 @@ Get detailed information about a specific run.
   "model": "string",
   "prompt_version": "string",
   "intent": "string",
+  "is_branded": true,
   "status": "string",
   "latency_ms": 1234,
   "input_tokens": 100,

@@ -1,172 +1,703 @@
 {
   "period": {
-    "start_date": "2025-08-16",
-    "end_date": "2025-08-19",
-    "days": 4
+    "start_date": "2025-08-20",
+    "end_date": "2025-08-25",
+    "days": 6
   },
   "execution_summary": {
-    "total_runs": 15,
-    "successful_runs": 0,
-    "failed_runs": 15,
-    "total_cost_usd": 0.031591
+    "total_runs": 181,
+    "successful_runs": 181,
+    "failed_runs": 0,
+    "total_cost_usd": 0.084132
   },
   "share_of_voice": {
-    "2025-08-19": {
-      "date": "2025-08-19",
-      "total_runs": 6,
-      "extreme_mentions": 0,
-      "share_of_voice_pct": 0.0,
-      "competitor_mentions": 6
+    "2025-08-25": {
+      "date": "2025-08-25",
+      "total_runs": 151,
+      "extreme_mentions": 31,
+      "share_of_voice_pct": 20.53,
+      "competitor_mentions": 120
     },
-    "2025-08-18": {
-      "date": "2025-08-18",
-      "total_runs": 8,
-      "extreme_mentions": 2,
-      "share_of_voice_pct": 25.0,
-      "competitor_mentions": 6
-    },
-    "2025-08-16": {
-      "date": "2025-08-16",
-      "total_runs": 1,
-      "extreme_mentions": 1,
-      "share_of_voice_pct": 100.0,
-      "competitor_mentions": 0
+    "2025-08-20": {
+      "date": "2025-08-20",
+      "total_runs": 30,
+      "extreme_mentions": 10,
+      "share_of_voice_pct": 33.33,
+      "competitor_mentions": 20
     }
   },
   "cost_analysis": {
-    "total_cost_usd": 0.031591,
-    "total_tokens": 16646,
-    "avg_cost_per_run": 0.002106,
+    "total_cost_usd": 0.084132,
+    "total_tokens": 84132,
+    "avg_cost_per_run": 0.000465,
     "cost_by_engine": {
       "perplexity": {
-        "cost": 0.006768,
-        "runs": 7
+        "cost": 0.084132,
+        "runs": 90
       },
-      "openai": {
-        "cost": 0.024823,
-        "runs": 8
+      "gpt-4o-mini-search-preview": {
+        "cost": 0.0,
+        "runs": 91
       }
     }
   },
   "competitor_insights": {
-    "total_entity_mentions": 7,
-    "unique_entities": 6,
+    "total_entity_mentions": 321,
+    "unique_entities": 37,
     "top_competitors": [
       {
         "name": "Cisco",
-        "mentions": 2,
-        "avg_rank": "N/A",
-        "ranking_positions": []
+        "mentions": 54,
+        "avg_rank": 1.63,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          4,
+          6,
+          7
+        ]
       },
       {
         "name": "HPE",
-        "mentions": 1,
-        "avg_rank": "N/A",
-        "ranking_positions": []
-      },
-      {
-        "name": "Juniper",
-        "mentions": 1,
-        "avg_rank": "N/A",
-        "ranking_positions": []
-      },
-      {
-        "name": "Dell",
-        "mentions": 1,
-        "avg_rank": "N/A",
-        "ranking_positions": []
+        "mentions": 35,
+        "avg_rank": 2.34,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          5,
+          10
+        ]
       },
       {
         "name": "Extreme Networks",
-        "mentions": 1,
-        "avg_rank": "N/A",
-        "ranking_positions": []
+        "mentions": 32,
+        "avg_rank": 1.62,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "name": "Juniper",
+        "mentions": 29,
+        "avg_rank": 2.62,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          6,
+          9
+        ]
+      },
+      {
+        "name": "Aruba",
+        "mentions": 25,
+        "avg_rank": 3.52,
+        "ranking_positions": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          9,
+          11
+        ]
       },
       {
         "name": "Fortinet",
-        "mentions": 1,
-        "avg_rank": "N/A",
-        "ranking_positions": []
+        "mentions": 21,
+        "avg_rank": 2.86,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          5,
+          7,
+          8
+        ]
+      },
+      {
+        "name": "Broadcom (VMware)",
+        "mentions": 13,
+        "avg_rank": 2.31,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4
+        ]
+      },
+      {
+        "name": "Arista",
+        "mentions": 10,
+        "avg_rank": 3.1,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          2,
+          2,
+          3,
+          5,
+          5,
+          5,
+          6
+        ]
+      },
+      {
+        "name": "Palo Alto Networks",
+        "mentions": 10,
+        "avg_rank": 1.6,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          4
+        ]
+      },
+      {
+        "name": "CommScope (Ruckus)",
+        "mentions": 9,
+        "avg_rank": 2.78,
+        "ranking_positions": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
       }
     ],
     "detection_effectiveness": {
       "entity_extraction_rate": 100.0,
-      "avg_entities_per_run": 0.47,
-      "extreme_networks_detection_rate": 6.67,
-      "extreme_networks_mention_rate": 14.29
+      "avg_entities_per_run": 1.99,
+      "extreme_networks_detection_rate": 19.88,
+      "extreme_networks_mention_rate": 9.97
     },
     "competitor_detection_analysis": {
-      "total_runs_analyzed": 15,
-      "runs_with_entities": 15,
+      "total_runs_analyzed": 161,
+      "runs_with_entities": 161,
       "runs_without_entities": 0,
       "entity_extraction_issues": [],
       "competitor_mentions_by_run": {
-        "run_perplexity_1755639936426": {
-          "query": "Best colleges for ROI - undergrad CS",
+        "auto_perplexity_transactional_1756169096422": {
+          "query": "book consultation for network automation",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 797
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_transactional_1756169089217": {
+          "query": "schedule POC for campus Wi-Fi upgrade",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
           "engine": "perplexity",
           "total_entities": 0
         },
-        "run_openai_1755630161739": {
-          "query": "Best stocks to invest in - this week. Keep it concise, 5 stocks, short justifications, short responses.",
-          "entities_found": [],
-          "extreme_mentioned": false,
-          "extreme_networks_rank": null,
-          "engine": "openai",
-          "total_entities": 0
-        },
-        "run_openai_1755629312051": {
-          "query": "Best places to intern at as a rising sophomore in CS 2025.",
-          "entities_found": [],
-          "extreme_mentioned": false,
-          "extreme_networks_rank": null,
-          "engine": "openai",
-          "total_entities": 0
-        },
-        "run_openai_1755626540073": {
-          "query": "Best places to intern at as a rising sophomore in CS 2025.",
-          "entities_found": [],
-          "extreme_mentioned": false,
-          "extreme_networks_rank": null,
-          "engine": "openai",
-          "total_entities": 0
-        },
-        "run_perplexity_1755625996423": {
-          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+        "auto_perplexity_transactional_1756169069421": {
+          "query": "enterprise network assessment request",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
           "engine": "perplexity",
           "total_entities": 0
         },
-        "run_openai_1755625604061": {
-          "query": "Best places to intern at as a rising sophomore in CS 2025.",
+        "auto_perplexity_transactional_1756169057412": {
+          "query": "RFP template for SD-WAN rollout",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "openai",
+          "engine": "perplexity",
           "total_entities": 0
         },
-        "run_openai_1755556057851": {
-          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+        "auto_perplexity_transactional_1756169042082": {
+          "query": "buy enterprise NAC solution",
+          "entities_found": [
+            {
+              "name": "Aruba",
+              "rank": 1,
+              "first_pos": 331
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 463
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 3,
+              "first_pos": 628
+            },
+            {
+              "name": "Fortinet",
+              "rank": 4,
+              "first_pos": 1647
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 3,
+          "engine": "perplexity",
+          "total_entities": 4
+        },
+        "auto_perplexity_transactional_1756169031422": {
+          "query": "start free trial enterprise monitoring tool",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "openai",
+          "engine": "perplexity",
           "total_entities": 0
         },
-        "run_openai_1755555666511": {
-          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+        "auto_perplexity_transactional_1756169014429": {
+          "query": "start free trial enterprise network analytics",
+          "entities_found": [
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 1,
+              "first_pos": 508
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_transactional_1756169006522": {
+          "query": "get quote for campus switching refresh",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1132
+            },
+            {
+              "name": "D-Link",
+              "rank": 2,
+              "first_pos": 4852
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_transactional_1756168987401": {
+          "query": "get pricing for cloud-managed enterprise networking",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "openai",
+          "engine": "perplexity",
           "total_entities": 0
         },
-        "run_openai_1755555259158": {
-          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+        "auto_perplexity_transactional_1756168975206": {
+          "query": "request demo for enterprise network automation",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 1346
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_transactional_1756168969268": {
+          "query": "request demo for enterprise SD-WAN solution",
+          "entities_found": [
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 1,
+              "first_pos": 793
+            },
+            {
+              "name": "Versa Networks",
+              "rank": 2,
+              "first_pos": 1042
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 1292
+            },
+            {
+              "name": "HPE",
+              "rank": 4,
+              "first_pos": 1544
+            },
+            {
+              "name": "Aruba",
+              "rank": 5,
+              "first_pos": 1544
+            },
+            {
+              "name": "Cato Networks",
+              "rank": 6,
+              "first_pos": 1795
+            },
+            {
+              "name": "Cisco",
+              "rank": 7,
+              "first_pos": 2046
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 7
+        },
+        "auto_perplexity_navigational_1756168951933": {
+          "query": "CommScope Ruckus enterprise Wi-Fi",
+          "entities_found": [
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 1,
+              "first_pos": 10
+            },
+            {
+              "name": "Nokia",
+              "rank": 2,
+              "first_pos": 1843
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_navigational_1756168940462": {
+          "query": "Arista cloud networking platform",
+          "entities_found": [
+            {
+              "name": "Arista",
+              "rank": 1,
+              "first_pos": 6
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 2,
+              "first_pos": 1587
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_navigational_1756168926955": {
+          "query": "Dell Networking enterprise portfolio",
+          "entities_found": [
+            {
+              "name": "Dell",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168917666": {
+          "query": "Aruba Wi-Fi 7 access points",
+          "entities_found": [
+            {
+              "name": "Meter",
+              "rank": 1,
+              "first_pos": 1448
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 1814
+            },
+            {
+              "name": "Aruba",
+              "rank": 3,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_navigational_1756168906869": {
+          "query": "Aruba Central cloud management",
+          "entities_found": [
+            {
+              "name": "Aruba",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 1558
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_navigational_1756168899223": {
+          "query": "Juniper Apstra automation",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 2
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168883248": {
+          "query": "Juniper Mist Wi-Fi platform",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 6
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 2948
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_navigational_1756168874345": {
+          "query": "Cisco DNA Center automation",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 2
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168864862": {
+          "query": "Cisco Meraki cloud networking",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 2
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168848467": {
+          "query": "Cisco enterprise networking platform",
           "entities_found": [
             {
               "name": "Cisco",
@@ -176,24 +707,1408 @@
           ],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "openai",
+          "engine": "perplexity",
           "total_entities": 1
         },
-        "run_openai_1755555104366": {
-          "query": "Give me resources on learning more about Wifi 6E (for a beginner). Please cite any sources you give me.",
+        "auto_perplexity_navigational_1756168839509": {
+          "query": "Extreme Networks campus switching portfolio",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 1327
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168833385": {
+          "query": "Extreme Networks SD-WAN solution",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168821647": {
+          "query": "Extreme Networks AIOps platform",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 1956
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168814443": {
+          "query": "Extreme Networks Wi-Fi 7 access points",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 843
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_navigational_1756168796212": {
+          "query": "Extreme Networks enterprise products overview",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2437
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168784775": {
+          "query": "what is DPI (deep packet inspection) enterprise",
           "entities_found": [],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "openai",
+          "engine": "perplexity",
           "total_entities": 0
         },
-        "run_perplexity_1755549800169": {
-          "query": "I want to learn more about Wifi 6E. Point me to some resources.",
+        "auto_perplexity_informational_1756168775346": {
+          "query": "what is leaf-spine architecture",
           "entities_found": [
             {
               "name": "HPE",
               "rank": 1,
+              "first_pos": 3097
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168765903": {
+          "query": "what is BGP for enterprise WAN",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168755052": {
+          "query": "what is 802.1X for enterprise wireless",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 3421
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168745879": {
+          "query": "what is enterprise NAC",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 1808
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 2236
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_informational_1756168736609": {
+          "query": "what is intent-based networking",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 2312
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168728120": {
+          "query": "how to design an enterprise Wi-Fi 6/6E rollout",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1724
+            },
+            {
+              "name": "Arista",
+              "rank": 2,
+              "first_pos": 2382
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_informational_1756168714196": {
+          "query": "what is network policy orchestration",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168700251": {
+          "query": "enterprise network security controls explained",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168683779": {
+          "query": "what is network analytics enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 2813
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168670958": {
+          "query": "what are AIOps platforms",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168661857": {
+          "query": "what is edge computing for enterprise networks",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 2515
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168651013": {
+          "query": "benefits of automation in enterprise networks",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168637996": {
+          "query": "enterprise network management explained",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168629506": {
+          "query": "what is software-defined networking (SDN)",
+          "entities_found": [
+            {
+              "name": "Cloudflare",
+              "rank": 1,
+              "first_pos": 2430
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168618829": {
+          "query": "enterprise switches vs consumer switches",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168611750": {
+          "query": "what is enterprise campus networking",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1391
+            },
+            {
+              "name": "Cloudflare",
+              "rank": 2,
+              "first_pos": 2012
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_informational_1756168603698": {
+          "query": "benefits of zero-trust networking",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 2655
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168593140": {
+          "query": "how enterprise network monitoring works",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 3065
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_informational_1756168578510": {
+          "query": "advantages of SD-WAN over MPLS",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168568520": {
+          "query": "do enterprises need Wi-Fi 7",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_informational_1756168557093": {
+          "query": "what is enterprise AIOps",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 2359
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 2784
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168548290": {
+          "query": "Extreme Networks vs EnGenius enterprise WLAN",
+          "entities_found": [
+            {
+              "name": "EnGenius",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 2,
+              "first_pos": 175
+            },
+            {
+              "name": "Ubiquiti",
+              "rank": 3,
+              "first_pos": 1805
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 2,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_commercial_1756168534177": {
+          "query": "Extreme Networks vs Zyxel enterprise Wi-Fi",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "Zyxel",
+              "rank": 2,
+              "first_pos": 22
+            },
+            {
+              "name": "Meter",
+              "rank": 3,
+              "first_pos": 2078
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_commercial_1756168517993": {
+          "query": "Extreme Networks vs SonicWall network security",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "SonicWall",
+              "rank": 2,
+              "first_pos": 22
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168509193": {
+          "query": "Extreme Networks vs WatchGuard secure Wi-Fi",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "WatchGuard",
+              "rank": 2,
+              "first_pos": 27
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 1096
+            },
+            {
+              "name": "Juniper",
+              "rank": 4,
+              "first_pos": 1100
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 4
+        },
+        "auto_perplexity_commercial_1756168488895": {
+          "query": "Extreme Networks vs H3C campus networking",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "H3C",
+              "rank": 2,
+              "first_pos": 23
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 910
+            },
+            {
+              "name": "Cisco",
+              "rank": 4,
+              "first_pos": 2001
+            },
+            {
+              "name": "Huawei",
+              "rank": 5,
+              "first_pos": 2011
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 5
+        },
+        "auto_perplexity_commercial_1756168479521": {
+          "query": "Extreme Networks vs NETGEAR enterprise Wi-Fi",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 15
+            },
+            {
+              "name": "NETGEAR",
+              "rank": 2,
+              "first_pos": 36
+            },
+            {
+              "name": "Meter",
+              "rank": 3,
+              "first_pos": 485
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_commercial_1756168470772": {
+          "query": "Extreme Networks vs Versa Networks SD-WAN",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 15
+            },
+            {
+              "name": "Versa Networks",
+              "rank": 2,
+              "first_pos": 36
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168460516": {
+          "query": "Extreme Networks vs Cloudflare SASE",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 15
+            },
+            {
+              "name": "Cloudflare",
+              "rank": 2,
+              "first_pos": 36
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168451212": {
+          "query": "Fortinet vs Palo Alto Networks enterprise security",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "Fortinet",
+              "rank": 2,
+              "first_pos": 25
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168431904": {
+          "query": "Arista vs Cisco cloud networking comparison",
+          "entities_found": [
+            {
+              "name": "Arista",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 12
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168420945": {
+          "query": "Cisco vs HPE Aruba Wi-Fi 7 comparison",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 11
+            },
+            {
+              "name": "Aruba",
+              "rank": 3,
+              "first_pos": 11
+            },
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 4,
+              "first_pos": 1405
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 4
+        },
+        "auto_perplexity_commercial_1756168405265": {
+          "query": "Extreme Networks vs Juniper enterprise switches",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 2
+            },
+            {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 23
+            },
+            {
+              "name": "Cisco",
+              "rank": 3,
+              "first_pos": 1257
+            },
+            {
+              "name": "HPE",
+              "rank": 4,
+              "first_pos": 6003
+            },
+            {
+              "name": "Aruba",
+              "rank": 5,
+              "first_pos": 6007
+            },
+            {
+              "name": "D-Link",
+              "rank": 6,
+              "first_pos": 6013
+            },
+            {
+              "name": "NETGEAR",
+              "rank": 7,
+              "first_pos": 6020
+            },
+            {
+              "name": "TP-Link",
+              "rank": 8,
+              "first_pos": 6049
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 8
+        },
+        "auto_perplexity_commercial_1756168384337": {
+          "query": "top secure Wi-Fi solutions for enterprises",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 74
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 74
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 85
+            },
+            {
+              "name": "Cisco",
+              "rank": 4,
+              "first_pos": 99
+            },
+            {
+              "name": "Ubiquiti",
+              "rank": 5,
+              "first_pos": 113
+            },
+            {
+              "name": "Meter",
+              "rank": 6,
+              "first_pos": 1614
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 6
+        },
+        "auto_perplexity_commercial_1756168371972": {
+          "query": "top SD-Branch solutions for enterprises",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 178
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 1091
+            },
+            {
+              "name": "Join Digital",
+              "rank": 3,
+              "first_pos": 1815
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_commercial_1756168364047": {
+          "query": "top intent-based networking vendors enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 88
+            },
+            {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 581
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 3,
+              "first_pos": 1059
+            },
+            {
+              "name": "HPE",
+              "rank": 4,
+              "first_pos": 1486
+            },
+            {
+              "name": "Aruba",
+              "rank": 5,
+              "first_pos": 1714
+            },
+            {
+              "name": "Huawei",
+              "rank": 6,
+              "first_pos": 1947
+            },
+            {
+              "name": "Nokia",
+              "rank": 7,
+              "first_pos": 2818
+            },
+            {
+              "name": "Fortinet",
+              "rank": 8,
+              "first_pos": 2905
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 8
+        },
+        "auto_perplexity_commercial_1756168351599": {
+          "query": "top network monitoring solutions for enterprises",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_commercial_1756168333012": {
+          "query": "top campus core switches for enterprises",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 104
+            },
+            {
+              "name": "Huawei",
+              "rank": 2,
+              "first_pos": 111
+            },
+            {
+              "name": "Arista",
+              "rank": 3,
+              "first_pos": 119
+            },
+            {
+              "name": "Juniper",
+              "rank": 4,
+              "first_pos": 136
+            },
+            {
+              "name": "H3C",
+              "rank": 5,
+              "first_pos": 158
+            },
+            {
+              "name": "Dell",
+              "rank": 6,
+              "first_pos": 4215
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 6
+        },
+        "auto_perplexity_commercial_1756168321282": {
+          "query": "top AIOps providers for enterprise networks",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 1967
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 1997
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168303571": {
+          "query": "top multi-cloud networking solutions enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 327
+            },
+            {
+              "name": "Dell",
+              "rank": 2,
+              "first_pos": 1071
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 1641
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 4,
+              "first_pos": 2261
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 4
+        },
+        "auto_perplexity_commercial_1756168287908": {
+          "query": "top DDoS protection vendors enterprise",
+          "entities_found": [
+            {
+              "name": "Cloudflare",
+              "rank": 1,
+              "first_pos": 79
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_commercial_1756168272953": {
+          "query": "top observability platforms for enterprise networks",
+          "entities_found": [
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 1,
+              "first_pos": 1799
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 1
+        },
+        "auto_perplexity_commercial_1756168264234": {
+          "query": "top AI-driven enterprise networking solutions",
+          "entities_found": [
+            {
+              "name": "Arista",
+              "rank": 1,
+              "first_pos": 258
+            },
+            {
+              "name": "Nile",
+              "rank": 2,
+              "first_pos": 920
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 3,
+              "first_pos": 1462
+            },
+            {
+              "name": "Versa Networks",
+              "rank": 4,
+              "first_pos": 1905
+            },
+            {
+              "name": "HPE",
+              "rank": 5,
+              "first_pos": 2766
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 3,
+          "engine": "perplexity",
+          "total_entities": 5
+        },
+        "auto_perplexity_commercial_1756168251237": {
+          "query": "top automation tools for enterprise networks",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_commercial_1756168241757": {
+          "query": "top enterprise network management software",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 831
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 3010
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 2
+        },
+        "auto_perplexity_commercial_1756168224416": {
+          "query": "top SASE providers for enterprises",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 86
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 113
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 139
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 3
+        },
+        "auto_perplexity_commercial_1756168212437": {
+          "query": "top campus networking solutions enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 115
+            },
+            {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 129
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 147
+            },
+            {
+              "name": "Aruba",
+              "rank": 4,
+              "first_pos": 147
+            },
+            {
+              "name": "Arista",
+              "rank": 5,
+              "first_pos": 158
+            },
+            {
+              "name": "Meter",
+              "rank": 6,
+              "first_pos": 179
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 6
+        },
+        "auto_perplexity_commercial_1756168196215": {
+          "query": "top SD-WAN vendors for enterprises",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 57
+            },
+            {
+              "name": "Fortinet",
+              "rank": 2,
+              "first_pos": 68
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 3,
+              "first_pos": 82
+            },
+            {
+              "name": "Aryaka",
+              "rank": 4,
+              "first_pos": 106
+            },
+            {
+              "name": "Versa Networks",
+              "rank": 5,
+              "first_pos": 118
+            },
+            {
+              "name": "Cato Networks",
+              "rank": 6,
+              "first_pos": 138
+            },
+            {
+              "name": "Nokia",
+              "rank": 7,
+              "first_pos": 157
+            },
+            {
+              "name": "Nuage Networks",
+              "rank": 8,
+              "first_pos": 164
+            },
+            {
+              "name": "Juniper",
+              "rank": 9,
+              "first_pos": 185
+            },
+            {
+              "name": "HPE",
+              "rank": 10,
+              "first_pos": 211
+            },
+            {
+              "name": "Aruba",
+              "rank": 11,
+              "first_pos": 211
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 11
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168183942": {
+          "query": "estimate TCO for campus network upgrade",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168177078": {
+          "query": "contact sales for enterprise networking platform",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 109
+            },
+            {
+              "name": "Palo Alto Networks",
+              "rank": 2,
+              "first_pos": 353
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 581
+            },
+            {
+              "name": "Alcatel-Lucent Enterprise",
+              "rank": 4,
+              "first_pos": 816
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 4
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168171259": {
+          "query": "schedule POC for enterprise SD-WAN",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168166147": {
+          "query": "compare enterprise networking support SLAs pricing",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168157343": {
+          "query": "RFP template for enterprise Wi-Fi 7 deployment",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168151643": {
+          "query": "buy enterprise network firewall license",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 192
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 544
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 884
+            },
+            {
+              "name": "SonicWall",
+              "rank": 4,
+              "first_pos": 1302
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 4
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168144751": {
+          "query": "start free trial network orchestration platform",
+          "entities_found": [
+            {
+              "name": "Prosimo",
+              "rank": 1,
+              "first_pos": 959
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168136757": {
+          "query": "get quote for enterprise SASE platform",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 375
+            },
+            {
+              "name": "Palo Alto Networks",
+              "rank": 2,
+              "first_pos": 996
+            },
+            {
+              "name": "Versa Networks",
+              "rank": 3,
+              "first_pos": 1432
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 4,
+              "first_pos": 1798
+            },
+            {
+              "name": "Cloudflare",
+              "rank": 5,
+              "first_pos": 2142
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 5
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168127957": {
+          "query": "get pricing for enterprise Wi-Fi 7 access points",
+          "entities_found": [
+            {
+              "name": "TP-Link",
+              "rank": 1,
+              "first_pos": 165
+            },
+            {
+              "name": "EnGenius",
+              "rank": 2,
+              "first_pos": 503
+            },
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 3,
+              "first_pos": 1438
+            },
+            {
+              "name": "Ubiquiti",
+              "rank": 4,
+              "first_pos": 1700
+            },
+            {
+              "name": "NETGEAR",
+              "rank": 5,
+              "first_pos": 1981
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 5
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168119792": {
+          "query": "request demo for enterprise network monitoring",
+          "entities_found": [
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 1,
+              "first_pos": 925
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_transactional_1756168112696": {
+          "query": "request demo for enterprise AIOps platform",
+          "entities_found": [
+            {
+              "name": "Prosimo",
+              "rank": 1,
+              "first_pos": 1596
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168106238": {
+          "query": "NETGEAR enterprise switches lineup",
+          "entities_found": [
+            {
+              "name": "NETGEAR",
+              "rank": 1,
               "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168099400": {
+          "query": "Nokia enterprise networking solutions",
+          "entities_found": [
+            {
+              "name": "Nokia",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168093510": {
+          "query": "Fortinet secure networking for enterprise",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168086802": {
+          "query": "HPE enterprise networking solutions",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 28
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 229
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 464
+            },
+            {
+              "name": "Huawei",
+              "rank": 4,
+              "first_pos": 1869
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 4
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168080442": {
+          "query": "Aruba CX switches overview",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 310
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168073273": {
+          "query": "Aruba enterprise networking portfolio",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 23
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168067005": {
+          "query": "Juniper EX switches overview",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168061499": {
+          "query": "Juniper enterprise networking solutions",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 2074
             },
             {
               "name": "Juniper",
@@ -203,247 +2118,1962 @@
           ],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "perplexity",
+          "engine": "gpt-4o-mini-search-preview",
           "total_entities": 2
         },
-        "run_perplexity_1755543806022": {
-          "query": "Cloud Networking Companies with biggest expected growth in upcoming fiscal year",
+        "auto_gpt-4o-mini-search-preview_navigational_1756168056282": {
+          "query": "Cisco ThousandEyes monitoring",
           "entities_found": [
             {
               "name": "Cisco",
               "rank": 1,
               "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168050954": {
+          "query": "Cisco Catalyst switches overview",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168044829": {
+          "query": "Extreme Networks technical support portal",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 345
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168031531": {
+          "query": "Extreme Networks network orchestration",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 380
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168025245": {
+          "query": "Extreme Networks network analytics",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 1087
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168018735": {
+          "query": "Extreme Networks cloud-managed networking",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 387
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_navigational_1756168013376": {
+          "query": "Extreme Networks Fabric Connect overview",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 182
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756168007840": {
+          "query": "what is WPA3 for enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1185
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756168001962": {
+          "query": "what is AIOps vs traditional NMS",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167997087": {
+          "query": "what is EVPN/VXLAN in campus fabrics",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167991875": {
+          "query": "what is QoS in enterprise networks",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 513
             },
             {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 783
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167986268": {
+          "query": "what is PoE and PoE+ and UPoE",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 185
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167977368": {
+          "query": "Wi-Fi 6 vs Wi-Fi 6E vs Wi-Fi 7 for enterprise",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167970774": {
+          "query": "what are enterprise network SLAs",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167965617": {
+          "query": "what is anomaly detection in enterprise networks",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167950380": {
+          "query": "what is network observability enterprise",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 414
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167943123": {
+          "query": "what is network compliance enterprise",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167936083": {
+          "query": "what is wireless optimization in enterprise",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167930933": {
+          "query": "what is network resiliency in enterprise",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167923639": {
+          "query": "how network virtualization works",
+          "entities_found": [
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 1,
+              "first_pos": 163
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167918585": {
+          "query": "what is networking digital twin",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167912992": {
+          "query": "what is network orchestration enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 483
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167907489": {
+          "query": "what is enterprise load balancing",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167902420": {
+          "query": "what is multi-cloud networking",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1313
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167896402": {
+          "query": "what is enterprise WLAN design",
+          "entities_found": [
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 1,
+              "first_pos": 1808
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167891176": {
+          "query": "what is network segmentation for enterprises",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 377
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167885934": {
+          "query": "what is SASE in enterprise networks",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167878692": {
+          "query": "what is network automation for enterprises",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 293
+            },
+            {
+              "name": "Fortinet",
+              "rank": 2,
+              "first_pos": 829
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167872002": {
+          "query": "what is OFDMA in Wi-Fi 6/6E/7",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_informational_1756167863150": {
+          "query": "what is SD-WAN in enterprise networking",
+          "entities_found": [
+            {
+              "name": "Cloudflare",
+              "rank": 1,
+              "first_pos": 1304
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167856867": {
+          "query": "Extreme Networks vs D-Link enterprise switches",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 15
+            },
+            {
+              "name": "D-Link",
+              "rank": 2,
+              "first_pos": 36
+            },
+            {
+              "name": "Meter",
+              "rank": 3,
+              "first_pos": 377
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167850445": {
+          "query": "Extreme Networks vs Barracuda network security",
+          "entities_found": [
+            {
+              "name": "Barracuda",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167844305": {
+          "query": "Extreme Networks vs Sophos enterprise firewall",
+          "entities_found": [
+            {
+              "name": "Sophos",
+              "rank": 1,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167838203": {
+          "query": "Extreme Networks vs Nokia enterprise LAN",
+          "entities_found": [
+            {
+              "name": "Nokia",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167830807": {
+          "query": "Extreme Networks vs CommScope Ruckus Wi-Fi",
+          "entities_found": [
+            {
+              "name": "Extreme Networks",
+              "rank": 1,
+              "first_pos": 36
+            },
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 2,
+              "first_pos": 57
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167824985": {
+          "query": "Extreme Networks vs Dell enterprise networking",
+          "entities_found": [
+            {
               "name": "Dell",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 2,
+              "first_pos": 639
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 3,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 3,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167818493": {
+          "query": "Extreme Networks vs Cato Networks SD-WAN",
+          "entities_found": [
+            {
+              "name": "Cato Networks",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167812141": {
+          "query": "Extreme Networks vs Fortinet secure networking",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 2,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167804970": {
+          "query": "Huawei vs Nokia enterprise networking",
+          "entities_found": [
+            {
+              "name": "Nokia",
+              "rank": 1,
+              "first_pos": 11
+            },
+            {
+              "name": "Huawei",
               "rank": 2,
               "first_pos": 0
             }
           ],
           "extreme_mentioned": false,
           "extreme_networks_rank": null,
-          "engine": "perplexity",
+          "engine": "gpt-4o-mini-search-preview",
           "total_entities": 2
         },
-        "run_perplexity_1755542972358": {
-          "query": "Extreme Platform One - a top product in the industry? give me detailed analysis",
-          "entities_found": [],
-          "extreme_mentioned": true,
-          "extreme_networks_rank": null,
-          "engine": "perplexity",
-          "total_entities": 0
-        },
-        "run_perplexity_1755542783962": {
-          "query": "Extreme Platform One - a top product in the industry? give me detailed analysis",
-          "entities_found": [],
-          "extreme_mentioned": true,
-          "extreme_networks_rank": null,
-          "engine": "perplexity",
-          "total_entities": 0
-        },
-        "run_perplexity_1755304126106": {
-          "query": "Top AI powered platforms for cloud network management",
+        "auto_gpt-4o-mini-search-preview_commercial_1756167798473": {
+          "query": "Cisco vs Juniper enterprise SD-WAN",
           "entities_found": [
             {
-              "name": "Extreme Networks",
+              "name": "Cisco",
               "rank": 1,
-              "first_pos": 0
+              "first_pos": 49
             },
             {
-              "name": "Fortinet",
+              "name": "Juniper",
               "rank": 2,
+              "first_pos": 59
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167790509": {
+          "query": "Extreme Networks vs Aruba enterprise Wi-Fi",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 21
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 440
+            },
+            {
+              "name": "Cisco",
+              "rank": 4,
+              "first_pos": 467
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 5,
               "first_pos": 0
             }
           ],
           "extreme_mentioned": true,
-          "extreme_networks_rank": 1,
-          "engine": "perplexity",
+          "extreme_networks_rank": 5,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 5
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167784762": {
+          "query": "Extreme Networks vs Cisco campus networking",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 21
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 1717
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 3,
+              "first_pos": 0
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 3,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167777648": {
+          "query": "best network assurance tools enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 1402
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167771332": {
+          "query": "best WAN optimization solutions enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 628
+            },
+            {
+              "name": "Citrix",
+              "rank": 2,
+              "first_pos": 1047
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 1428
+            },
+            {
+              "name": "Aruba",
+              "rank": 4,
+              "first_pos": 1820
+            },
+            {
+              "name": "Aryaka",
+              "rank": 5,
+              "first_pos": 2186
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 5
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167762804": {
+          "query": "best network orchestration platforms enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 171
+            },
+            {
+              "name": "Juniper",
+              "rank": 2,
+              "first_pos": 447
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 3,
+              "first_pos": 689
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167755223": {
+          "query": "best enterprise access points Wi-Fi 6E/7",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 105
+            },
+            {
+              "name": "Meter",
+              "rank": 2,
+              "first_pos": 499
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 595
+            },
+            {
+              "name": "Aruba",
+              "rank": 4,
+              "first_pos": 595
+            },
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 5,
+              "first_pos": 1072
+            },
+            {
+              "name": "Ubiquiti",
+              "rank": 6,
+              "first_pos": 1541
+            },
+            {
+              "name": "Fortinet",
+              "rank": 7,
+              "first_pos": 2004
+            },
+            {
+              "name": "TP-Link",
+              "rank": 8,
+              "first_pos": 2515
+            },
+            {
+              "name": "EnGenius",
+              "rank": 9,
+              "first_pos": 3041
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 9
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167745779": {
+          "query": "best enterprise edge networking platforms",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 187
+            },
+            {
+              "name": "Palo Alto Networks",
+              "rank": 2,
+              "first_pos": 1011
+            },
+            {
+              "name": "Aruba",
+              "rank": 3,
+              "first_pos": 1803
+            },
+            {
+              "name": "Juniper",
+              "rank": 4,
+              "first_pos": 2572
+            },
+            {
+              "name": "Arista",
+              "rank": 5,
+              "first_pos": 3240
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 5
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167733926": {
+          "query": "best enterprise NAC solutions",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 177
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 645
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 1854
+            },
+            {
+              "name": "Palo Alto Networks",
+              "rank": 4,
+              "first_pos": 2258
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 4
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167720933": {
+          "query": "best cloud-managed networking platforms enterprise",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 149
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 700
+            },
+            {
+              "name": "Aruba",
+              "rank": 3,
+              "first_pos": 700
+            },
+            {
+              "name": "Juniper",
+              "rank": 4,
+              "first_pos": 1256
+            },
+            {
+              "name": "Fortinet",
+              "rank": 5,
+              "first_pos": 1800
+            },
+            {
+              "name": "Arista",
+              "rank": 6,
+              "first_pos": 2364
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 6
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167713093": {
+          "query": "best enterprise firewalls 2025",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 160
+            },
+            {
+              "name": "Fortinet",
+              "rank": 2,
+              "first_pos": 426
+            },
+            {
+              "name": "Cisco",
+              "rank": 3,
+              "first_pos": 1003
+            },
+            {
+              "name": "Juniper",
+              "rank": 4,
+              "first_pos": 1356
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 4
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167707406": {
+          "query": "best enterprise zero-trust platforms",
+          "entities_found": [
+            {
+              "name": "Palo Alto Networks",
+              "rank": 1,
+              "first_pos": 220
+            },
+            {
+              "name": "Cloudflare",
+              "rank": 2,
+              "first_pos": 1933
+            },
+            {
+              "name": "Fortinet",
+              "rank": 3,
+              "first_pos": 3012
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167696622": {
+          "query": "best hybrid cloud networking tools enterprise",
+          "entities_found": [
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 1,
+              "first_pos": 145
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 663
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 1262
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167689477": {
+          "query": "best enterprise load balancing solutions",
+          "entities_found": [
+            {
+              "name": "F5 (Distributed Cloud)",
+              "rank": 1,
+              "first_pos": 158
+            },
+            {
+              "name": "Citrix",
+              "rank": 2,
+              "first_pos": 587
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 3,
+              "first_pos": 1023
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167680749": {
+          "query": "best enterprise network analytics platforms",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167671653": {
+          "query": "best enterprise wireless LAN platforms",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 187
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 643
+            },
+            {
+              "name": "Aruba",
+              "rank": 3,
+              "first_pos": 643
+            },
+            {
+              "name": "Fortinet",
+              "rank": 4,
+              "first_pos": 1207
+            },
+            {
+              "name": "Huawei",
+              "rank": 5,
+              "first_pos": 1641
+            },
+            {
+              "name": "Cisco",
+              "rank": 6,
+              "first_pos": 2020
+            },
+            {
+              "name": "CommScope (Ruckus)",
+              "rank": 7,
+              "first_pos": 2505
+            },
+            {
+              "name": "Cambium Networks",
+              "rank": 8,
+              "first_pos": 2834
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 8
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167663641": {
+          "query": "best enterprise network automation tools",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 1494
+            },
+            {
+              "name": "Broadcom (VMware)",
+              "rank": 2,
+              "first_pos": 3329
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
           "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_commercial_1756167652235": {
+          "query": "best enterprise Wi-Fi 7 solutions 2025",
+          "entities_found": [
+            {
+              "name": "TP-Link",
+              "rank": 1,
+              "first_pos": 1710
+            },
+            {
+              "name": "EnGenius",
+              "rank": 2,
+              "first_pos": 2176
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_perplexity_generic_intent_1755733230721": {
+          "query": "enterprise network management platforms",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_generic_intent_1755733218427": {
+          "query": "best enterprise network monitoring",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_perplexity_generic_intent_1755733206761": {
+          "query": "top SD-WAN solutions enterprise",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 611
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 1363
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 1981
+            },
+            {
+              "name": "Aruba",
+              "rank": 4,
+              "first_pos": 1981
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 4
+        },
+        "auto_perplexity_generic_intent_1755733193858": {
+          "query": "enterprise campus networking solutions",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 739
+            },
+            {
+              "name": "HPE",
+              "rank": 2,
+              "first_pos": 746
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 751
+            },
+            {
+              "name": "Extreme Networks",
+              "rank": 4,
+              "first_pos": 760
+            },
+            {
+              "name": "Arista",
+              "rank": 5,
+              "first_pos": 782
+            },
+            {
+              "name": "Huawei",
+              "rank": 6,
+              "first_pos": 3498
+            },
+            {
+              "name": "Dell",
+              "rank": 7,
+              "first_pos": 3519
+            },
+            {
+              "name": "Nokia",
+              "rank": 8,
+              "first_pos": 3538
+            },
+            {
+              "name": "Aruba",
+              "rank": 9,
+              "first_pos": 3557
+            }
+          ],
+          "extreme_mentioned": true,
+          "extreme_networks_rank": 4,
+          "engine": "perplexity",
+          "total_entities": 9
+        },
+        "auto_perplexity_generic_intent_1755733180507": {
+          "query": "best network AIOps tools",
+          "entities_found": [],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "perplexity",
+          "total_entities": 0
+        },
+        "auto_gpt-4o-mini-search-preview_generic_intent_1755733099681": {
+          "query": "top enterprise wireless solutions",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 161
+            },
+            {
+              "name": "Huawei",
+              "rank": 2,
+              "first_pos": 574
+            },
+            {
+              "name": "HPE",
+              "rank": 3,
+              "first_pos": 994
+            },
+            {
+              "name": "Aruba",
+              "rank": 4,
+              "first_pos": 994
+            },
+            {
+              "name": "Ubiquiti",
+              "rank": 5,
+              "first_pos": 1354
+            },
+            {
+              "name": "Juniper",
+              "rank": 6,
+              "first_pos": 2314
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 6
+        },
+        "auto_gpt-4o-mini-search-preview_generic_intent_1755733092782": {
+          "query": "enterprise network automation tools",
+          "entities_found": [
+            {
+              "name": "Juniper",
+              "rank": 1,
+              "first_pos": 1517
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 1
+        },
+        "auto_gpt-4o-mini-search-preview_generic_intent_1755733085007": {
+          "query": "best enterprise network security tools",
+          "entities_found": [
+            {
+              "name": "Fortinet",
+              "rank": 1,
+              "first_pos": 596
+            },
+            {
+              "name": "Cisco",
+              "rank": 2,
+              "first_pos": 966
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 2
+        },
+        "auto_gpt-4o-mini-search-preview_generic_intent_1755733075578": {
+          "query": "top enterprise switches 2025",
+          "entities_found": [
+            {
+              "name": "Cisco",
+              "rank": 1,
+              "first_pos": 169
+            },
+            {
+              "name": "Arista",
+              "rank": 2,
+              "first_pos": 561
+            },
+            {
+              "name": "Juniper",
+              "rank": 3,
+              "first_pos": 970
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
+        },
+        "auto_gpt-4o-mini-search-preview_generic_intent_1755733067800": {
+          "query": "top enterprise Wi-Fi 7 solutions",
+          "entities_found": [
+            {
+              "name": "HPE",
+              "rank": 1,
+              "first_pos": 221
+            },
+            {
+              "name": "Aruba",
+              "rank": 2,
+              "first_pos": 221
+            },
+            {
+              "name": "Huawei",
+              "rank": 3,
+              "first_pos": 1342
+            }
+          ],
+          "extreme_mentioned": false,
+          "extreme_networks_rank": null,
+          "engine": "gpt-4o-mini-search-preview",
+          "total_entities": 3
         }
       },
       "extreme_networks_analysis": {
-        "total_mentions": 1,
-        "runs_mentioned": 1,
+        "total_mentions": 32,
+        "runs_mentioned": 32,
         "ranking_analysis": [
           {
-            "run_id": "run_perplexity_1755304126106",
-            "query": "Top AI powered platforms for cloud network management",
+            "run_id": "auto_perplexity_transactional_1756169042082",
+            "query": "buy enterprise NAC solution",
+            "rank": 3,
+            "total_entities_in_run": 4,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_navigational_1756168839509",
+            "query": "Extreme Networks campus switching portfolio",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_navigational_1756168833385",
+            "query": "Extreme Networks SD-WAN solution",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_navigational_1756168821647",
+            "query": "Extreme Networks AIOps platform",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_navigational_1756168814443",
+            "query": "Extreme Networks Wi-Fi 7 access points",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_navigational_1756168796212",
+            "query": "Extreme Networks enterprise products overview",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168548290",
+            "query": "Extreme Networks vs EnGenius enterprise WLAN",
+            "rank": 2,
+            "total_entities_in_run": 3,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168534177",
+            "query": "Extreme Networks vs Zyxel enterprise Wi-Fi",
+            "rank": 1,
+            "total_entities_in_run": 3,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168517993",
+            "query": "Extreme Networks vs SonicWall network security",
             "rank": 1,
             "total_entities_in_run": 2,
             "engine": "perplexity",
-            "date": "2025-08-16"
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168509193",
+            "query": "Extreme Networks vs WatchGuard secure Wi-Fi",
+            "rank": 1,
+            "total_entities_in_run": 4,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168488895",
+            "query": "Extreme Networks vs H3C campus networking",
+            "rank": 1,
+            "total_entities_in_run": 5,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168479521",
+            "query": "Extreme Networks vs NETGEAR enterprise Wi-Fi",
+            "rank": 1,
+            "total_entities_in_run": 3,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168470772",
+            "query": "Extreme Networks vs Versa Networks SD-WAN",
+            "rank": 1,
+            "total_entities_in_run": 2,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168460516",
+            "query": "Extreme Networks vs Cloudflare SASE",
+            "rank": 1,
+            "total_entities_in_run": 2,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168405265",
+            "query": "Extreme Networks vs Juniper enterprise switches",
+            "rank": 1,
+            "total_entities_in_run": 8,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168321282",
+            "query": "top AIOps providers for enterprise networks",
+            "rank": 1,
+            "total_entities_in_run": 2,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_commercial_1756168264234",
+            "query": "top AI-driven enterprise networking solutions",
+            "rank": 3,
+            "total_entities_in_run": 5,
+            "engine": "perplexity",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168044829",
+            "query": "Extreme Networks technical support portal",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168031531",
+            "query": "Extreme Networks network orchestration",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168025245",
+            "query": "Extreme Networks network analytics",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168018735",
+            "query": "Extreme Networks cloud-managed networking",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168013376",
+            "query": "Extreme Networks Fabric Connect overview",
+            "rank": 1,
+            "total_entities_in_run": 1,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167856867",
+            "query": "Extreme Networks vs D-Link enterprise switches",
+            "rank": 1,
+            "total_entities_in_run": 3,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167850445",
+            "query": "Extreme Networks vs Barracuda network security",
+            "rank": 2,
+            "total_entities_in_run": 2,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167838203",
+            "query": "Extreme Networks vs Nokia enterprise LAN",
+            "rank": 2,
+            "total_entities_in_run": 2,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167830807",
+            "query": "Extreme Networks vs CommScope Ruckus Wi-Fi",
+            "rank": 1,
+            "total_entities_in_run": 2,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167824985",
+            "query": "Extreme Networks vs Dell enterprise networking",
+            "rank": 3,
+            "total_entities_in_run": 3,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167818493",
+            "query": "Extreme Networks vs Cato Networks SD-WAN",
+            "rank": 2,
+            "total_entities_in_run": 2,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167812141",
+            "query": "Extreme Networks vs Fortinet secure networking",
+            "rank": 2,
+            "total_entities_in_run": 2,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167790509",
+            "query": "Extreme Networks vs Aruba enterprise Wi-Fi",
+            "rank": 5,
+            "total_entities_in_run": 5,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167784762",
+            "query": "Extreme Networks vs Cisco campus networking",
+            "rank": 3,
+            "total_entities_in_run": 3,
+            "engine": "gpt-4o-mini-search-preview",
+            "date": "2025-08-25"
+          },
+          {
+            "run_id": "auto_perplexity_generic_intent_1755733193858",
+            "query": "enterprise campus networking solutions",
+            "rank": 4,
+            "total_entities_in_run": 9,
+            "engine": "perplexity",
+            "date": "2025-08-20"
           }
         ],
         "context_analysis": []
       }
     },
     "extreme_networks_detailed_analysis": {
-      "total_mentions": 1,
-      "runs_mentioned": 1,
+      "total_mentions": 32,
+      "runs_mentioned": 32,
       "ranking_analysis": [
         {
-          "run_id": "run_perplexity_1755304126106",
-          "query": "Top AI powered platforms for cloud network management",
+          "run_id": "auto_perplexity_transactional_1756169042082",
+          "query": "buy enterprise NAC solution",
+          "rank": 3,
+          "total_entities_in_run": 4,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_navigational_1756168839509",
+          "query": "Extreme Networks campus switching portfolio",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_navigational_1756168833385",
+          "query": "Extreme Networks SD-WAN solution",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_navigational_1756168821647",
+          "query": "Extreme Networks AIOps platform",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_navigational_1756168814443",
+          "query": "Extreme Networks Wi-Fi 7 access points",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_navigational_1756168796212",
+          "query": "Extreme Networks enterprise products overview",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168548290",
+          "query": "Extreme Networks vs EnGenius enterprise WLAN",
+          "rank": 2,
+          "total_entities_in_run": 3,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168534177",
+          "query": "Extreme Networks vs Zyxel enterprise Wi-Fi",
+          "rank": 1,
+          "total_entities_in_run": 3,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168517993",
+          "query": "Extreme Networks vs SonicWall network security",
           "rank": 1,
           "total_entities_in_run": 2,
           "engine": "perplexity",
-          "date": "2025-08-16"
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168509193",
+          "query": "Extreme Networks vs WatchGuard secure Wi-Fi",
+          "rank": 1,
+          "total_entities_in_run": 4,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168488895",
+          "query": "Extreme Networks vs H3C campus networking",
+          "rank": 1,
+          "total_entities_in_run": 5,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168479521",
+          "query": "Extreme Networks vs NETGEAR enterprise Wi-Fi",
+          "rank": 1,
+          "total_entities_in_run": 3,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168470772",
+          "query": "Extreme Networks vs Versa Networks SD-WAN",
+          "rank": 1,
+          "total_entities_in_run": 2,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168460516",
+          "query": "Extreme Networks vs Cloudflare SASE",
+          "rank": 1,
+          "total_entities_in_run": 2,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168405265",
+          "query": "Extreme Networks vs Juniper enterprise switches",
+          "rank": 1,
+          "total_entities_in_run": 8,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168321282",
+          "query": "top AIOps providers for enterprise networks",
+          "rank": 1,
+          "total_entities_in_run": 2,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_commercial_1756168264234",
+          "query": "top AI-driven enterprise networking solutions",
+          "rank": 3,
+          "total_entities_in_run": 5,
+          "engine": "perplexity",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168044829",
+          "query": "Extreme Networks technical support portal",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168031531",
+          "query": "Extreme Networks network orchestration",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168025245",
+          "query": "Extreme Networks network analytics",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168018735",
+          "query": "Extreme Networks cloud-managed networking",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_navigational_1756168013376",
+          "query": "Extreme Networks Fabric Connect overview",
+          "rank": 1,
+          "total_entities_in_run": 1,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167856867",
+          "query": "Extreme Networks vs D-Link enterprise switches",
+          "rank": 1,
+          "total_entities_in_run": 3,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167850445",
+          "query": "Extreme Networks vs Barracuda network security",
+          "rank": 2,
+          "total_entities_in_run": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167838203",
+          "query": "Extreme Networks vs Nokia enterprise LAN",
+          "rank": 2,
+          "total_entities_in_run": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167830807",
+          "query": "Extreme Networks vs CommScope Ruckus Wi-Fi",
+          "rank": 1,
+          "total_entities_in_run": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167824985",
+          "query": "Extreme Networks vs Dell enterprise networking",
+          "rank": 3,
+          "total_entities_in_run": 3,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167818493",
+          "query": "Extreme Networks vs Cato Networks SD-WAN",
+          "rank": 2,
+          "total_entities_in_run": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167812141",
+          "query": "Extreme Networks vs Fortinet secure networking",
+          "rank": 2,
+          "total_entities_in_run": 2,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167790509",
+          "query": "Extreme Networks vs Aruba enterprise Wi-Fi",
+          "rank": 5,
+          "total_entities_in_run": 5,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_gpt-4o-mini-search-preview_commercial_1756167784762",
+          "query": "Extreme Networks vs Cisco campus networking",
+          "rank": 3,
+          "total_entities_in_run": 3,
+          "engine": "gpt-4o-mini-search-preview",
+          "date": "2025-08-25"
+        },
+        {
+          "run_id": "auto_perplexity_generic_intent_1755733193858",
+          "query": "enterprise campus networking solutions",
+          "rank": 4,
+          "total_entities_in_run": 9,
+          "engine": "perplexity",
+          "date": "2025-08-20"
         }
       ],
       "context_analysis": []
     }
   },
   "citation_analysis": {
-    "total_citations": 25,
-    "unique_domains": 21,
+    "total_citations": 774,
+    "unique_domains": 385,
     "top_5_domains_by_frequency": [
       {
-        "domain": "indeed.com",
-        "total_mentions": 3,
-        "unique_urls": 3,
-        "avg_rank": 2.67,
-        "runs_mentioned": 2,
+        "domain": "extremenetworks.com",
+        "total_mentions": 29,
+        "unique_urls": 29,
+        "avg_rank": 2.28,
+        "runs_mentioned": 17,
         "mentions_by_date": {
-          "2025-08-19": 3
+          "2025-08-25": 25,
+          "2025-08-20": 4
         },
         "sample_urls": [
-          "https://www.indeed.com/q-Computer-Science-Internship-Sophomores-jobs.html?utm_source=openai",
-          "https://www.indeed.com/q-2025-summer-internships-computer-science-l-new-jersey-jobs.html?utm_source=openai",
-          "https://www.indeed.com/q-computer-science-summer-internship-sophomore-jobs.html"
+          "https://www.extremenetworks.com/resources/blogs/extreme-platform-one-and-our-expanded-hardware-portfolio",
+          "https://www.extremenetworks.com/products/sd-wan/extreme-sd-wan/extremecloud-sd-wan",
+          "https://www.extremenetworks.com/solutions/sd-wan"
         ]
       },
       {
-        "domain": "careerservices.fas.harvard.edu",
-        "total_mentions": 2,
-        "unique_urls": 2,
-        "avg_rank": 2.5,
-        "runs_mentioned": 2,
+        "domain": "juniper.net",
+        "total_mentions": 26,
+        "unique_urls": 26,
+        "avg_rank": 3.08,
+        "runs_mentioned": 17,
         "mentions_by_date": {
-          "2025-08-19": 2
+          "2025-08-25": 17,
+          "2025-08-20": 9
         },
         "sample_urls": [
-          "https://careerservices.fas.harvard.edu/resources/technology-internships-for-first-years-and-sophomores/?utm_source=openai",
-          "https://careerservices.fas.harvard.edu/resources/technology-internships-for-first-years-and-sophomores/"
+          "https://www.juniper.net/us/en/events/on-demand-demos/wan-automation-demo-translate-business-intent-into-reality-amer.html",
+          "https://www.juniper.net/documentation/us/en/software/apstra5.0/apstra-server-and-security/apstra-server-and-security-guide/topics/concept/apstra-overview.html",
+          "https://www.juniper.net/documentation/us/en/software/mist/mist-wireless/topics/topic-map/wireless-network-overview.html"
         ]
       },
       {
-        "domain": "fcc.gov",
-        "total_mentions": 2,
-        "unique_urls": 2,
-        "avg_rank": 6.5,
-        "runs_mentioned": 1,
+        "domain": "cisco.com",
+        "total_mentions": 24,
+        "unique_urls": 24,
+        "avg_rank": 2.79,
+        "runs_mentioned": 19,
         "mentions_by_date": {
-          "2025-08-18": 2
+          "2025-08-25": 19,
+          "2025-08-20": 5
         },
         "sample_urls": [
-          "https://www.fcc.gov/6ghz",
-          "https://www.fcc.gov"
+          "https://www.cisco.com/c/en/us/products/security/sd-wan/request-demo.html",
+          "https://www.cisco.com/c/en/us/solutions/enterprise-networks/solution-listing.html",
+          "https://www.cisco.com/site/us/en/products/networking/index.html"
         ]
       },
       {
-        "domain": "forbes.com",
-        "total_mentions": 1,
-        "unique_urls": 1,
-        "avg_rank": 1.0,
-        "runs_mentioned": 1,
+        "domain": "en.wikipedia.org",
+        "total_mentions": 23,
+        "unique_urls": 23,
+        "avg_rank": 4.22,
+        "runs_mentioned": 17,
         "mentions_by_date": {
-          "2025-08-19": 1
+          "2025-08-25": 20,
+          "2025-08-20": 3
         },
         "sample_urls": [
-          "https://www.forbes.com/sites/investor-hub/article/best-stocks-buy-now-may-2025/?utm_source=openai"
+          "https://en.wikipedia.org/wiki/IEEE_802.1X",
+          "https://en.wikipedia.org/wiki/Network_access_control",
+          "https://en.wikipedia.org/wiki/Software-defined_networking"
         ]
       },
       {
-        "domain": "msfinance1955.medium.com",
-        "total_mentions": 1,
-        "unique_urls": 1,
-        "avg_rank": 2.0,
-        "runs_mentioned": 1,
+        "domain": "techtarget.com",
+        "total_mentions": 17,
+        "unique_urls": 17,
+        "avg_rank": 2.47,
+        "runs_mentioned": 17,
         "mentions_by_date": {
-          "2025-08-19": 1
+          "2025-08-25": 15,
+          "2025-08-20": 2
         },
         "sample_urls": [
-          "https://msfinance1955.medium.com/top-stock-picks-for-august-2025-3e89fe6c117d?utm_source=openai"
+          "https://www.techtarget.com/searchnetworking/tip/How-to-start-building-an-SD-WAN-RFP",
+          "https://www.techtarget.com/searchitoperations/feature/Compare-8-tools-for-IT-monitoring",
+          "https://www.techtarget.com/searchnetworking/definition/deep-packet-inspection-DPI"
         ]
       }
     ],
     "top_domains_by_count": [
       {
-        "domain": "indeed.com",
-        "count": 3,
-        "total_mentions": 3,
-        "avg_rank": 2.67,
-        "runs_mentioned": 2
+        "domain": "extremenetworks.com",
+        "count": 29,
+        "total_mentions": 29,
+        "avg_rank": 2.28,
+        "runs_mentioned": 17
       },
       {
-        "domain": "careerservices.fas.harvard.edu",
-        "count": 2,
-        "total_mentions": 2,
-        "avg_rank": 2.5,
-        "runs_mentioned": 2
+        "domain": "juniper.net",
+        "count": 26,
+        "total_mentions": 26,
+        "avg_rank": 3.08,
+        "runs_mentioned": 17
       },
       {
-        "domain": "fcc.gov",
-        "count": 2,
-        "total_mentions": 2,
-        "avg_rank": 6.5,
-        "runs_mentioned": 1
+        "domain": "cisco.com",
+        "count": 24,
+        "total_mentions": 24,
+        "avg_rank": 2.79,
+        "runs_mentioned": 19
       },
       {
-        "domain": "forbes.com",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 1.0,
-        "runs_mentioned": 1
+        "domain": "en.wikipedia.org",
+        "count": 23,
+        "total_mentions": 23,
+        "avg_rank": 4.22,
+        "runs_mentioned": 17
       },
       {
-        "domain": "msfinance1955.medium.com",
-        "count": 1,
-        "total_mentions": 1,
+        "domain": "techtarget.com",
+        "count": 17,
+        "total_mentions": 17,
+        "avg_rank": 2.47,
+        "runs_mentioned": 17
+      },
+      {
+        "domain": "peerspot.com",
+        "count": 14,
+        "total_mentions": 14,
         "avg_rank": 2.0,
-        "runs_mentioned": 1
+        "runs_mentioned": 13
       },
       {
-        "domain": "worldbusinesstrends.com",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 3.0,
-        "runs_mentioned": 1
+        "domain": "hpe.com",
+        "count": 13,
+        "total_mentions": 13,
+        "avg_rank": 2.23,
+        "runs_mentioned": 11
       },
       {
-        "domain": "s-i-solutions.com",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 4.0,
-        "runs_mentioned": 1
+        "domain": "techradar.com",
+        "count": 13,
+        "total_mentions": 13,
+        "avg_rank": 2.31,
+        "runs_mentioned": 7
       },
       {
-        "domain": "arxiv.org",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 3.0,
-        "runs_mentioned": 1
+        "domain": "crn.com",
+        "count": 12,
+        "total_mentions": 12,
+        "avg_rank": 2.33,
+        "runs_mentioned": 11
       },
       {
-        "domain": "ladderinternships.com",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 2.0,
-        "runs_mentioned": 1
-      },
-      {
-        "domain": "codewizardshq.com",
-        "count": 1,
-        "total_mentions": 1,
-        "avg_rank": 1.0,
-        "runs_mentioned": 1
+        "domain": "g2.com",
+        "count": 8,
+        "total_mentions": 8,
+        "avg_rank": 3.38,
+        "runs_mentioned": 8
       }
     ],
     "domain_breakdown": {
-      "total_domains_found": 21,
-      "domains_with_multiple_mentions": 3,
-      "most_frequent_domain": "indeed.com"
+      "total_domains_found": 385,
+      "domains_with_multiple_mentions": 125,
+      "most_frequent_domain": "extremenetworks.com"
     }
   },
-  "last_updated": "2025-08-20T23:44:52.413218"
+  "last_updated": "2025-08-26T19:58:31.798448"
 }

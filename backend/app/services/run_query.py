@@ -83,6 +83,10 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
     # Save to database
     try:
         db = next(get_db())
+        # Heuristic for branded flag
+        q_lower = (req.query or "").lower()
+        branded_terms = ["extreme", "cisco", "juniper", "aruba", "vs", "versus", "compare", "comparison"]
+        is_branded = (req.intent in ("brand_focused", "comparison")) or any(t in q_lower for t in branded_terms)
         db_run = Run(
             id=run_id,
             ts=datetime.fromisoformat(ts_iso.replace('Z', '+00:00')),
@@ -104,6 +108,7 @@ def run_single_engine(req: QueryRequest, eng: str, ts_iso: str) -> RunResponse:
             entities_normalized=entities_normalized,
             extreme_mentioned=extreme_mentioned,
             extreme_rank=extreme_rank,
+            is_branded=is_branded,
             deleted=False,
             source="manual"  # Mark as manual query
         )

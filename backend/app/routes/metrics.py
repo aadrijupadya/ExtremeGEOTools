@@ -18,7 +18,7 @@ from ..services.extract import extract_competitors, extract_links, to_domains
 from ..models.run import Run
 from ..models.automated_run import AutomatedRun
 from ..models.metrics import DailyMetrics
-from sqlalchemy import and_, func, desc, asc
+from sqlalchemy import and_, func, desc, asc, or_
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
@@ -190,6 +190,129 @@ def get_metrics_trends(
         "summary": summary
     }
 
+@router.get("/extreme-trends")
+def get_extreme_trends(
+    days: int = Query(default=30, ge=7, le=365, description="Number of days to analyze"),
+    engine: Optional[str] = Query(None, description="Filter by engine"),
+    db: Session = Depends(get_db)
+) -> Dict[str, Any]:
+    """Get Extreme Networks focused trends from neutral queries only."""
+    try:
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Query only non-branded (neutral) queries with Extreme mentions
+        query = db.query(AutomatedRun).filter(
+            AutomatedRun.ts >= start_date,
+            AutomatedRun.is_branded == False,  # Only neutral queries
+            AutomatedRun.extreme_mentioned == True  # Must mention Extreme
+        )
+        
+        if engine:
+            if engine == 'openai':
+                query = query.filter(or_(
+                    AutomatedRun.engine.like('gpt%'),
+                    AutomatedRun.engine.like('openai%'),
+                    AutomatedRun.engine == 'openai'
+                ))
+            elif engine == 'perplexity':
+                query = query.filter(AutomatedRun.engine == 'perplexity')
+            else:
+                query = query.filter(AutomatedRun.engine == engine)
+        
+        runs = query.order_by(AutomatedRun.ts.asc()).all()
+        
+        if not runs:
+            return {
+                "period_days": days,
+                "start_date": start_date.isoformat(),
+                "end_date": end_date.isoformat(),
+                "focus": "extreme_networks_neutral_queries",
+                "trends": [],
+                "message": "No neutral queries mentioning Extreme Networks found"
+            }
+        
+        # Group runs by date for daily trends
+        trends_by_date = {}
+        
+        for run in runs:
+            date_key = run.ts.date().isoformat()
+            
+            if date_key not in trends_by_date:
+                trends_by_date[date_key] = {
+                    "date": date_key,
+                    "extreme_mentions": 0,
+                    "extreme_citations": 0,
+                    "total_citations": 0,
+                    "avg_rank": 1.0,  # Placeholder for now
+                    "runs_count": 0,
+                    "total_cost": 0.0
+                }
+            
+            trends_by_date[date_key]["runs_count"] += 1
+            trends_by_date[date_key]["total_cost"] += float(run.cost_usd or 0)
+            
+            # Count Extreme mentions
+            if run.extreme_mentioned:
+                trends_by_date[date_key]["extreme_mentions"] += 1
+            
+            # Count Extreme-related citations from links
+            if run.links:
+                try:
+                    links = json.loads(run.links) if isinstance(run.links, str) else run.links
+                    if isinstance(links, list):
+                        for link in links:
+                            if isinstance(link, dict) and 'url' in link:
+                                url = link['url'].lower()
+                                if 'extremenetworks.com' in url or 'een.extremenetworks.com' in url:
+                                    trends_by_date[date_key]["extreme_citations"] += 1
+                            elif isinstance(link, str):
+                                url = link.lower()
+                                if 'extremenetworks.com' in url or 'een.extremenetworks.com' in url:
+                                    trends_by_date[date_key]["extreme_citations"] += 1
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+            
+            # Count total citations
+            if run.links:
+                try:
+                    links = json.loads(run.links) if isinstance(run.links, str) else run.links
+                    if isinstance(links, list):
+                        trends_by_date[date_key]["total_citations"] += len(links)
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+        
+        # Convert to sorted list
+        trends = list(trends_by_date.values())
+        trends.sort(key=lambda x: x["date"])
+        
+        # Calculate summary statistics
+        summary = {
+            "total_runs": len(runs),
+            "total_extreme_mentions": sum(t["extreme_mentions"] for t in trends),
+            "total_extreme_citations": sum(t["extreme_citations"] for t in trends),
+            "total_citations": sum(t["total_citations"] for t in trends),
+            "total_cost": sum(t["total_cost"] for t in trends),
+            "avg_cost_per_run": sum(t["total_cost"] for t in trends) / len(runs) if runs else 0
+        }
+        
+        return {
+            "period_days": days,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
+            "focus": "extreme_networks_neutral_queries",
+            "filters": {"engine": engine},
+            "trends": trends,
+            "summary": summary
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error generating Extreme trends: {str(e)}"
+        )
+
+
 #provide summary metrics for the last N days
 @router.get("/summary")
 def get_metrics_summary(
@@ -329,104 +452,166 @@ def get_enhanced_analysis(
 ) -> Dict[str, Any]:
     """Get enhanced citation and competitor analysis from recent AUTOMATED runs only."""
     try:
-        # Import the post-processing pipeline
-        from post_process_metrics import PostProcessPipeline
-        
         # Get recent AUTOMATED runs only
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days)
         
-        # First try to query by source = "automated"
-        try:
-            query = db.query(AutomatedRun).filter(
-                AutomatedRun.ts >= start_date
-            )
-            
-            if engine:
-                # Handle engine filtering more intelligently
-                if engine == 'openai':
-                    # Filter for any OpenAI-related engines
-                    from sqlalchemy import or_
-                    query = query.filter(or_(
-                        AutomatedRun.engine.like('gpt%'),
-                        AutomatedRun.engine.like('openai%'),
-                        AutomatedRun.engine == 'openai'
-                    ))
-                elif engine == 'perplexity':
-                    # Filter for Perplexity engines
-                    query = query.filter(or_(
-                        AutomatedRun.engine.like('perplexity%'),
-                        AutomatedRun.engine == 'perplexity'
-                    ))
-                else:
-                    # Exact match for other engines
-                    query = query.filter(AutomatedRun.engine == engine)
-            
-            runs = query.order_by(AutomatedRun.ts.desc()).all()
-            
-            if runs:
-                # We found automated runs, use them
-                run_source = "automated"
+        # Query automated runs with engine filtering
+        query = db.query(AutomatedRun).filter(
+            AutomatedRun.ts >= start_date
+        )
+        
+        if engine:
+            # Handle engine filtering more intelligently
+            if engine == 'openai':
+                # Filter for any OpenAI-related engines
+                query = query.filter(or_(
+                    AutomatedRun.engine.like('gpt%'),
+                    AutomatedRun.engine.like('openai%'),
+                    AutomatedRun.engine == 'openai'
+                ))
+            elif engine == 'perplexity':
+                # Filter for Perplexity engines (exact match)
+                query = query.filter(AutomatedRun.engine == 'perplexity')
             else:
-                # No automated runs found, fallback to enterprise networking queries
-                enterprise_keywords = [
-                    "wi-fi", "wifi", "enterprise", "networking", "cisco", "juniper", 
-                    "aruba", "extreme", "network", "switch", "router", "aiops", "sd-wan"
-                ]
-                
-                # Build OR condition for enterprise keywords
-                from sqlalchemy import or_
-                enterprise_conditions = or_(*[AutomatedRun.query.ilike(f"%{keyword}%") for keyword in enterprise_keywords])
-                
-                query = db.query(AutomatedRun).filter(
-                    AutomatedRun.ts >= start_date,
-                    enterprise_conditions
-                )
-                
-                if engine:
-                    # Handle engine filtering more intelligently
-                    if engine == 'openai':
-                        # Filter for any OpenAI-related engines
-                        from sqlalchemy import or_
-                        query = query.filter(or_(
-                            AutomatedRun.engine.like('gpt%'),
-                            AutomatedRun.engine.like('openai%'),
-                            AutomatedRun.engine == 'openai'
-                        ))
-                    elif engine == 'perplexity':
-                        # Filter for Perplexity engines
-                        query = query.filter(or_(
-                            AutomatedRun.engine.like('perplexity%'),
-                            AutomatedRun.engine == 'perplexity'
-                        ))
-                    else:
-                        # Exact match for other engines
-                        query = query.filter(AutomatedRun.engine == engine)
-                
-                runs = query.order_by(AutomatedRun.ts.desc()).all()
-                run_source = "enterprise_networking_fallback"
-                
-        except Exception as e:
-            # If automated_runs table doesn't exist, return empty result
-            runs = []
-            run_source = "table_not_found"
+                # Exact match for other engines
+                query = query.filter(AutomatedRun.engine == engine)
+        
+        runs = query.order_by(AutomatedRun.ts.desc()).all()
+        run_source = "automated"
         
         if not runs:
             return {
                 "period_days": days,
                 "start_date": start_date.isoformat(),
                 "end_date": end_date.isoformat(),
-                "message": "No enterprise networking runs found for the specified period",
+                "message": "No automated runs found for the specified period and engine filter",
                 "analysis": {},
                 "run_source": "none"
             }
         
-        # Create pipeline instance and run analysis
-        pipeline = PostProcessPipeline()
+        # Simple analysis without external pipeline dependency
+        # Count entities and compute basic insights
+        total_runs = len(runs)
+        failed_runs = len([r for r in runs if getattr(r, 'status', 'completed') != 'completed'])
+        successful_runs = total_runs - failed_runs
         
-        # Run the enhanced analysis
-        citation_analysis = pipeline.compute_citation_analysis(runs)
-        competitor_insights = pipeline.compute_competitor_insights(runs)
+        # Calculate average response time
+        response_times = [r.latency_ms for r in runs if getattr(r, 'latency_ms', None) and r.latency_ms > 0]
+        avg_response_time = (sum(response_times) / len(response_times)) / 1000.0 if response_times else None
+        
+        # Calculate average cost per query
+        costs = [r.cost_usd for r in runs if getattr(r, 'cost_usd', None) and r.cost_usd > 0]
+        avg_cost_per_query = sum(costs) / len(costs) if costs else None
+        
+        # Enhanced citation analysis
+        runs_with_links = [r for r in runs if getattr(r, 'links', None) and r.links]
+        runs_without_links = [r for r in runs if not getattr(r, 'links', None) or not r.links]
+        
+        # Extract citations and domains from runs
+        all_citations = []
+        all_domains = set()
+        domain_counts = {}
+        
+        for run in runs_with_links:
+            try:
+                if isinstance(run.links, str):
+                    links = json.loads(run.links)
+                else:
+                    links = run.links
+                
+                if isinstance(links, list):
+                    for link in links:
+                        if isinstance(link, dict) and 'url' in link:
+                            all_citations.append(link)
+                            try:
+                                from urllib.parse import urlparse
+                                parsed = urlparse(link['url'])
+                                domain = parsed.netloc.lower()
+                                if domain.startswith('www.'):
+                                    domain = domain[4:]
+                                all_domains.add(domain)
+                                domain_counts[domain] = domain_counts.get(domain, 0) + 1
+                            except Exception:
+                                continue
+                        elif isinstance(link, str):
+                            # Handle case where links is just a list of URLs
+                            all_citations.append({"url": link})
+                            try:
+                                from urllib.parse import urlparse
+                                parsed = urlparse(link)
+                                domain = parsed.netloc.lower()
+                                if domain.startswith('www.'):
+                                    domain = domain[4:]
+                                all_domains.add(domain)
+                                domain_counts[domain] = domain_counts.get(domain, 0) + 1
+                            except Exception:
+                                continue
+            except (json.JSONDecodeError, AttributeError):
+                continue
+        
+        # Sort domains by frequency
+        top_domains = sorted(
+            [{"domain": domain, "count": count} for domain, count in domain_counts.items()],
+            key=lambda x: x["count"], reverse=True
+        )[:5]
+        
+        citation_analysis = {
+            "total_citations": len(all_citations),
+            "unique_domains": len(all_domains),
+            "runs_with_links": len(runs_with_links),
+            "runs_without_links": len(runs_without_links),
+            "top_5_domains_by_frequency": top_domains,
+            "domain_breakdown": {
+                "most_frequent_domain": top_domains[0]["domain"] if top_domains else "N/A"
+            }
+        }
+        
+        # Basic competitor insights with actual entity data
+        # Extract entities from runs that have them
+        all_entities = []
+        for run in runs:
+            if hasattr(run, 'entities_normalized') and run.entities_normalized:
+                try:
+                    # Parse entities if it's a JSON string
+                    if isinstance(run.entities_normalized, str):
+                        entities = json.loads(run.entities_normalized)
+                    else:
+                        entities = run.entities_normalized
+                    
+                    if isinstance(entities, list):
+                        all_entities.extend(entities)
+                    elif isinstance(entities, dict):
+                        all_entities.append(entities)
+                except (json.JSONDecodeError, AttributeError):
+                    continue
+        
+        # Count unique entities and mentions
+        entity_counts = {}
+        for entity in all_entities:
+            if isinstance(entity, dict):
+                name = entity.get('name', entity.get('entity', 'Unknown'))
+                if name:
+                    entity_counts[name] = entity_counts.get(name, 0) + 1
+        
+        # Sort by mention count
+        top_competitors = [
+            {"name": name, "mentions": count, "avg_rank": "N/A"}
+            for name, count in sorted(entity_counts.items(), key=lambda x: x[1], reverse=True)
+        ]
+        
+        competitor_insights = {
+            "total_runs_analyzed": total_runs,
+            "runs_with_entities": len([r for r in runs if getattr(r, 'entities_normalized', None)]),
+            "runs_without_entities": len([r for r in runs if not getattr(r, 'entities_normalized', None)]),
+            "entity_detection_rate": len([r for r in runs if getattr(r, 'entities_normalized', None)]) / total_runs if total_runs > 0 else 0.0,
+            "unique_entities": len(entity_counts),
+            "total_entities_mentions": sum(entity_counts.values()),
+            "top_competitors": top_competitors,
+            "detection_effectiveness": {
+                "entity_extraction_rate": len([r for r in runs if getattr(r, 'entities_normalized', None)]) / total_runs * 100 if total_runs > 0 else 0.0
+            }
+        }
         
         # Calculate additional metrics for the frontend
         total_runs = len(runs)
@@ -437,9 +622,65 @@ def get_enhanced_analysis(
         response_times = [r.latency_ms for r in runs if r.latency_ms and r.latency_ms > 0]
         avg_response_time = (sum(response_times) / len(response_times)) / 1000.0 if response_times else None
         
-        # Calculate average cost per query
+        # Calculate engine breakdown
+        engine_counts = {}
+        for run in runs:
+            engine_name = run.engine
+            if engine_name not in engine_counts:
+                engine_counts[engine_name] = 0
+            engine_counts[engine_name] += 1
+        
+        # Calculate average cost per query and total cost
         costs = [r.cost_usd for r in runs if r.cost_usd and r.cost_usd > 0]
         avg_cost_per_query = sum(costs) / len(costs) if costs else None
+        total_cost = sum(costs) if costs else 0.0
+        
+        # Add entity associations data for the dashboard
+        try:
+            from pathlib import Path
+            import json
+            
+            # Load entity associations data
+            entity_assoc_file = Path(__file__).parent.parent.parent.parent / "data" / "entity_associations.json"
+            entity_assoc_data = {}
+            
+            if entity_assoc_file.exists():
+                with open(entity_assoc_file, 'r') as f:
+                    entity_assoc_data = json.load(f)
+            
+            # Extract entity associations for the dashboard
+            entity_associations = entity_assoc_data.get("associations", [])
+            
+            # Filter by engine if specified
+            if engine:
+                if engine == 'openai':
+                    entity_associations = [a for a in entity_associations if 'gpt' in a.get('model', '').lower()]
+                elif engine == 'perplexity':
+                    entity_associations = [a for a in entity_associations if a.get('engine') == 'perplexity']
+            
+            # Count products and keywords
+            total_products = 0
+            total_keywords = 0
+            for assoc in entity_associations:
+                if "product" in assoc.get("query", "").lower():
+                    total_products += len(assoc.get("products", []))
+                else:
+                    total_keywords += len(assoc.get("keywords", []))
+            
+            # Add entity associations to the response
+            entity_analysis = {
+                "total_products": total_products,
+                "total_keywords": total_keywords,
+                "associations_count": len(entity_associations)
+            }
+            
+        except Exception as e:
+            # If entity associations fail to load, provide empty data
+            entity_analysis = {
+                "total_products": 0,
+                "total_keywords": 0,
+                "associations_count": 0
+            }
         
         return {
             "period_days": days,
@@ -451,6 +692,9 @@ def get_enhanced_analysis(
             "analysis": {
                 "citations": citation_analysis,
                 "competitors": competitor_insights,
+                "entity_associations": entity_analysis,
+                "engine_breakdown": engine_counts,
+                "total_cost": total_cost,
                 "failed_runs": failed_runs,
                 "avg_response_time": avg_response_time,
                 "avg_cost_per_query": avg_cost_per_query
@@ -464,7 +708,7 @@ def get_enhanced_analysis(
         )
     except Exception as e:
         raise HTTPException(
-            status_code=500, 
+            status_code=500,
             detail=f"Error running enhanced analysis: {str(e)}"
         )
 

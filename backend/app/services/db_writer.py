@@ -13,6 +13,12 @@ def persist_run_to_db(row: Dict[str, Any]) -> None:
     """Persist a run to the database. Legacy function name kept for compatibility."""
     db: Session = SessionLocal()
     try:
+        # Heuristic to classify branded vs non-branded
+        q = (row.get("query") or "").lower()
+        intent = (row.get("intent") or "").lower()
+        branded_terms = ["extreme", "cisco", "juniper", "aruba", "vs", "versus", "compare", "comparison"]
+        is_branded = intent in {"brand_focused", "comparison"} or any(t in q for t in branded_terms)
+
         run = Run(
             id=str(row.get("run_id")),
             ts=datetime.fromisoformat(str(row.get("ts").replace("Z", "+00:00"))),
@@ -34,6 +40,7 @@ def persist_run_to_db(row: Dict[str, Any]) -> None:
             entities_normalized=row.get("entities_normalized") or [],
             extreme_mentioned=bool(row.get("extreme_mentioned", False)),
             extreme_rank=row.get("extreme_rank"),
+            is_branded=is_branded,
         )
         db.add(run)
         db.commit()
