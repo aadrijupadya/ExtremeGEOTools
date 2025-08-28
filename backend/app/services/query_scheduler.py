@@ -62,7 +62,8 @@ class QueryScheduler:
         for query in generic_gpt + brand_gpt + comp_gpt:
             daily_queries.append({
                 "query": query,
-                "engine": "gpt-4o-mini-search-preview",
+                "engine": "openai",
+                "model": "gpt-4o-mini-search-preview",
                 "intent": self._classify_intent(query),
                 "priority": "high"
             })
@@ -148,7 +149,7 @@ class QueryScheduler:
                     "ts": datetime.utcnow(),
                     "query": query_info["query"],
                     "engine": query_info["engine"],
-                    "model": result.get("model"),
+                    "model": query_info.get("model") or result.get("model"),
                     "intent": query_info["intent"],
                     "is_branded": is_branded,
                     "status": "completed",

@@ -8,11 +8,13 @@ from sqlalchemy.orm import Session
 from collections import defaultdict
 import sys
 import os
+import json
 
 # Add the scripts directory to the path for importing post-processing
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'scripts'))
 
 from ..services.database import get_db
+from ..services.pricing import prices_for_model
 from ..services.metrics import MetricsService
 from ..services.extract import extract_competitors, extract_links, to_domains
 from ..models.run import Run
@@ -456,9 +458,10 @@ def get_enhanced_analysis(
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days)
         
-        # Query automated runs with engine filtering
+        # Query automated runs with engine filtering - only non-branded queries
         query = db.query(AutomatedRun).filter(
-            AutomatedRun.ts >= start_date
+            AutomatedRun.ts >= start_date,
+            AutomatedRun.is_branded == False  # Only neutral queries
         )
         
         if engine:
@@ -586,19 +589,39 @@ def get_enhanced_analysis(
                 except (json.JSONDecodeError, AttributeError):
                     continue
         
-        # Count unique entities and mentions
+        # Count unique entities and mentions, and track positions for ranking
         entity_counts = {}
-        for entity in all_entities:
-            if isinstance(entity, dict):
-                name = entity.get('name', entity.get('entity', 'Unknown'))
-                if name:
-                    entity_counts[name] = entity_counts.get(name, 0) + 1
+        entity_positions = {}  # Track all positions for each entity
         
-        # Sort by mention count
-        top_competitors = [
-            {"name": name, "mentions": count, "avg_rank": "N/A"}
-            for name, count in sorted(entity_counts.items(), key=lambda x: x[1], reverse=True)
-        ]
+        for run in runs:
+            if run.entities_normalized:
+                try:
+                    entities = json.loads(run.entities_normalized) if isinstance(run.entities_normalized, str) else run.entities_normalized
+                    if isinstance(entities, list):
+                        for pos, entity in enumerate(entities, 1):
+                            if isinstance(entity, dict):
+                                name = entity.get('name', entity.get('entity', 'Unknown'))
+                                if name:
+                                    if name not in entity_counts:
+                                        entity_counts[name] = 0
+                                        entity_positions[name] = []
+                                    entity_counts[name] += 1
+                                    entity_positions[name].append(pos)
+                except (json.JSONDecodeError, AttributeError):
+                    continue
+        
+        # Sort by mention count - get top competitors with calculated average rank
+        sorted_entities = sorted(entity_counts.items(), key=lambda x: x[1], reverse=True)
+        top_competitors = []
+        
+        for name, count in sorted_entities[:15]:  # Get top 15 to allow frontend to show top 10
+            positions = entity_positions.get(name, [])
+            avg_rank = sum(positions) / len(positions) if positions else "N/A"
+            top_competitors.append({
+                "name": name, 
+                "mentions": count, 
+                "avg_rank": round(avg_rank, 1) if isinstance(avg_rank, (int, float)) else avg_rank
+            })
         
         competitor_insights = {
             "total_runs_analyzed": total_runs,
@@ -717,7 +740,6 @@ def get_enhanced_analysis(
 def get_recent_queries(
     days: int = Query(default=7, ge=1, le=30, description="Number of days to look back"),
     engine: Optional[str] = Query(None, description="Filter by engine"),
-    limit: int = Query(default=50, ge=1, le=100, description="Maximum number of queries to return"),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
     """Get recent automated queries with full details from the automated_runs table."""
@@ -750,12 +772,20 @@ def get_recent_queries(
                 # Exact match for other engines
                 query = query.filter(AutomatedRun.engine == engine)
         
-        # Order by timestamp descending (most recent first)
-        runs = query.order_by(AutomatedRun.ts.desc()).limit(limit).all()
+        # Order by timestamp descending (most recent first) - no limit to show all queries
+        runs = query.order_by(AutomatedRun.ts.desc()).all()
         
         # Serialize the automated runs data
         serialized_runs = []
         for run in runs:
+            # Fallback cost estimate for OpenAI when missing/zero
+            computed_cost = 0.0
+            try:
+                if (not run.cost_usd or float(run.cost_usd) == 0.0) and (run.engine and ('gpt' in run.engine or 'openai' in run.engine)):
+                    in_p, out_p = prices_for_model(run.model or 'gpt-4o-search-preview')
+                    computed_cost = ((run.input_tokens or 0) / 1000.0 * in_p) + ((run.output_tokens or 0) / 1000.0 * out_p)
+            except Exception:
+                computed_cost = 0.0
             serialized_run = {
                 "id": run.id,
                 "query_text": run.query,
@@ -764,7 +794,7 @@ def get_recent_queries(
                 "created_at": run.ts.isoformat() if run.ts else None,
                 "status": run.status,
                 "response_time": run.latency_ms / 1000.0 if run.latency_ms else None,  # Convert ms to seconds
-                "cost": float(run.cost_usd) if run.cost_usd else 0.0,
+                "cost": float(run.cost_usd) if run.cost_usd and float(run.cost_usd) > 0 else round(float(computed_cost), 6),
                 "input_tokens": run.input_tokens,
                 "output_tokens": run.output_tokens,
                 "intent": run.intent_category,  # Use intent_category from automated_runs

@@ -128,7 +128,7 @@ const ExtremeFocusDetail = () => {
             <div className="guide-content">
               <p><strong>AI Search Visibility:</strong> How often Extreme Networks is mentioned in neutral queries (excluding branded queries like "Cisco vs Juniper"), along with citation and domain metrics from runs where Extreme was mentioned.</p>
               <p><strong>Query Coverage Gaps:</strong> Identifies neutral queries where Extreme should be showing up but is missing from AI responses. Click on any gap to see the full query and AI response.</p>
-              <p><strong>Brand Intent Analysis:</strong> Categorizes queries where Extreme was mentioned by intent type (comparison, product-specific, review, etc.) with clickable examples to view full responses.</p>
+              <p><strong>Query Intent Analysis:</strong> Categorizes all queries by their intent type (comparison, product-specific, review, etc.) with clickable examples to view full responses.</p>
               <p><strong>Entity Associations:</strong> Shows what products and keywords AI associates with Extreme (Wi-Fi 6E, SASE, campus networking, etc.).</p>
               <p><strong>Interactive Features:</strong> Click on coverage gaps and context examples to view complete AI responses in detailed modals with proper markdown formatting.</p>
             </div>
@@ -212,7 +212,7 @@ const ExtremeFocusDetail = () => {
           <div className="guide-content">
             <p><strong>AI Search Visibility:</strong> How often Extreme Networks is mentioned in neutral queries (excluding branded queries like "Cisco vs Juniper"), along with citation and domain metrics from runs where Extreme was mentioned.</p>
             <p><strong>Query Coverage Gaps:</strong> Identifies neutral queries where Extreme should be showing up but is missing from AI responses. Click on any gap to see the full query and AI response.</p>
-            <p><strong>Brand Intent Analysis:</strong> Categorizes queries where Extreme was mentioned by intent type (comparison, product-specific, review, etc.) with clickable examples to view full responses.</p>
+            <p><strong>Query Intent Analysis:</strong> Categorizes all queries by their intent type (comparison, product-specific, review, etc.) with clickable examples to view full responses.</p>
             <p><strong>Entity Associations:</strong> Shows what products and keywords AI associates with Extreme (Wi-Fi 6E, SASE, campus networking, etc.).</p>
             <p><strong>Interactive Features:</strong> Click on coverage gaps and context examples to view complete AI responses in detailed modals with proper markdown formatting.</p>
           </div>
@@ -352,10 +352,10 @@ const ExtremeFocusDetail = () => {
         )}
       </div>
 
-      {/* Brand Intent Analysis */}
+      {/* Query Intent Analysis */}
       <div className="metrics-section">
-        <h2>Brand Intent Analysis</h2>
-        <p>Intent split of queries where Extreme Networks was mentioned.</p>
+        <h2>Query Intent Analysis</h2>
+        <p>Intent split of all queries by type</p>
         
         <div className="intent-breakdown">
           {Object.entries(metrics.answer_positioning?.intent_breakdown || {}).map(([intent, count]) => (
@@ -414,91 +414,115 @@ const ExtremeFocusDetail = () => {
 
       {/* Entity Associations */}
       <div className="metrics-section">
-        <h2>Entity Associations</h2>
-        <p>What products and keywords AI associates with Extreme Networks by engine.</p>
+        <h2>🔗 Entity Associations</h2>
+        <p>What products and keywords AI associates with Extreme Networks</p>
         
-        {entityAssociations ? (
-          <div className="associations-grid">
-            <div className="association-group">
-              <h3>Product Associations</h3>
-              <div className="engine-filter-info">
-                {engine === 'all' ? 'All Engines' : engine} - {
-                  engine === 'all' 
-                    ? (entityAssociations.by_engine?.openai?.products?.length || 0) + 
-                      (entityAssociations.by_engine?.perplexity?.products?.length || 0)
-                    : (entityAssociations.by_engine?.[engine]?.products?.length || 0)
-                } products
-              </div>
-              <div className="association-items">
-                {engine === 'all' ? (
-                  <>
-                    {entityAssociations.by_engine?.openai?.products?.map((product, index) => (
-                      <div key={`openai-${index}`} className="association-item">
-                        <span className="association-name">{product.split(' - ')[0]}</span>
-                        <span className="association-engine">OpenAI</span>
-                      </div>
-                    ))}
-                    {entityAssociations.by_engine?.perplexity?.products?.map((product, index) => (
-                      <div key={`perplexity-${index}`} className="association-item">
-                        <span className="association-name">{product.split(' - ')[0]}</span>
-                        <span className="association-engine">Perplexity</span>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  entityAssociations.by_engine?.[engine]?.products?.map((product, index) => (
-                    <div key={index} className="association-item">
-                      <span className="association-name">{product.split(' - ')[0]}</span>
+        <div className="associations-grid">
+          <div className="association-card">
+            <h3>Product Associations</h3>
+            <div className="association-content scrollable">
+              {entityAssociations?.by_engine ? (
+                <>
+                  {/* OpenAI Products */}
+                  <div className="engine-section">
+                    <div className="engine-header">
+                      <img src="/icons/chatgpt.png" alt="OpenAI" className="engine-icon" />
+                      <h4>OpenAI</h4>
                     </div>
-                  ))
-                )}
-                {(!entityAssociations.by_engine?.openai?.products?.length && 
-                  !entityAssociations.by_engine?.perplexity?.products?.length) && 
-                  <div className="no-associations">No product associations found</div>}
-              </div>
-            </div>
-            
-            <div className="association-group">
-              <h3>Keyword Associations</h3>
-              <div className="engine-filter-info">
-                {engine === 'all' ? 'All Engines' : engine} - {
-                  engine === 'all' 
-                    ? (entityAssociations.by_engine?.openai?.keywords?.length || 0) + 
-                      (entityAssociations.by_engine?.perplexity?.keywords?.length || 0)
-                    : (entityAssociations.by_engine?.[engine]?.keywords?.length || 0)
-                } keywords
-              </div>
-              <div className="association-items">
-                {engine === 'all' ? (
-                  <>
-                    {entityAssociations.by_engine?.openai?.keywords?.map((keyword, index) => (
-                      <div key={`openai-${index}`} className="association-item">
-                        <span className="association-name">{keyword.split(' - ')[0]}</span>
-                        <span className="association-engine">OpenAI</span>
-                      </div>
-                    ))}
-                    {entityAssociations.by_engine?.perplexity?.keywords?.map((keyword, index) => (
-                      <div key={`perplexity-${index}`} className="association-item">
-                        <span className="association-name">{keyword.split(' - ')[0]}</span>
-                        <span className="association-engine">Perplexity</span>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  entityAssociations.by_engine?.[engine]?.keywords?.map((keyword, index) => (
-                    <div key={index} className="association-item">
-                      <span className="association-name">{keyword.split(' - ')[0]}</span>
+                    <div className="engine-associations">
+                      {entityAssociations.by_engine.openai?.products?.slice(0, 7).map((product, index) => (
+                        <div key={`openai-product-${index}`} className="association-item">
+                          <span className="association-name">{product}</span>
+                        </div>
+                      )) || (
+                        <div className="no-data-message">
+                          <p>No OpenAI product associations found</p>
+                        </div>
+                      )}
                     </div>
-                  ))
-                )}
-                {(!entityAssociations.by_engine?.openai?.keywords?.length && 
-                  !entityAssociations.by_engine?.perplexity?.keywords?.length) && 
-                  <div className="no-associations">No keyword associations found</div>}
-              </div>
+                  </div>
+                  
+                  {/* Perplexity Products */}
+                  <div className="engine-section">
+                    <div className="engine-header">
+                      <img src="/icons/perplexity.png" alt="Perplexity" className="engine-icon" />
+                      <h4>Perplexity</h4>
+                    </div>
+                    <div className="engine-associations">
+                      {entityAssociations.by_engine.perplexity?.products?.slice(0, 7).map((product, index) => (
+                        <div key={`perplexity-product-${index}`} className="association-item">
+                          <span className="association-name">{product}</span>
+                        </div>
+                      )) || (
+                        <div className="no-data-message">
+                          <p>No Perplexity product associations found</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="no-data-message">
+                  <p>No product associations data available</p>
+                </div>
+              )}
             </div>
           </div>
-        ) : (
-          <div className="no-data">
+          
+          <div className="association-card">
+            <h3>Keyword Associations</h3>
+            <div className="association-content scrollable">
+              {entityAssociations?.by_engine ? (
+                <>
+                  {/* OpenAI Keywords */}
+                  <div className="engine-section">
+                    <div className="engine-header">
+                      <img src="/icons/chatgpt.png" alt="OpenAI" className="engine-icon" />
+                      <h4>OpenAI</h4>
+                    </div>
+                    <div className="engine-associations">
+                      {entityAssociations.by_engine.openai?.keywords?.slice(0, 7).map((keyword, index) => (
+                        <div key={`openai-keyword-${index}`} className="association-item">
+                          <span className="association-name">{keyword}</span>
+                        </div>
+                      )) || (
+                        <div className="no-data-message">
+                          <p>No OpenAI keyword associations found</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Perplexity Keywords */}
+                  <div className="engine-section">
+                    <div className="engine-header">
+                      <img src="/icons/perplexity.png" alt="Perplexity" className="engine-icon" />
+                      <h4>Perplexity</h4>
+                    </div>
+                    <div className="engine-associations">
+                      {entityAssociations.by_engine.perplexity?.keywords?.slice(0, 7).map((keyword, index) => (
+                        <div key={`perplexity-keyword-${index}`} className="association-item">
+                          <span className="association-name">{keyword}</span>
+                        </div>
+                      )) || (
+                        <div className="no-data-message">
+                          <p>No Perplexity keyword associations found</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="no-data-message">
+                  <p>No keyword associations data available</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        {!entityAssociations?.by_engine && (
+          <div className="no-data-message">
             <p>No entity associations data available. Run the entity associations script to populate this data.</p>
           </div>
         )}

@@ -11,6 +11,77 @@ const CitationAnalysisDetail = () => {
   const [selectedSource, setSelectedSource] = useState(null);
   const [showSourceModal, setShowSourceModal] = useState(false);
 
+  // Function to export citation data to CSV
+  const exportCitationDataToCSV = () => {
+    if (!data || !data.citation_analysis) return;
+    
+    // Prepare CSV data
+    const csvData = [];
+    
+    // Add header row
+    csvData.push([
+      'Run ID',
+      'Date',
+      'Query Text',
+      'Intent',
+      'Engine',
+      'Model',
+      'URL',
+      'Domain',
+      'Extreme Mentioned',
+      'Competitors',
+      'Citation Count',
+      'Domain Count',
+      'Response Time (ms)',
+      'Cost USD',
+      'Status'
+    ]);
+    
+    // Process each run to extract citation data
+    if (data.citation_analysis.most_cited_sources?.top_sources) {
+      data.citation_analysis.most_cited_sources.top_sources.forEach(source => {
+        if (source.urls && source.queries) {
+          source.urls.forEach((url, urlIndex) => {
+            const query = source.queries[urlIndex] || source.queries[0] || 'N/A';
+            csvData.push([
+              source.runs_count || 'N/A',
+              new Date().toISOString().split('T')[0], // Current date as placeholder
+              query,
+              'N/A', // Intent not available in current data structure
+              'N/A', // Engine not available in current data structure
+              'N/A', // Model not available in current data structure
+              url,
+              source.domain,
+              'N/A', // Extreme mentioned not available in current data structure
+              'N/A', // Competitors not available in current data structure
+              source.citation_count,
+              'N/A', // Domain count not available in current data structure
+              'N/A', // Response time not available in current data structure
+              'N/A', // Cost not available in current data structure
+              'N/A'  // Status not available in current data structure
+            ]);
+          });
+        }
+      });
+    }
+    
+    // Convert to CSV string
+    const csvContent = csvData.map(row => 
+      row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+    
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `citation_analysis_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Function to categorize domains
   const categorizeDomain = (domain) => {
     const domainLower = domain.toLowerCase();
@@ -199,19 +270,7 @@ const CitationAnalysisDetail = () => {
         </div>
       </div>
 
-      {/* Engine Status */}
-      <div className="engine-status">
-        <strong>You are now seeing results for:</strong>
-        <div className="engine-display">
-          {engine === 'all' ? (
-            <span>All Engines</span>
-          ) : (
-            <span className="engine-name">
-              {engine === 'openai' ? 'OpenAI' : 'Perplexity'}
-            </span>
-          )}
-        </div>
-      </div>
+
 
       {/* Summary Stats */}
       <div className="summary-stats">
@@ -354,8 +413,22 @@ const CitationAnalysisDetail = () => {
           </div>
         </div>
         
-        <div className="analysis-note">
-          <p><strong>Analysis:</strong> {data.citation_analysis?.extreme_related_sources?.total_extreme_citations || 0} citations found in {Math.round((data.citation_analysis?.summary?.extreme_mention_rate || 0) * 100)}% of runs where Extreme was mentioned.</p>
+
+        
+        {/* CSV Export Section */}
+        <div className="csv-export-section">
+          <div className="csv-export-content">
+            <div className="csv-export-info">
+              <span className="csv-icon">📊</span>
+              <span className="csv-text">Export all citation data for external analysis</span>
+            </div>
+            <button 
+              className="csv-export-btn"
+              onClick={() => exportCitationDataToCSV()}
+            >
+              Export to CSV
+            </button>
+          </div>
         </div>
       </div>
 

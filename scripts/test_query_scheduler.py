@@ -114,7 +114,7 @@ def test_single_query():
         print(f"Testing query: {test_query}")
         
         result = call_engine(
-            engine="gpt-4o-mini-search-preview",
+            engine="openai",
             prompt=test_query,
             temperature=0.2
         )

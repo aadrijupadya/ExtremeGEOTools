@@ -49,6 +49,7 @@
   justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
+  margin-bottom: 3rem;
   transition: all 0.3s ease;
 }
 
@@ -91,7 +92,7 @@
    ============================================================================= */
 
 .overview-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .overview-section h2 {
@@ -218,7 +219,7 @@
    ============================================================================= */
 
 .competitors-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .competitors-section h2 {
@@ -233,6 +234,31 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
+}
+
+.competitors-grid.scrollable {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Custom scrollbar for competitors grid */
+.competitors-grid.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.competitors-grid.scrollable::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}
+
+.competitors-grid.scrollable::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.competitors-grid.scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 .competitor-card {
@@ -329,7 +355,7 @@
    ============================================================================= */
 
 .positioning-section {
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .positioning-section h2 {
@@ -1191,21 +1217,115 @@
 
 .association-content {
   min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.association-content.scrollable {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.engine-section {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.engine-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.engine-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.engine-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.engine-associations {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
 .association-item {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border);
+  padding: 0.75rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.4;
+  transition: all 0.2s ease;
 }
 
-.association-item:last-child {
-  border-bottom: none;
+.association-item:hover {
+  background: var(--card-background);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
 .association-name {
   font-weight: 500;
   color: var(--text);
   font-size: 0.95rem;
+}
+
+/* Custom scrollbar for engine associations */
+.engine-associations::-webkit-scrollbar {
+  width: 8px;
+}
+
+.engine-associations::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}
+
+.engine-associations::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.engine-associations::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Custom scrollbar for scrollable association content */
+.association-content.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.association-content.scrollable::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}
+
+.association-content.scrollable::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.association-content.scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }

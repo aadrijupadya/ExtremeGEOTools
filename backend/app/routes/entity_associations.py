@@ -18,7 +18,11 @@ def load_entity_associations() -> Dict[str, Any]:
     """Load entity associations from JSON file."""
     file_path = Path(__file__).parent.parent.parent.parent / "data" / "entity_associations.json"
     
+    print(f"Loading entity associations from: {file_path}")
+    print(f"File exists: {file_path.exists()}")
+    
     if not file_path.exists():
+        print("Entity associations file not found!")
         return {
             "version": "1.0",
             "description": "Entity associations extracted from AI responses about Extreme Networks",
@@ -29,8 +33,10 @@ def load_entity_associations() -> Dict[str, Any]:
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
+            print(f"Loaded {len(data.get('associations', []))} associations")
             return data
     except Exception as e:
+        print(f"Error loading entity associations: {e}")
         raise HTTPException(status_code=500, detail=f"Error loading entity associations: {str(e)}")
 
 
@@ -41,8 +47,12 @@ def get_entity_associations(
 ) -> Dict[str, Any]:
     """Get entity associations with optional engine filtering."""
     
+    print(f"get_entity_associations called with engine={engine}, limit={limit}")
+    
     data = load_entity_associations()
     associations = data.get("associations", [])
+    
+    print(f"Found {len(associations)} total associations")
     
     # Filter by engine if specified
     if engine:
@@ -50,52 +60,19 @@ def get_entity_associations(
             raise HTTPException(status_code=400, detail="Engine must be 'openai' or 'perplexity'")
         
         associations = [a for a in associations if a.get("engine") == engine]
+        print(f"After engine filtering: {len(associations)} associations")
     
     # Sort by timestamp (newest first) and limit results
     associations.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
     associations = associations[:limit]
     
-    # Aggregate products and keywords by engine
-    engine_summary = {}
-    all_products = set()
-    all_keywords = set()
+    print(f"Returning {len(associations)} associations")
     
-    for assoc in associations:
-        engine_name = assoc.get("engine", "unknown")
-        if engine_name not in engine_summary:
-            engine_summary[engine_name] = {
-                "total_queries": 0,
-                "products": set(),
-                "keywords": set(),
-                "last_updated": assoc.get("timestamp", "")
-            }
-        
-        engine_summary[engine_name]["total_queries"] += 1
-        
-        # Only add products from product queries and keywords from keyword queries
-        if "product" in assoc.get("query", "").lower():
-            engine_summary[engine_name]["products"].update(assoc.get("products", []))
-            all_products.update(assoc.get("products", []))
-        else:
-            engine_summary[engine_name]["keywords"].update(assoc.get("keywords", []))
-            all_keywords.update(assoc.get("keywords", []))
-    
-    # Convert sets to lists for JSON serialization
-    for engine_data in engine_summary.values():
-        engine_data["products"] = list(engine_data["products"])
-        engine_data["keywords"] = list(engine_data["keywords"])
-    
+    # Return the raw data structure that the frontend expects
     return {
+        "associations": associations,
         "total_associations": len(associations),
         "filters": {"engine": engine},
-        "summary": {
-            "total_products": len(all_products),
-            "total_keywords": len(all_keywords),
-            "all_products": list(all_products),
-            "all_keywords": list(all_keywords)
-        },
-        "by_engine": engine_summary,
-        "recent_associations": associations,
         "last_updated": data.get("last_updated")
     }
 

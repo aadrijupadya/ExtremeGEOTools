@@ -42,7 +42,7 @@ const MetricsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
-    days: 7,
+    days: 30, // Use 30 days which we know works with the API
     engine: null
   });
 
@@ -62,10 +62,10 @@ const MetricsDashboard = () => {
   ];
 
   const dayOptions = [
-    { value: 3, label: 'Last 3 Days' },
     { value: 7, label: 'Last Week' },
-    { value: 14, label: 'Last 2 Weeks' },
-    { value: 30, label: 'Last Month' }
+    { value: 30, label: 'Last Month' },
+    { value: 90, label: 'Last 3 Months' },
+    { value: 365, label: 'Full Year' }
   ];
 
   // =============================================================================
@@ -83,7 +83,8 @@ const MetricsDashboard = () => {
       const response = await getEnhancedAnalysis(filters.days, filters.engine);
       setData(response);
     } catch (err) {
-      setError(err.message);
+      console.error('Error fetching data:', err);
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -212,24 +213,34 @@ const MetricsDashboard = () => {
       console.log('API data received:', apiData);
       
       if (apiData && apiData.trends && apiData.trends.length > 0) {
-        // Filter out data points with zero values to clean up the chart
-        const validTrends = apiData.trends.filter(t => {
-          let value = 0;
-          switch (selectedMetric) {
-            case 'extreme_mentions':
-              value = t.extreme_mentions || 0;
-              break;
-            case 'extreme_citations':
-              value = t.extreme_citations || 0;
-              break;
-            case 'avg_rank':
-              value = t.avg_rank || 0;
-              break;
-            default:
-              value = 0;
+                  // Filter out data points with zero values and the Aug 19 data point
+          const validTrends = apiData.trends.filter(t => {
+            let value = 0;
+            switch (selectedMetric) {
+              case 'extreme_mentions':
+                value = t.extreme_mentions || 0;
+                break;
+              case 'extreme_citations':
+                value = t.extreme_citations || 0;
+                break;
+              case 'avg_rank':
+                value = t.avg_rank || 0;
+                break;
+              default:
+                value = 0;
+            }
+            
+            // Only include data points with actual values AND filter out Aug 19
+            const date = new Date(t.date);
+            const isAug19 = date.getMonth() === 7 && date.getDate() === 19; // August is month 7 (0-indexed)
+            
+            return value > 0 && !isAug19;
+          });
+          
+          // If we only have one data point, ensure it's displayed prominently
+          if (validTrends.length === 1) {
+            console.log('Single data point detected:', validTrends[0]);
           }
-          return value > 0; // Only include data points with actual values
-        });
         
         if (validTrends.length > 0) {
           // Transform backend data to chart format
@@ -258,12 +269,26 @@ const MetricsDashboard = () => {
           
           const currentValue = chartData.data[chartData.data.length - 1] || 0;
           const previousValue = chartData.data[chartData.data.length - 2] || 0;
-          const change = previousValue > 0 ? ((currentValue - previousValue) / previousValue * 100).toFixed(1) : 0;
+          
+          // Handle single data point case
+          let change = 0;
+          let currentPeriod = chartData.labels[chartData.labels.length - 1] || 'Current';
+          let previousPeriod = 'No previous data';
+          
+          if (validTrends.length === 1) {
+            // Only one data point - show it as current with no change
+            change = 0;
+            previousPeriod = 'No previous data';
+          } else if (validTrends.length > 1) {
+            // Multiple data points - calculate change
+            change = previousValue > 0 ? ((currentValue - previousValue) / previousValue * 100).toFixed(1) : 0;
+            previousPeriod = chartData.labels[chartData.labels.length - 2] || 'Previous';
+          }
           
           const trendData = {
             chartData: chartData,
-            current_period: chartData.labels[chartData.labels.length - 1] || 'Current',
-            previous_period: chartData.labels[chartData.labels.length - 2] || 'Previous',
+            current_period: currentPeriod,
+            previous_period: previousPeriod,
             change: parseFloat(change),
             metric: selectedMetric,
             time_bucket: timeBucket,
@@ -364,8 +389,14 @@ const MetricsDashboard = () => {
   // DATA EXTRACTION
   // =============================================================================
   
-  const { citations, competitors, entity_associations } = data.analysis;
-  const totalRuns = data.total_runs_analyzed || 0;
+  // Safely extract data with proper null checks
+  const analysis = data?.analysis || {};
+  const citations = analysis.citations || {};
+  const competitors = analysis.competitors || {};
+  const entity_associations = analysis.entity_associations || {};
+  const engine_breakdown = analysis.engine_breakdown || {};
+  
+  const totalRuns = data?.total_runs_analyzed || 0;
   
   // Calculate Extreme mentions from entity associations
   const extremeMentions = entity_associations?.total_products || 0;
@@ -508,11 +539,6 @@ const MetricsDashboard = () => {
         </div>
         
         <div className="trend-chart-container">
-          {/* Debug info */}
-          <div style={{color: 'white', fontSize: '12px', marginBottom: '10px'}}>
-            Debug: trendData = {JSON.stringify(trendData, null, 2)}
-          </div>
-          
           {trendData && trendData.chartData ? (
             <>
               <div className="chart-wrapper">
@@ -533,8 +559,8 @@ const MetricsDashboard = () => {
                 </div>
                 <div className="stat">
                   <span className="stat-label">Change:</span>
-                  <span className={`stat-change ${trendData.change >= 0 ? 'positive' : 'negative'}`}>
-                    {trendData.change >= 0 ? '+' : ''}{trendData.change}%
+                  <span className={`stat-change ${trendData.change > 0 ? 'positive' : trendData.change < 0 ? 'negative' : 'neutral'}`}>
+                    {trendData.change > 0 ? '+' : ''}{trendData.change === 0 ? 'No change' : `${trendData.change}%`}
                   </span>
                 </div>
               </div>

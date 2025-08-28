@@ -345,6 +345,10 @@
   color: #ef4444;
 }
 
+.stat-change.neutral {
+  color: #6b7280;
+}
+
 .component-card {
   background: var(--card-background);
   border: 1px solid var(--border);
@@ -392,12 +396,43 @@
   margin-bottom: 1.5rem;
 }
 
+.component-metrics {
+  margin: 20px 0;
+}
+
 .metric-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--border);
+}
+
+.component-metrics .metric-row {
+  border-bottom: none;
+  padding: 0.5rem 0;
+}
+
+.component-metrics .metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.component-metrics .metric-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.component-metrics .metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .metric-row:last-child {

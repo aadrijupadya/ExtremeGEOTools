@@ -370,6 +370,60 @@
   color: var(--accent);
 }
 
+/* CSV Export Section */
+.csv-export-section {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.csv-export-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.csv-export-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+}
+
+.csv-icon {
+  font-size: 1.2rem;
+}
+
+.csv-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.csv-export-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.csv-export-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.csv-export-btn:active {
+  transform: translateY(0);
+}
+
 /* Source Modal */
 .source-modal-overlay {
   position: fixed;

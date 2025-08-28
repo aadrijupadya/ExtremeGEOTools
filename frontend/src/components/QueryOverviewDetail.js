@@ -18,11 +18,12 @@ const QueryOverviewDetail = () => {
   const [error, setError] = useState(null);
   const [queries, setQueries] = useState([]);
   const [selectedQuery, setSelectedQuery] = useState(null);
+  const [selectedIntent, setSelectedIntent] = useState(null); // { name: 'Commercial', list: Query[] }
   const [filters, setFilters] = useState({
     days: 7,
     engine: null
   });
-  const [showInfoGuide, setShowInfoGuide] = useState(true); // New state for info guide visibility
+  const [showInfoGuide, setShowInfoGuide] = useState(false); // Info guide closed by default
 
   // =============================================================================
   // UTILITY FUNCTIONS
@@ -83,8 +84,8 @@ const QueryOverviewDetail = () => {
       const analysisResponse = await getEnhancedAnalysis(filters.days, filters.engine);
       setData(analysisResponse);
       
-      // Fetch real query data from database
-      const queriesResponse = await getRecentQueries(filters.days, filters.engine, 50);
+      // Fetch real query data from database - no limit to show all queries
+      const queriesResponse = await getRecentQueries(filters.days, filters.engine);
       setQueries(queriesResponse.queries || []);
       
     } catch (err) {
@@ -104,6 +105,75 @@ const QueryOverviewDetail = () => {
 
   const closeQueryDetail = () => {
     setSelectedQuery(null);
+  };
+
+  const exportToCSV = () => {
+    if (!queries || queries.length === 0) {
+      alert('No data to export');
+      return;
+    }
+
+    // Define CSV headers with all database fields
+    const headers = [
+      'Date',
+      'Query Text',
+      'Query Response/Answer',
+      'Engine',
+      'Model',
+      'Response Time (s)',
+      'Cost (USD)',
+      'Status',
+      'Source',
+      'Intent',
+      'Input Tokens',
+      'Output Tokens',
+      'Latency (ms)',
+      'Raw Excerpt',
+      'Extreme Mentioned',
+      'Extreme Rank',
+      'Is Branded',
+      'Created At',
+      'Query ID'
+    ];
+
+    // Convert data to CSV format
+    const csvData = queries.map(query => [
+      query.created_at ? new Date(query.created_at).toLocaleDateString() : 'N/A',
+      query.query_text || 'N/A',
+      query.answer_text || query.raw_excerpt || 'N/A',
+      query.engine || 'N/A',
+      query.model || 'N/A',
+      query.response_time || 'N/A',
+      query.cost || 'N/A',
+      query.status || 'N/A',
+      query.source || 'N/A',
+      query.intent || 'N/A',
+      query.input_tokens || 'N/A',
+      query.output_tokens || 'N/A',
+      query.latency_ms || 'N/A',
+      query.raw_excerpt ? (query.raw_excerpt.length > 100 ? query.raw_excerpt.substring(0, 100) + '...' : query.raw_excerpt) : 'N/A',
+      query.extreme_mentioned ? 'Yes' : 'No',
+      query.extreme_rank || 'N/A',
+      query.is_branded ? 'Yes' : 'No',
+      query.created_at || 'N/A',
+      query.id || 'N/A'
+    ]);
+
+    // Combine headers and data
+    const csvContent = [headers, ...csvData]
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    // Create and download CSV file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `query_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // =============================================================================
@@ -138,10 +208,18 @@ const QueryOverviewDetail = () => {
         };
       }
       acc[engine].count++;
-      if (q.cost) {
+      
+      // Handle cost - check if it's a valid number (including 0)
+      if (q.cost !== null && q.cost !== undefined && typeof q.cost === 'number') {
         acc[engine].totalCost += q.cost;
         acc[engine].costs.push(q.cost);
       }
+      
+      // Debug: log cost values for OpenAI runs
+      if (engine.includes('gpt') || engine.includes('openai')) {
+        console.log(`OpenAI run cost: ${q.cost} (type: ${typeof q.cost})`);
+      }
+      
       if (q.response_time) {
         acc[engine].totalResponseTime += q.response_time;
         acc[engine].responseTimes.push(q.response_time);
@@ -157,34 +235,54 @@ const QueryOverviewDetail = () => {
       } else {
         metrics.avgResponseTime = 'N/A';
       }
+      
+      // Better cost handling - compute per-1000 cost internally, but render a single $ value
       if (metrics.costs.length > 0) {
-        metrics.avgCost = (metrics.totalCost / metrics.costs.length).toFixed(4);
+        const avgCost = metrics.totalCost / metrics.costs.length;
+        const costPer1000 = avgCost * 1000;
+        metrics.avgCost = `$${costPer1000.toFixed(2)}`;
       } else {
-        metrics.avgCost = 'N/A';
+        metrics.avgCost = '$0.00';
       }
     });
     
-    const queryTypes = queries.reduce((acc, q) => {
-      let type = 'General';
-      if (q.query_text) {
-        const text = q.query_text.toLowerCase();
-        if (q.intent === 'comparison' || text.includes('vs') || text.includes('comparison')) type = 'Competitor Analysis';
-        else if (text.includes('market') || text.includes('trend') || text.includes('review')) type = 'Market Research';
-        else if (text.includes('brand') || text.includes('extreme')) type = 'Brand Monitoring';
-        else if (text.includes('technology') || text.includes('product') || text.includes('solution')) type = 'Technology Research';
-        else if (text.includes('enterprise') || text.includes('networking')) type = 'Enterprise Networking';
-        else if (q.intent) type = q.intent.charAt(0).toUpperCase() + q.intent.slice(1);
+    // Intent helpers (4 buckets)
+    const transactionalKw = ['buy','price','pricing','purchase','quote','cost','subscription','tier','plan','license'];
+    const commercialKw = ['vs','versus','compare','comparison','alternative','alternatives','best','top','review','reviews','benchmark'];
+    const navigationalKw = ['login','portal','support','docs','documentation','download','website','homepage','contact'];
+    const normalizeIntent = (intent) => {
+      if (!intent) return null;
+      const i = intent.toLowerCase();
+      if (['transactional','commercial','informational','navigational'].includes(i)) {
+        return i.charAt(0).toUpperCase() + i.slice(1);
       }
-      acc[type] = (acc[type] || 0) + 1;
+      return null;
+    };
+    const classifyIntentFromQuery = (q) => {
+      const fromField = normalizeIntent(q.intent);
+      if (fromField) return fromField;
+      const text = (q.query_text || '').toLowerCase();
+      const hasAny = (arr) => arr.some(k => text.includes(k));
+      if (hasAny(transactionalKw)) return 'Transactional';
+      if (hasAny(commercialKw)) return 'Commercial';
+      if (hasAny(navigationalKw)) return 'Navigational';
+      return 'Informational';
+    };
+
+    // Intent distribution across 4 buckets
+    const intentDistribution = queries.reduce((acc, q) => {
+      const bucket = classifyIntentFromQuery(q);
+      acc[bucket] = (acc[bucket] || 0) + 1;
       return acc;
-    }, {});
+    }, { Transactional: 0, Commercial: 0, Informational: 0, Navigational: 0 });
     
     return {
       totalQueries,
       avgResponseTime,
       avgCost,
       engineMetrics,
-      queryTypes
+      intentDistribution,
+      classifyIntentFromQuery
     };
   };
 
@@ -261,6 +359,39 @@ const QueryOverviewDetail = () => {
       </div>
 
       {/* =============================================================================
+          FILTER CONTROLS
+          ============================================================================= */}
+      <div className="filter-controls">
+        <div className="filter-group">
+          <label>Time Period:</label>
+          <select 
+            value={filters.days} 
+            onChange={(e) => handleFilterChange('days', parseInt(e.target.value))}
+          >
+            {dayOptions.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="filter-group">
+          <label>Engine:</label>
+          <select 
+            value={filters.engine || ''} 
+            onChange={(e) => handleFilterChange('engine', e.target.value || null)}
+          >
+            {engines.map(engine => (
+              <option key={engine.value || 'all'} value={engine.value || ''}>
+                {engine.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* =============================================================================
           INFORMATION GUIDE SECTION
           ============================================================================= */}
       <div className="info-guide-section">
@@ -300,7 +431,7 @@ const QueryOverviewDetail = () => {
                   <strong>Average Response Time:</strong> How long it typically takes for AI engines to respond to your queries (in seconds).
                 </div>
                 <div className="metric-explanation">
-                  <strong>Average Cost per Query:</strong> The typical cost of running a single query across all AI engines.
+                  <strong>Average Cost:</strong> Displayed as normalized cost per 1000 queries.
                 </div>
               </div>
             </div>
@@ -362,8 +493,8 @@ const QueryOverviewDetail = () => {
             <span className="stat-value">{metrics.avgResponseTime || 'N/A'}</span>
           </div>
           <div className="stat-item">
-            <span className="stat-label">AVG COST PER QUERY</span>
-            <span className="stat-value">${metrics.avgCost || '0.0000'}</span>
+            <span className="stat-label">AVG COST (PER 1000 QUERIES)</span>
+            <span className="stat-value">{metrics.avgCost || '$0.00'}</span>
           </div>
         </div>
       </div>
@@ -413,8 +544,8 @@ const QueryOverviewDetail = () => {
                     <span className="stat-value">{metrics.avgResponseTime}s</span>
                   </div>
                   <div className="stat-item">
-                    <span className="stat-label">Avg Cost:</span>
-                    <span className="stat-value">${metrics.avgCost}</span>
+                    <span className="stat-label">Avg Cost (per 1000 queries):</span>
+                    <span className="stat-value">{metrics.avgCost}</span>
                   </div>
                 </div>
               </div>
@@ -424,14 +555,14 @@ const QueryOverviewDetail = () => {
       </div>
 
       {/* =============================================================================
-          QUERY TYPES DISTRIBUTION
+          QUERY INTENT DISTRIBUTION (4 buckets)
           ============================================================================= */}
       
       <div className="types-section">
-        <h2>📋 Query Types Distribution</h2>
+        <h2>📋 Query Intent Distribution</h2>
         <div className="types-grid">
-          {Object.entries(metrics.queryTypes || {}).map(([type, count]) => (
-            <div key={type} className="type-card">
+          {Object.entries(metrics.intentDistribution || {}).map(([type, count]) => (
+            <div key={type} className="type-card" onClick={() => setSelectedIntent({ name: type, list: queries.filter(q => (metrics.classifyIntentFromQuery ? metrics.classifyIntentFromQuery(q) : 'Informational') === type) })} style={{cursor:'pointer'}}>
               <div className="type-header">
                 <h3>{type}</h3>
                 <span className="type-count">{count}</span>
@@ -457,7 +588,16 @@ const QueryOverviewDetail = () => {
           ============================================================================= */}
       
       <div className="queries-section">
-        <h2>📝 Recent Queries</h2>
+        <div className="queries-header">
+          <h2>📝 Recent Queries</h2>
+          <button 
+            className="export-csv-btn"
+            onClick={exportToCSV}
+            title="Export all query data to CSV"
+          >
+            📊 Export to CSV
+          </button>
+        </div>
         <div className="queries-table-container">
           <table className="queries-table">
             <thead>
@@ -677,6 +817,76 @@ const QueryOverviewDetail = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {selectedIntent && (
+        <div className="modal-overlay" onClick={() => setSelectedIntent(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">{selectedIntent.name} Queries</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setSelectedIntent(null)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="queries-table-container">
+              <table className="queries-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Query</th>
+                    <th>Engine</th>
+                    <th>Model</th>
+                    <th>Response Time</th>
+                    <th>Cost</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(selectedIntent.list || []).map((query, index) => (
+                    <tr key={query.id || index} className="query-row">
+                      <td>{query.created_at ? new Date(query.created_at).toLocaleDateString() : 'N/A'}</td>
+                      <td className="query-text">
+                        {query.query_text ? 
+                          (query.query_text.length > 60 ? 
+                            query.query_text.substring(0, 60) + '...' : 
+                            query.query_text
+                          ) : 
+                          'N/A'
+                        }
+                      </td>
+                      <td>
+                        <span className={`engine-badge ${query.engine || 'unknown'}`}>
+                          {query.engine || 'Unknown'}
+                        </span>
+                      </td>
+                      <td>{query.model || 'N/A'}</td>
+                      <td>{query.response_time ? `${query.response_time}s` : 'N/A'}</td>
+                      <td>{query.cost ? `$${query.cost.toFixed(4)}` : 'N/A'}</td>
+                      <td>
+                        <span className={`status-badge ${query.status || 'completed'}`}>
+                          {query.status || 'Completed'}
+                        </span>
+                      </td>
+                      <td>
+                        <button 
+                          className="view-details-btn"
+                          onClick={() => setSelectedQuery(query)}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

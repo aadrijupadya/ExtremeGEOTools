@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEnhancedAnalysis, getEntityAssociations } from '../services/api';
+import { getEnhancedAnalysis } from '../services/api';
 import './CompetitorAnalysisDetail.css';
 
 /**
@@ -38,12 +38,11 @@ const CompetitorAnalysisDetail = () => {
     }
   };
   
+  const [filters, setFilters] = useState(getStoredFilters());
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filters, setFilters] = useState(getStoredFilters());
   const [showInfoGuide, setShowInfoGuide] = useState(false); // Info guide closed by default
-  const [entityAssociations, setEntityAssociations] = useState(null);
 
   // =============================================================================
   // CONFIGURATION
@@ -76,15 +75,6 @@ const CompetitorAnalysisDetail = () => {
       setError(null);
       const response = await getEnhancedAnalysis(filters.days, filters.engine);
       setData(response);
-      
-      // Fetch entity associations
-      try {
-        const associationsResponse = await getEntityAssociations(filters.engine);
-        setEntityAssociations(associationsResponse);
-      } catch (assocErr) {
-        console.warn('Failed to fetch entity associations:', assocErr);
-        setEntityAssociations(null);
-      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -336,9 +326,9 @@ const CompetitorAnalysisDetail = () => {
       
       <div className="competitors-section">
         <h2>🏆 Top Competitors Surfaced (Entities in Same Results)</h2>
-        <div className="competitors-grid">
+        <div className="competitors-grid scrollable">
           {topCompetitors.length > 0 ? (
-            topCompetitors.slice(0, 6).map((competitor, index) => (
+            topCompetitors.slice(0, 10).map((competitor, index) => (
               <div key={index} className="competitor-card">
                 <div className="competitor-rank">#{index + 1}</div>
                 <div className="competitor-header">
@@ -392,7 +382,7 @@ const CompetitorAnalysisDetail = () => {
             <h3>Mention Distribution by Competitor</h3>
             <div className="mention-chart">
               {topCompetitors.length > 0 ? (
-                topCompetitors.slice(0, 5).map((competitor, index) => (
+                topCompetitors.slice(0, 10).map((competitor, index) => (
                   <div key={index} className="mention-bar-item">
                     <span className="competitor-name">{competitor.name}</span>
                     <div className="mention-bar-container">
@@ -444,53 +434,6 @@ const CompetitorAnalysisDetail = () => {
               ) : (
                 <div className="no-data-message">
                   <p>No insights available without competitor data</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-      {/* =============================================================================
-          ENTITY ASSOCIATIONS
-          ============================================================================= */}
-      
-      <div className="entity-associations-section">
-        <h2>🔗 Entity Associations</h2>
-        <p>What products and keywords AI associates with Extreme Networks</p>
-        
-        <div className="associations-grid">
-          <div className="association-card">
-            <h3>Product Associations</h3>
-            <div className="association-content">
-              {entityAssociations?.by_engine?.[filters.engine || 'all']?.products?.length > 0 ? (
-                entityAssociations.by_engine[filters.engine || 'all'].products.map((product, index) => (
-                  <div key={index} className="association-item">
-                    <span className="association-name">{product}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="no-data-message">
-                  <p>No product associations found for selected engine</p>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="association-card">
-            <h3>Keyword Associations</h3>
-            <div className="association-content">
-              {entityAssociations?.by_engine?.[filters.engine || 'all']?.keywords?.length > 0 ? (
-                entityAssociations.by_engine[filters.engine || 'all'].keywords.map((keyword, index) => (
-                  <div key={index} className="association-item">
-                    <span className="association-name">{keyword}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="no-data-message">
-                  <p>No keyword associations found for selected engine</p>
                 </div>
               )}
             </div>

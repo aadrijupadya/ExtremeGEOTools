@@ -197,30 +197,7 @@ def call_engine(engine: str, prompt: str, temperature: float, model: str | None 
     """
     t0 = time.time()
 
-    if engine == "gpt-4o-mini-search-preview":
-        # Use OpenAI adapter with the specific model
-        resp = openai_adapter.run_query(prompt, model="gpt-4o-mini-search-preview", max_output_tokens=500)
-        norm = _normalize_openai(resp, t0)
-        if not (norm.get("text") or "").strip():
-            # Persist a concise debug summary so it shows up on runs/{id}
-            meta = norm.get("debug_meta") or {}
-            usage = f"in {norm.get('input_tokens', 0)}, out {norm.get('output_tokens', 0)}"
-            types = ",".join((meta.get("item_types") or [])[:5])
-            blocks = meta.get("num_blocks")
-            model_name = norm.get("model") or "gpt-4o-mini-search-preview"
-            debug_str = (
-                f"[No text returned by {model_name}. Tokens: {usage}. "
-                f"blocks: {blocks}, types: {types}]"
-            )
-            preview = norm.get("raw_preview") or ""
-            norm["text"] = debug_str + ("\n" + preview if preview else "")
-            try:
-                print("OPENAI WARNING: Empty text from model.", {"model": model_name, "usage": usage, "blocks": blocks, "types": types})
-                if preview:
-                    print("OPENAI OUTPUT PREVIEW:", preview[:500])
-            except Exception:
-                pass
-        return norm
+
 
     # Legacy engine names for backward compatibility
     if engine == "openai":

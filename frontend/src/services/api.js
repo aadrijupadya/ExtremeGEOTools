@@ -142,9 +142,9 @@ export const getEnhancedAnalysis = async (days = 7, engine = null) => {
 };
 
 // Recent Queries with Real Data
-export const getRecentQueries = async (days = 7, engine = null, limit = 50) => {
+export const getRecentQueries = async (days = 7, engine = null) => {
   try {
-    let url = `${API_BASE_URL}/metrics/recent-queries?days=${days}&limit=${limit}`;
+    let url = `${API_BASE_URL}/metrics/recent-queries?days=${days}`;
     if (engine) {
       url += `&engine=${engine}`;
     }

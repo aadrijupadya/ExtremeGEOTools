@@ -73,6 +73,44 @@ function ResultsPage() {
     else { setSortKey(key); setSortDir(key === 'ts' ? 'desc' : 'asc'); }
   };
 
+  const exportToCSV = (data) => {
+    if (!data || data.length === 0) {
+      alert('No data to export');
+      return;
+    }
+
+    const headers = ['When', 'Engine', 'Model', 'Status', 'Cost (USD)', 'Full Answer', 'Latency (ms)'];
+    const csvContent = [
+      headers.join(','),
+      ...data.map(r => [
+        `${new Date(r.ts).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric'
+        })} ${new Date(r.ts).toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: true 
+        })}`,
+        r.engine || '',
+        r.model || '',
+        r.status || '',
+        Number(r.cost_usd || 0).toFixed(6),
+        `"${(r.answer || r.preview || '').replace(/"/g, '""')}"`,
+        r.latency_ms || ''
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `results_page_runs_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const StatusCell = ({ status }) => {
     const s = String(status || '').trim();
     const isErr = s.toLowerCase().startsWith('error');
@@ -93,6 +131,20 @@ function ResultsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 10 }}>
         <h2 style={{ margin: 0 }}>Recent Runs</h2>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => exportToCSV(sorted)}
+            style={{ 
+              padding: '0.5rem 1rem', 
+              borderRadius: 8, 
+              border: '1px solid var(--accent, #667eea)', 
+              background: 'var(--accent, #667eea)', 
+              color: '#ffffff', 
+              cursor: 'pointer',
+              fontWeight: '500'
+            }}
+          >
+            Export to CSV
+          </button>
           <input
             type="text"
             placeholder="Search text…"
@@ -137,7 +189,14 @@ function ResultsPage() {
         <tbody>
           {sorted.map((r) => (
             <tr key={r.id}>
-              <td>{new Date(r.ts).toLocaleString()}</td>
+              <td>{new Date(r.ts).toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric'
+              })} {new Date(r.ts).toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+              })}</td>
               <td>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <BrandIcon name={(r.engine || '').toLowerCase()} size={14} />
@@ -148,7 +207,16 @@ function ResultsPage() {
               <td><StatusCell status={r.status} /></td>
               <td align="right">${Number(r.cost_usd || 0).toFixed(6)}</td>
               <td>
-                <Link to={`/runs/${encodeURIComponent(r.id)}`}>{r.preview}</Link>
+                <Link 
+                  to={`/runs/${encodeURIComponent(r.id)}`}
+                  style={{ 
+                    color: 'var(--accent, #667eea)', 
+                    textDecoration: 'none',
+                    fontWeight: '500'
+                  }}
+                >
+                  {r.preview}
+                </Link>
               </td>
               <td align="right">
                 <button
