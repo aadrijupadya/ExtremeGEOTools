@@ -12,12 +12,14 @@ from backend.app.services.database import init_db
 #app configuration and endpoint registration
 app = FastAPI()
 
-# CORS for local React dev server
+# CORS configuration for both development and production
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
+        "http://localhost:3000",  # Local development
+        "http://127.0.0.1:3000",  # Local development
+        "https://extremegeotools.onrender.com",  # Production frontend
+        "https://extremegeotools-backend.onrender.com",  # Production backend (if different)
     ],
     allow_credentials=True,
     allow_methods=["*"],

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEnhancedAnalysis } from '../services/api';
+import { getEnhancedAnalysis, API_BASE_URL } from '../services/api';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -201,7 +201,7 @@ const MetricsDashboard = () => {
       console.log('fetchTrendData called with:', { timeBucket, selectedMetric });
       
       // Call the new Extreme-focused trends endpoint
-      const response = await fetch(`http://127.0.0.1:8000/metrics/extreme-trends?days=${timeBucket === 'weekly' ? 56 : 180}`);
+      const response = await fetch(`${API_BASE_URL}/metrics/extreme-trends?days=${timeBucket === 'weekly' ? 56 : 180}`);
       
       console.log('API response status:', response.status);
       
