@@ -18,8 +18,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",  # Local development
         "http://127.0.0.1:3000",  # Local development
-        "https://extremegeotools.onrender.com",  # Production frontend
-        "https://extremegeotools-backend.onrender.com",  # Production backend (if different)
+        "https://extremegeotools.onrender.com",  # Production backend
+        "https://extremegeotools-frontend.onrender.com",  # Production frontend (if different)
     ],
     allow_credentials=True,
     allow_methods=["*"],
