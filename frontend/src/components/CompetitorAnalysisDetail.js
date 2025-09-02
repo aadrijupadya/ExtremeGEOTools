@@ -20,14 +20,14 @@ const CompetitorAnalysisDetail = () => {
       if (stored) {
         const parsed = JSON.parse(stored);
         // Validate the stored values
-        const validDays = [3, 7, 14, 30].includes(parsed.days) ? parsed.days : 7;
+        const validDays = [3, 7, 14, 30, 365].includes(parsed.days) ? parsed.days : 365;
         const validEngine = ['openai', 'perplexity', null].includes(parsed.engine) ? parsed.engine : null;
         return { days: validDays, engine: validEngine };
       }
     } catch (error) {
       console.warn('Failed to parse stored filters:', error);
     }
-    return { days: 7, engine: null };
+    return { days: 365, engine: null };
   };
 
   const saveFilters = (newFilters) => {
@@ -58,7 +58,8 @@ const CompetitorAnalysisDetail = () => {
     { value: 3, label: 'Last 3 Days' },
     { value: 7, label: 'Last Week' },
     { value: 14, label: 'Last 2 Weeks' },
-    { value: 30, label: 'Last Month' }
+    { value: 30, label: 'Last Month' },
+    { value: 365, label: 'Full Year' }
   ];
 
   // =============================================================================

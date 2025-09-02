@@ -156,7 +156,7 @@ const CitationAnalysisDetail = () => {
   };
 
   const engine = searchParams.get('engine') || 'all';
-  const days = parseInt(searchParams.get('days') || '7');
+  const days = parseInt(searchParams.get('days') || '365');
 
   useEffect(() => {
     const fetchData = async () => {

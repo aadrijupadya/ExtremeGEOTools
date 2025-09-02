@@ -31,7 +31,7 @@ const ExtremeFocusDetail = () => {
   
   // Get filters from URL params with defaults
   const engine = searchParams.get('engine') || 'all';
-  const days = parseInt(searchParams.get('days') || '30');
+  const days = parseInt(searchParams.get('days') || '365');
   
   // Calculate date range - fix the date calculation
   const today = new Date();

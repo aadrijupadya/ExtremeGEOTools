@@ -3,7 +3,10 @@
   "routes": {
     "/**": "index.html"
   },
-  "clean_urls": true,
-  "trailing_slash": false
+  "headers": {
+    "/**": {
+      "Cache-Control": "no-cache"
+    }
+  }
 }
 

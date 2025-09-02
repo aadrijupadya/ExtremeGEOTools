@@ -20,7 +20,7 @@ const QueryOverviewDetail = () => {
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [selectedIntent, setSelectedIntent] = useState(null); // { name: 'Commercial', list: Query[] }
   const [filters, setFilters] = useState({
-    days: 7,
+    days: 365,
     engine: null
   });
   const [showInfoGuide, setShowInfoGuide] = useState(false); // Info guide closed by default
@@ -64,7 +64,8 @@ const QueryOverviewDetail = () => {
     { value: 3, label: 'Last 3 Days' },
     { value: 7, label: 'Last Week' },
     { value: 14, label: 'Last 2 Weeks' },
-    { value: 30, label: 'Last Month' }
+    { value: 30, label: 'Last Month' },
+    { value: 365, label: 'Full Year' }
   ];
 
   // =============================================================================

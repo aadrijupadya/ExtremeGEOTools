@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getEnhancedAnalysis, API_BASE_URL } from '../services/api';
 import { Line } from 'react-chartjs-2';
 import {
@@ -42,7 +43,7 @@ const MetricsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
-    days: 30, // Use 30 days which we know works with the API
+    days: 365, // Use 365 days to get all available data
     engine: null
   });
 
@@ -445,9 +446,9 @@ const MetricsDashboard = () => {
           </div>
           
           <div className="component-footer">
-            <a href="/metrics/query-overview" className="detail-link">
+            <Link to="/metrics/query-overview" className="detail-link">
               View Detailed Analysis →
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -462,9 +463,9 @@ const MetricsDashboard = () => {
           </div>
           
           <div className="component-footer">
-            <a href="/metrics/competitor-analysis" className="detail-link">
+            <Link to="/metrics/competitor-analysis" className="detail-link">
               View Detailed Analysis →
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -479,9 +480,9 @@ const MetricsDashboard = () => {
           </div>
           
           <div className="component-footer">
-            <a href="/metrics/extreme-focus" className="detail-link">
+            <Link to="/metrics/extreme-focus" className="detail-link">
               View Detailed Analysis →
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -496,9 +497,9 @@ const MetricsDashboard = () => {
           </div>
           
           <div className="component-footer">
-            <a href="/metrics/citation-analysis" className="detail-link">
+            <Link to="/metrics/citation-analysis" className="detail-link">
               View Detailed Analysis →
-            </a>
+            </Link>
           </div>
         </div>
       </div>
