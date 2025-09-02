@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getEnhancedAnalysis, getRecentQueries } from '../services/api';
 import './QueryOverviewDetail.css';
 
@@ -897,9 +898,9 @@ const QueryOverviewDetail = () => {
           ============================================================================= */}
       
       <div className="back-section">
-        <a href="/metrics" className="back-link">
+        <Link to="/metrics" className="back-link">
           ← Back to Metrics Dashboard
-        </a>
+        </Link>
       </div>
       
     </div>

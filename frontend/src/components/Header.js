@@ -38,6 +38,16 @@ function Header() {
       <div className="header-content" style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'left', padding: '0 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <img 
+              src="/geo_logo.png" 
+              alt="GEO Logo" 
+              style={{ 
+                width: '40px', 
+                height: '40px', 
+                borderRadius: '8px',
+                objectFit: 'contain'
+              }} 
+            />
             <div>
               <h1 style={{ margin: 0 }}>GEO Dashboard</h1>
               <p style={{ margin: 0 }}>Competitive Intelligence & Market Research</p>

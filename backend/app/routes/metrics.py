@@ -844,8 +844,8 @@ def get_extreme_focus_metrics(
         raise HTTPException(status_code=400, detail="Start date must be before end date")
     
     # Limit date range to prevent excessive queries
-    if (end - start).days > 90:
-        raise HTTPException(status_code=400, detail="Date range cannot exceed 90 days")
+    if (end - start).days > 365:
+        raise HTTPException(status_code=400, detail="Date range cannot exceed 365 days")
     
     try:
         # Build query with intelligent engine filtering
@@ -1265,8 +1265,8 @@ def get_citation_analysis(
         raise HTTPException(status_code=400, detail="Start date must be before end date")
     
     # Limit date range to prevent excessive queries
-    if (end - start).days > 90:
-        raise HTTPException(status_code=400, detail="Date range cannot exceed 90 days")
+    if (end - start).days > 365:
+        raise HTTPException(status_code=400, detail="Date range cannot exceed 365 days")
     
     try:
         # Get all automated runs in the date range
