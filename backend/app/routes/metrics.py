@@ -89,7 +89,7 @@ def get_daily_metrics(
 #provide trends for runs, costs, citations, etc. over time
 @router.get("/trends")
 def get_metrics_trends(
-    days: int = Query(default=30, ge=7, le=90, description="Number of days to analyze"),
+    days: int = Query(default=30, ge=7, le=365, description="Number of days to analyze"),
     engine: Optional[str] = Query(None, description="Filter by engine"),
     metric_type: str = Query(default="visibility", description="Metric to trend: visibility, citations, costs, share_of_voice"),
     db: Session = Depends(get_db)
@@ -336,7 +336,7 @@ def get_metrics_summary(
 #provide entity metrics for the last N days, where entity is either extreme_networks or competitor mentions in answers
 @router.get("/entities")
 def get_entity_metrics(
-    days: int = Query(default=30, ge=1, le=90, description="Number of days to analyze"),
+    days: int = Query(default=30, ge=1, le=365, description="Number of days to analyze"),
     engine: Optional[str] = Query(None, description="Filter by engine"),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
@@ -448,7 +448,7 @@ def compute_daily_metrics(
 #enhanced is defined as the ability to compute metrics for the dashboard that are not available in the daily metrics table
 @router.get("/enhanced-analysis")
 def get_enhanced_analysis(
-    days: int = Query(default=7, ge=1, le=30, description="Number of days to analyze"),
+    days: int = Query(default=30, ge=1, le=365, description="Number of days to analyze"),
     engine: Optional[str] = Query(None, description="Filter by engine"),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
@@ -738,7 +738,7 @@ def get_enhanced_analysis(
 #provide recent queries for the last N days, which is displayed in frontend as a table view
 @router.get("/recent-queries")
 def get_recent_queries(
-    days: int = Query(default=7, ge=1, le=30, description="Number of days to look back"),
+    days: int = Query(default=30, ge=1, le=365, description="Number of days to look back"),
     engine: Optional[str] = Query(None, description="Filter by engine"),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:

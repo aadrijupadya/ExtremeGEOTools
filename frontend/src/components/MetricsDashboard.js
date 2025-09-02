@@ -43,7 +43,7 @@ const MetricsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
-    days: 365, // Use 365 days to get all available data
+    days: 30, // Use 30 days until backend is updated
     engine: null
   });
 
