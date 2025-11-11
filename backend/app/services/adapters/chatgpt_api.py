@@ -25,6 +25,17 @@ You are an AI search assistant.
 - If unsure, respond conservatively and avoid fabricating.
 """
 
+def _supports_temperature(model_id: str | None) -> bool:
+    """Return True if the model supports temperature parameter."""
+    if not model_id:
+        return True
+    model_lower = model_id.lower()
+    # Search-preview models disallow temperature overrides
+    if "search-preview" in model_lower:
+        return False
+    return True
+
+
 def run_query(prompt: str, model: str | None = None, max_output_tokens: int = 500, temperature: float | None = None):
     # Responses API migration: https://platform.openai.com/docs/guides/migrate-to-responses
     # Prefer structured input blocks for Responses API
@@ -58,6 +69,8 @@ def run_query(prompt: str, model: str | None = None, max_output_tokens: int = 50
 
     client = _get_openai_client()
     # Use Responses API for GPT-5 family; use Chat Completions for older/search-preview models
+    temp_arg = float(temperature) if (temperature is not None and _supports_temperature(resolved_model)) else None
+
     if str(resolved_model).startswith("gpt-5"):
         try:
             # Primary: structured input blocks + instructions
@@ -66,7 +79,7 @@ def run_query(prompt: str, model: str | None = None, max_output_tokens: int = 50
                 instructions=SYSTEM_PROMPT.strip(),
                 input=input_blocks,
                 max_output_tokens=max_output_tokens,
-                **({"temperature": float(temperature)} if temperature is not None else {}),
+                **({"temperature": temp_arg} if temp_arg is not None else {}),
             )
             if os.getenv("EGT_DEBUG_OPENAI"):
                 try:
@@ -97,7 +110,7 @@ def run_query(prompt: str, model: str | None = None, max_output_tokens: int = 50
                     instructions=SYSTEM_PROMPT.strip(),
                     input=prompt,
                     max_output_tokens=max_output_tokens,
-                    **({"temperature": float(temperature)} if temperature is not None else {}),
+                    **({"temperature": temp_arg} if temp_arg is not None else {}),
                 )
                 if os.getenv("EGT_DEBUG_OPENAI"):
                     try:
@@ -137,7 +150,7 @@ def run_query(prompt: str, model: str | None = None, max_output_tokens: int = 50
                     {"role": "user", "content": prompt},
                 ],
                 max_tokens=max_output_tokens,
-                **({"temperature": float(temperature)} if temperature is not None else {}),
+                **({"temperature": temp_arg} if temp_arg is not None else {}),
             )
             if os.getenv("EGT_DEBUG_OPENAI"):
                 try:

@@ -8,7 +8,7 @@ import asyncio
 import json
 import uuid
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import sys
 import os
 
@@ -48,14 +48,39 @@ class AutomatedQueryExecutor:
         timestamp = int(datetime.now().timestamp() * 1000)
         return f"auto_{engine}_{intent}_{timestamp}"
     
-    def execute_single_query(self, query: str, engine: str, intent_category: str) -> Dict[str, Any]:
+    def _resolve_engine_and_model(self, engine_key: str) -> Dict[str, Optional[str]]:
+        """Normalize engine identifiers to canonical engine + model."""
+        if not engine_key:
+            raise ValueError("Engine key cannot be empty")
+
+        key_lower = engine_key.lower()
+        if "gpt" in key_lower or "openai" in key_lower:
+            return {"engine": "openai", "model": engine_key}
+
+        if "perplexity" in key_lower or key_lower == "sonar":
+            # Allow specifying specific Perplexity model identifiers
+            model = None if key_lower == "perplexity" else engine_key
+            return {"engine": "perplexity", "model": model}
+
+        # Allow explicitly passing canonical engine names
+        if key_lower in {"openai", "perplexity"}:
+            return {"engine": key_lower, "model": None}
+
+        raise ValueError(f"Unsupported engine configuration: {engine_key}")
+
+    def execute_single_query(self, query: str, engine_key: str, intent_category: str) -> Dict[str, Any]:
         """Execute a single query and return results."""
-        print(f"🔄 Executing: {query[:60]}... ({engine})")
+        resolved = self._resolve_engine_and_model(engine_key)
+        engine = resolved["engine"]
+        model = resolved["model"]
+
+        display_engine = f"{engine} ({model})" if model else engine
+        print(f"🔄 Executing: {query[:60]}... ({display_engine})")
         
         try:
             # Call the engine
             start_time = datetime.now()
-            response = call_engine(engine, query, temperature=0.2)
+            response = call_engine(engine, query, temperature=0.2, model=model)
             end_time = datetime.now()
             latency_ms = int((end_time - start_time).total_seconds() * 1000)
             
@@ -97,14 +122,20 @@ class AutomatedQueryExecutor:
             }
             
             # Estimate costs
-            cost_estimate = estimate_cost(response.get('input_tokens', 0), response.get('output_tokens', 0), None, response.get('model', engine))
+            response_model = response.get('model', model or engine)
+            cost_estimate = estimate_cost(
+                response.get('input_tokens', 0),
+                response.get('output_tokens', 0),
+                None,
+                response_model
+            )
             
             result = {
                 'id': self._generate_run_id(engine, intent_category),
                 'ts': start_time,
                 'query': query,
                 'engine': engine,
-                'model': response.get('model', 'unknown'),
+                'model': response_model,
                 'status': 'completed',
                 'answer_text': answer,
                 'entities_normalized': entities_normalized,
@@ -171,11 +202,17 @@ class AutomatedQueryExecutor:
         print(f"📊 Distribution: {engine_queries}")
         
         # Execute queries for each engine
-        for engine, queries in engine_queries.items():
-            print(f"\n🔥 Executing {len(queries)} queries on {engine}...")
+        for engine_key, engine_data in engine_queries.items():
+            resolved = self._resolve_engine_and_model(engine_key)
+            canonical_engine = resolved["engine"]
+            model = resolved["model"]
+            display_engine = f"{canonical_engine} ({model})" if model else canonical_engine
+            queries = engine_data
+
+            print(f"\n🔥 Executing {len(queries)} queries on {display_engine}...")
             
             for query_text, intent_category in queries:
-                result = self.execute_single_query(query_text, engine, intent_category)
+                result = self.execute_single_query(query_text, engine_key, intent_category)
                 if result:
                     all_results.append(result)
                 

@@ -40,8 +40,18 @@ class QueryScheduler:
         
         # Get engine distribution
         engine_dist = self.queries_config.get("engine_distribution", {})
-        gpt_queries = engine_dist.get("gpt-4o-mini-search-preview", 15)
-        perplexity_queries = engine_dist.get("perplexity-online", 15)
+        
+        openai_key = None
+        perplexity_key = None
+        for key in engine_dist.keys():
+            lower_key = key.lower()
+            if openai_key is None and ("gpt" in lower_key or "openai" in lower_key):
+                openai_key = key
+            if perplexity_key is None and ("perplexity" in lower_key or lower_key == "sonar"):
+                perplexity_key = key
+        
+        gpt_queries = engine_dist.get(openai_key, 0) if openai_key else 0
+        perplexity_queries = engine_dist.get(perplexity_key, 0) if perplexity_key else 0
         
         # Create daily query plan
         daily_queries = []
@@ -63,7 +73,7 @@ class QueryScheduler:
             daily_queries.append({
                 "query": query,
                 "engine": "openai",
-                "model": "gpt-4o-mini-search-preview",
+                "model": openai_key or "gpt-4o-mini-search-preview",
                 "intent": self._classify_intent(query),
                 "priority": "high"
             })
@@ -73,6 +83,7 @@ class QueryScheduler:
             daily_queries.append({
                 "query": query,
                 "engine": "perplexity",
+                "model": perplexity_key if perplexity_key and perplexity_key.lower() != "perplexity" else None,
                 "intent": self._classify_intent(query),
                 "priority": "high"
             })
@@ -103,12 +114,15 @@ class QueryScheduler:
         db = next(get_db())
         
         for i, query_info in enumerate(queries):
-            print(f"Query {i+1}/{len(queries)}: {query_info['query'][:50]}...")
+            model = query_info.get("model")
+            display_engine = f"{query_info['engine']} ({model})" if model else query_info["engine"]
+            print(f"Query {i+1}/{len(queries)}: {query_info['query'][:50]}... [{display_engine}]")
             
             if dry_run:
                 results.append({
                     "query": query_info["query"],
                     "engine": query_info["engine"],
+                    "model": model,
                     "intent": query_info["intent"],
                     "status": "dry_run",
                     "result": None
@@ -120,7 +134,8 @@ class QueryScheduler:
                 result = call_engine(
                     engine=query_info["engine"],
                     prompt=query_info["query"],
-                    temperature=0.2
+                    temperature=0.2,
+                    model=model
                 )
                 
                 # Extract entities and citations
@@ -149,7 +164,7 @@ class QueryScheduler:
                     "ts": datetime.utcnow(),
                     "query": query_info["query"],
                     "engine": query_info["engine"],
-                    "model": query_info.get("model") or result.get("model"),
+                    "model": model or result.get("model"),
                     "intent": query_info["intent"],
                     "is_branded": is_branded,
                     "status": "completed",
@@ -186,6 +201,7 @@ class QueryScheduler:
                     "run_id": run_id,
                     "query": query_info["query"],
                     "engine": query_info["engine"],
+                    "model": model,
                     "intent": query_info["intent"],
                     "status": "completed",
                     "result": run_data
@@ -200,6 +216,7 @@ class QueryScheduler:
                 results.append({
                     "query": query_info["query"],
                     "engine": query_info["engine"],
+                    "model": model,
                     "intent": query_info["intent"],
                     "status": "error",
                     "error": str(e),
