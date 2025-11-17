@@ -132,7 +132,16 @@ export const getEnhancedAnalysis = async (days = 7, engine = null) => {
     
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      // Try to get the actual error message from the response
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.detail || errorData.message || errorMessage;
+      } catch (e) {
+        // If response isn't JSON, use status text
+        errorMessage = response.statusText || errorMessage;
+      }
+      throw new Error(errorMessage);
     }
     return await response.json();
   } catch (error) {
