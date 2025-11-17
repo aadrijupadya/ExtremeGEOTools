@@ -461,9 +461,13 @@ def get_enhanced_analysis(
         start_date = end_date - timedelta(days=days)
         
         # Query both AutomatedRun table and Run table with source="automated"
-        # First try AutomatedRun table
+        # Note: AutomatedRun.ts is timezone-naive, Run.ts is timezone-aware
+        # Convert start_date to naive for AutomatedRun comparison
+        start_date_naive = start_date.replace(tzinfo=None) if start_date.tzinfo else start_date
+        
+        # First try AutomatedRun table (timezone-naive)
         auto_query = db.query(AutomatedRun).filter(
-            AutomatedRun.ts >= start_date,
+            AutomatedRun.ts >= start_date_naive,
             AutomatedRun.is_branded == False  # Only neutral queries
         )
         
@@ -482,9 +486,9 @@ def get_enhanced_analysis(
         
         automated_runs = auto_query.order_by(AutomatedRun.ts.desc()).all()
         
-        # Also query Run table for source="automated" and is_branded=False
+        # Also query Run table for source="automated" and is_branded=False (timezone-aware)
         run_query = db.query(Run).filter(
-            Run.ts >= start_date,
+            Run.ts >= start_date,  # start_date is timezone-aware, matches Run.ts
             Run.source == "automated",
             Run.is_branded == False,  # Only neutral queries
             Run.deleted == False
