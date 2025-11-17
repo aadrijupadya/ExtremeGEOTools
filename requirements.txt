@@ -50,6 +50,6 @@ python-dotenv==1.0.1
 
 
 #database and storage
-SQLAlchemy==2.0.34
-alembic==1.13.2
-psycopg2-binary==2.9.9
+# SQLAlchemy and alembic already listed above in Backend Framework section
+# psycopg[binary] (psycopg3) is already listed above; psycopg2-binary is legacy
+psycopg2-binary==2.9.9  # Legacy support (psycopg3 preferred)

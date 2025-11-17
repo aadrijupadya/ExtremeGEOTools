@@ -458,8 +458,9 @@ def get_enhanced_analysis(
         end_date = datetime.now()
         start_date = end_date - timedelta(days=days)
         
-        # Query automated runs with engine filtering - only non-branded queries
-        query = db.query(AutomatedRun).filter(
+        # Query both AutomatedRun table and Run table with source="automated"
+        # First try AutomatedRun table
+        auto_query = db.query(AutomatedRun).filter(
             AutomatedRun.ts >= start_date,
             AutomatedRun.is_branded == False  # Only neutral queries
         )
@@ -467,21 +468,74 @@ def get_enhanced_analysis(
         if engine:
             # Handle engine filtering more intelligently
             if engine == 'openai':
-                # Filter for any OpenAI-related engines
-                query = query.filter(or_(
+                auto_query = auto_query.filter(or_(
                     AutomatedRun.engine.like('gpt%'),
                     AutomatedRun.engine.like('openai%'),
                     AutomatedRun.engine == 'openai'
                 ))
             elif engine == 'perplexity':
-                # Filter for Perplexity engines (exact match)
-                query = query.filter(AutomatedRun.engine == 'perplexity')
+                auto_query = auto_query.filter(AutomatedRun.engine == 'perplexity')
             else:
-                # Exact match for other engines
-                query = query.filter(AutomatedRun.engine == engine)
+                auto_query = auto_query.filter(AutomatedRun.engine == engine)
         
-        runs = query.order_by(AutomatedRun.ts.desc()).all()
-        run_source = "automated"
+        automated_runs = auto_query.order_by(AutomatedRun.ts.desc()).all()
+        
+        # Also query Run table for source="automated" and is_branded=False
+        from ..models.run import Run
+        run_query = db.query(Run).filter(
+            Run.ts >= start_date,
+            Run.source == "automated",
+            Run.is_branded == False,  # Only neutral queries
+            Run.deleted == False
+        )
+        
+        if engine:
+            if engine == 'openai':
+                run_query = run_query.filter(or_(
+                    Run.engine.like('gpt%'),
+                    Run.engine.like('openai%'),
+                    Run.engine == 'openai'
+                ))
+            elif engine == 'perplexity':
+                run_query = run_query.filter(Run.engine == 'perplexity')
+            else:
+                run_query = run_query.filter(Run.engine == engine)
+        
+        regular_runs = run_query.order_by(Run.ts.desc()).all()
+        
+        # Combine both sources - convert Run objects to a format compatible with AutomatedRun
+        runs = list(automated_runs)
+        for run in regular_runs:
+            # Create a simple object that mimics AutomatedRun structure
+            class RunAdapter:
+                def __init__(self, run_obj):
+                    self.id = run_obj.id
+                    self.ts = run_obj.ts
+                    self.query = run_obj.query
+                    self.engine = run_obj.engine
+                    self.model = run_obj.model
+                    self.status = run_obj.status
+                    self.answer_text = run_obj.raw_excerpt
+                    self.links = run_obj.links or []
+                    self.domains = run_obj.domains or []
+                    self.entities_normalized = run_obj.entities_normalized or []
+                    self.extreme_mentioned = run_obj.extreme_mentioned
+                    self.competitor_mentions = []
+                    self.citation_count = len(run_obj.links) if run_obj.links else 0
+                    self.domain_count = len(run_obj.domains) if run_obj.domains else 0
+                    self.input_tokens = run_obj.input_tokens
+                    self.output_tokens = run_obj.output_tokens
+                    self.cost_usd = float(run_obj.cost_usd) if run_obj.cost_usd else 0.0
+                    self.latency_ms = run_obj.latency_ms
+                    self.intent_category = run_obj.intent
+                    self.is_branded = run_obj.is_branded
+            
+            runs.append(RunAdapter(run))
+        
+        # Sort all runs by timestamp descending
+        runs.sort(key=lambda x: x.ts, reverse=True)
+        
+        run_source = "automated" if automated_runs else ("runs" if regular_runs else "none")
         
         if not runs:
             return {
