@@ -455,97 +455,31 @@ def get_enhanced_analysis(
     """Get enhanced citation and competitor analysis from recent AUTOMATED runs only."""
     try:
         # Get recent AUTOMATED runs only
-        # Use timezone-aware datetime for comparison with Run.ts (which is timezone-aware)
-        from datetime import timezone
-        end_date = datetime.now(timezone.utc)
+        # AutomatedRun.ts is timezone-naive (DateTime), so use timezone-naive datetime
+        end_date = datetime.utcnow()
         start_date = end_date - timedelta(days=days)
         
-        # Query both AutomatedRun table and Run table with source="automated"
-        # Note: AutomatedRun.ts is timezone-naive, Run.ts is timezone-aware
-        # Convert start_date to naive for AutomatedRun comparison
-        start_date_naive = start_date.replace(tzinfo=None) if start_date.tzinfo else start_date
-        
-        # First try AutomatedRun table (timezone-naive)
-        auto_query = db.query(AutomatedRun).filter(
-            AutomatedRun.ts >= start_date_naive,
+        # Query automated_runs table only
+        query = db.query(AutomatedRun).filter(
+            AutomatedRun.ts >= start_date,
             AutomatedRun.is_branded == False  # Only neutral queries
         )
         
         if engine:
             # Handle engine filtering more intelligently
             if engine == 'openai':
-                auto_query = auto_query.filter(or_(
+                query = query.filter(or_(
                     AutomatedRun.engine.like('gpt%'),
                     AutomatedRun.engine.like('openai%'),
                     AutomatedRun.engine == 'openai'
                 ))
             elif engine == 'perplexity':
-                auto_query = auto_query.filter(AutomatedRun.engine == 'perplexity')
+                query = query.filter(AutomatedRun.engine == 'perplexity')
             else:
-                auto_query = auto_query.filter(AutomatedRun.engine == engine)
+                query = query.filter(AutomatedRun.engine == engine)
         
-        automated_runs = auto_query.order_by(AutomatedRun.ts.desc()).all()
-        
-        # Also query Run table for source="automated" and is_branded=False (timezone-aware)
-        run_query = db.query(Run).filter(
-            Run.ts >= start_date,  # start_date is timezone-aware, matches Run.ts
-            Run.source == "automated",
-            Run.is_branded == False,  # Only neutral queries
-            Run.deleted == False
-        )
-        
-        if engine:
-            if engine == 'openai':
-                run_query = run_query.filter(or_(
-                    Run.engine.like('gpt%'),
-                    Run.engine.like('openai%'),
-                    Run.engine == 'openai'
-                ))
-            elif engine == 'perplexity':
-                run_query = run_query.filter(Run.engine == 'perplexity')
-            else:
-                run_query = run_query.filter(Run.engine == engine)
-        
-        regular_runs = run_query.order_by(Run.ts.desc()).all()
-        
-        # Combine both sources - convert Run objects to a format compatible with AutomatedRun
-        # Define RunAdapter class outside the loop
-        class RunAdapter:
-            def __init__(self, run_obj):
-                self.id = run_obj.id
-                self.ts = run_obj.ts
-                self.query = run_obj.query
-                self.engine = run_obj.engine
-                self.model = run_obj.model or ""
-                self.status = run_obj.status or "completed"
-                self.answer_text = run_obj.raw_excerpt or ""
-                # Handle JSONB fields - they should already be lists/dicts
-                self.links = run_obj.links if run_obj.links else []
-                self.domains = run_obj.domains if run_obj.domains else []
-                self.entities_normalized = run_obj.entities_normalized if run_obj.entities_normalized else []
-                self.extreme_mentioned = run_obj.extreme_mentioned if run_obj.extreme_mentioned else False
-                self.competitor_mentions = []
-                self.citation_count = len(self.links) if self.links else 0
-                self.domain_count = len(self.domains) if self.domains else 0
-                self.input_tokens = run_obj.input_tokens or 0
-                self.output_tokens = run_obj.output_tokens or 0
-                self.cost_usd = float(run_obj.cost_usd) if run_obj.cost_usd else 0.0
-                self.latency_ms = run_obj.latency_ms or 0
-                self.intent_category = run_obj.intent or ""
-                self.is_branded = run_obj.is_branded if run_obj.is_branded else False
-        
-        runs = list(automated_runs)
-        for run in regular_runs:
-            try:
-                runs.append(RunAdapter(run))
-            except Exception as e:
-                logging.error(f"Error converting Run {run.id} to adapter: {e}")
-                continue
-        
-        # Sort all runs by timestamp descending
-        runs.sort(key=lambda x: x.ts, reverse=True)
-        
-        run_source = "automated" if automated_runs else ("runs" if regular_runs else "none")
+        runs = query.order_by(AutomatedRun.ts.desc()).all()
+        run_source = "automated"
         
         if not runs:
             return {
